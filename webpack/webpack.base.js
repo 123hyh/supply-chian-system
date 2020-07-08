@@ -104,7 +104,7 @@ module.exports = {
           'postcss-loader',
         ],
       },
-    ],
+    ].filter(Boolean),
   },
   plugins: [
     new VueLoaderPlugin(),
