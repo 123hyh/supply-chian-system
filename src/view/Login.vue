@@ -7,10 +7,19 @@
  * @FilePath: \supply-chain-cli\src\view\Login.vue
 --> 
 <template>
-  <div>登录loginPage</div>
+  <div>
+    <h2>
+      登录loginPage
+    </h2>
+    <TestTable />
+  </div>
 </template>
 <script>
+import TestTable from '@/pligins/TestTable.vue';
 export default {
+  components:{
+    TestTable
+  },
   name: 'login'
 };
 </script>
