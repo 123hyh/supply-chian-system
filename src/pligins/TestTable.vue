@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-08 23:40:10
- * @LastEditTime: 2020-07-08 23:59:43
+ * @LastEditTime: 2020-07-09 23:52:08
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/pligins/TestTable.vue
@@ -40,6 +40,14 @@ export default {
     };
   },
   created() {
+    const arr  = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 ];
+    const len = arr.length;
+    for ( let i = 0;i < arr.length * 2;i++ ) {
+      const x = Math.floor( Math.random() * len );
+      const y = Math.floor( Math.random() * len );
+      // eslint-disable-next-line no-unexpected-multiline
+      [ arr[x], arr[y] ] = [ arr[y], arr[x] ];
+    }
     this.tableData = [
       { name: 'hyh', sex: '男', age: 19, address: '草铺' },
       { name: 'hyh', sex: '男', age: 19, address: '草铺' },

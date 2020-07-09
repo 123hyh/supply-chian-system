@@ -20,6 +20,7 @@ const {
 } = require('yargs').argv;
 module.exports = merge(baseConf, {
   mode: 'production',
+  devtool: 'nosources-source-map',
   output: {
     filename: `[name].[chunkhash].js`,
     path: path.join(process.cwd(), 'dist'),

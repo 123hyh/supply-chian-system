@@ -8,10 +8,12 @@
  */
 
 import Vue from 'vue';
+import { errorHandler } from '@/utils/errorLog.ts';
 // 注册表格插件
 import 'xe-utils';
 import registerTableComponent from '@/pligins/table/index.js';
 registerTableComponent( Vue );
+errorHandler( Vue );
 
 import App from '@/App.vue';
 import store from '@/store';
