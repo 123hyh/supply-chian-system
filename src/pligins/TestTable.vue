@@ -1,71 +1,255 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-08 23:40:10
- * @LastEditTime: 2020-07-09 23:52:08
+ * @LastEditTime: 2020-07-12 13:01:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/pligins/TestTable.vue
 -->
 <template>
-  <vxe-table
-    :height='height'
-    class="table-scrollbar"
-    border
-    show-header-overflow
-    show-overflow
-    resizable
-    highlight-hover-row
-    :align="allAlign"
-    :data="tableData"
-  >
-    <vxe-table-column type="seq" title="序号" width="60"></vxe-table-column>
-    <vxe-table-column field="name" title="Name"></vxe-table-column>
-    <vxe-table-column field="sex" title="Sex"></vxe-table-column>
-    <vxe-table-column field="age" title="Age"></vxe-table-column>
-    <vxe-table-column field="address" title="Address"></vxe-table-column>
-  </vxe-table>
+  <div class="xy-component-table">
+    <!-- 工具栏 -->
+    <vxe-toolbar
+      size="medium"
+      :loading="loading"
+      custom
+      :perfect="true"
+      :refresh="{ query: handlerRefresh }"
+    >
+      <template v-slot:buttons>
+        <div>
+          <vxe-button
+            v-for="btnItem in leftButtons"
+            :key="btnItem.code"
+            :status="btnItem.type"
+            @click="
+              ({ $event } = {}) =>
+                handlerToolbarEvent({
+                  currentType: btnItem.code,
+                  event: $event,
+                })
+            "
+            >{{ btnItem.label }}</vxe-button
+          >
+        </div>
+      </template>
+    </vxe-toolbar>
+
+    <vxe-table
+      :size="size"
+      :height="height"
+      :loading="loading"
+      :align="allAlign"
+      :data="list"
+      border
+      round
+      show-header-overflow
+      show-overflow
+      resizable
+      highlight-hover-column
+      highlight-current-column
+      highlight-hover-row
+      highlight-current-row
+      class="table-scrollbar"
+      @sort-change="sortChangeEvent"
+      @checkbox-change='handlerCheckboxChange'
+    >
+      <!-- 序号列 -->
+      <vxe-table-column
+        v-if="isJoinSeq"
+        type="seq"
+        title="序号"
+        width="60"
+        fixed="left"
+      ></vxe-table-column>
+
+      <!-- 多选框 -->
+      <vxe-table-column
+        type="checkbox"
+        width="60"
+        fixed="left"
+      ></vxe-table-column>
+
+      <vxe-table-column
+        v-for="item in schema"
+        :key="item.key"
+        :field="item.key"
+        :title="item.label"
+        :width="item.width"
+        :fixed="item.fixed"
+        :sortable="item.sortable"
+        show-overflow
+      ></vxe-table-column>
+      <!-- 右侧操作按钮 -->
+      <vxe-table-column
+        v-if="rowContentButtons.length"
+        title="操作"
+        fixed="right"
+        :width="rowContentButtons.length * 100 - rowContentButtons.length * 20"
+      >
+        <template v-slot="data">
+          <Opration
+            :currentData="data"
+            :buttons="rowContentButtons"
+            @handlerToolbarEvent="(data) => $emit('handlerToolbarEvent', data)"
+          />
+        </template>
+      </vxe-table-column>
+    </vxe-table>
+    <!-- 分页条 -->
+    <Page
+      :key="`xy-component-page-${total}`"
+      :total="total"
+      @handlePageChange="(data) => $emit('handlePageChange', data || {})"
+    />
+  </div>
 </template>
 <script>
+const schema = [
+  { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left' },
+  { label: '性别', key: 'sex', width: '200' },
+  { label: '年龄', key: 'age', width: '1300', /* 启用排序 */ sortable: true },
+  { label: '地址', key: 'address', width: '200' }
+];
+const list = [
+  {
+    name: '123asdkjlasjfsn dnjsdhfjksdjs',
+    sex: '男',
+    age: 19,
+    address: '草铺'
+  },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺', status: '0' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' },
+  { name: 'hyh', sex: '男', age: 19, address: '草铺' }
+];
+import Page from '@/pligins/table/Page.vue';
+import Opration from '@/pligins/table/Opration.vue';
 export default {
-  props:{
-    height:{
+  name: 'xy-component-table',
+  components: {
+    Page,
+    Opration
+  },
+
+  props: {
+    total: {
+      type: Number,
+      default: 0
+    },
+    /* 左部按钮集合 */
+    leftButtons: {
+      type: Array,
+      default: () => [
+        {
+          label: '查询',
+          type: 'primary',
+          code: 'search'
+        },
+        { label: '新增', code: 'insert' },
+        { label: '保存', code: 'save' }
+      ]
+    },
+    /* 表格行数据操作按钮 */
+    rowContentButtons: {
+      type: Array,
+      default: () => [
+        {
+          label: '归类',
+          code: 'classify'
+        },
+        { label: '编辑', code: 'edit' }
+      ]
+    },
+    /* 表格加载状态 */
+    loading: {
+      type: Boolean,
+      default: false
+    },
+    /* 是否启用序号 */
+    isJoinSeq: {
+      type: Boolean,
+      default: true
+    },
+    /* 表格容器高度 */
+    height: {
       type: String,
       default: '400px'
+    },
+    /* 列表数据 */
+    list: {
+      type: Array,
+      default: () => list
+    },
+    /* 表格配置 */
+    schema: {
+      type: Array,
+      default: () => schema
+    },
+    /* 表格尺寸 */
+    size: {
+      type: String,
+      default: 'small',
+      validator( val ) {
+        const options = [ 'medium', 'small', 'mini' ];
+        const isExist = options.includes( val );
+        if ( !isExist ) {
+          throw Error( '参数选项：medium | small | mini' );
+        }
+        return true;
+      }
     }
   },
   data() {
     return {
-      allAlign: null,
-      tableData: []
+      allAlign: 'center'
     };
   },
-  created() {
-    const arr  = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 0 ];
-    const len = arr.length;
-    for ( let i = 0;i < arr.length * 2;i++ ) {
-      const x = Math.floor( Math.random() * len );
-      const y = Math.floor( Math.random() * len );
-      // eslint-disable-next-line no-unexpected-multiline
-      [ arr[x], arr[y] ] = [ arr[y], arr[x] ];
+  methods: {
+    /**
+     * 点击表头字段排序事件
+     * @description:
+     * @param {type}
+     * @return:
+     */
+    sortChangeEvent( currentClick, event ) {
+      const { field, order } = currentClick;
+      this.$emit( 'handlerClickSort', {
+        field,
+        order,
+        event
+      } );
+    },
+    /**
+     * 点击工具栏刷新列表按钮
+     * @description:
+     * @param {type}
+     * @return:
+     */
+    handlerRefresh() {
+      this.$emit( 'handleRefresh' );
+    },
+    /**
+     * 点击多选框事件
+     * @description: 
+     * @param {type} 
+     * @return: 
+     */
+    handlerCheckboxChange( clickCurrent = {}, event ) {
+      const { row = {} } = clickCurrent;
+      this.$emit( 'handleCheckboxChange', { event, current:row } );
     }
-    this.tableData = [
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' },
-      { name: 'hyh', sex: '男', age: 19, address: '草铺' }
-    ];
   }
 };
 </script>

@@ -31,7 +31,7 @@ module.exports = merge(baseConf, {
     port: 8090,
     overlay: {
       warnings: false,
-      errors: true
+      errors: true,
     },
     publicPath: '/',
     watchOptions: {
@@ -40,6 +40,7 @@ module.exports = merge(baseConf, {
   },
   devtool: 'source-map',
   plugins: [
+    
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new FriendlyErrorsWebpackPlugin({

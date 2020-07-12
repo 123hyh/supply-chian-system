@@ -1,11 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-07-08 23:12:14
- * @LastEditTime: 2020-07-08 23:45:21
+ * @LastEditTime: 2020-07-11 23:01:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/pligins/table/index.js
- */ 
+ */
+
 import {
   VXETable,
   Table,
@@ -18,7 +19,6 @@ import {
   Export,
   Keyboard,
   Validator,
-
   Grid,
   Toolbar,
   Pager,
@@ -35,12 +35,16 @@ import {
   List,
   Icon
 } from 'vxe-table';
+import XEUtils from 'xe-utils';
+import zhCNLocat from 'vxe-table/lib/locale/lang/zh-CN';
 
+// 按需加载的方式默认是不带国际化的，需要自行导入
+VXETable.setup( {
+  i18n: ( key, value ) => XEUtils.get( zhCNLocat, key )
+} );
 
-
-
-export default function registerTableComponent ( Vue ) {
-// 先安装依赖模块
+export default function registerTableComponent( Vue ) {
+  // 先安装依赖模块
   Vue.use( Icon );
   Vue.use( Column );
   Vue.use( Header );
