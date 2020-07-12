@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-08 23:40:10
- * @LastEditTime: 2020-07-12 13:01:00
+ * @LastEditTime: 2020-07-12 20:57:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/pligins/TestTable.vue
@@ -17,21 +17,8 @@
       :refresh="{ query: handlerRefresh }"
     >
       <template v-slot:buttons>
-        <div>
-          <vxe-button
-            v-for="btnItem in leftButtons"
-            :key="btnItem.code"
-            :status="btnItem.type"
-            @click="
-              ({ $event } = {}) =>
-                handlerToolbarEvent({
-                  currentType: btnItem.code,
-                  event: $event,
-                })
-            "
-            >{{ btnItem.label }}</vxe-button
-          >
-        </div>
+        <!-- 左侧按钮 -->
+        <LeftTools :buttons="leftButtons" />
       </template>
     </vxe-toolbar>
 
@@ -52,7 +39,7 @@
       highlight-current-row
       class="table-scrollbar"
       @sort-change="sortChangeEvent"
-      @checkbox-change='handlerCheckboxChange'
+      @checkbox-change="handlerCheckboxChange"
     >
       <!-- 序号列 -->
       <vxe-table-column
@@ -78,6 +65,7 @@
         :width="item.width"
         :fixed="item.fixed"
         :sortable="item.sortable"
+        :visible='item.visible'
         show-overflow
       ></vxe-table-column>
       <!-- 右侧操作按钮 -->
@@ -102,6 +90,13 @@
       :total="total"
       @handlePageChange="(data) => $emit('handlePageChange', data || {})"
     />
+    <!-- 测试插槽 -->
+    <test>
+      <div>测试jsx插槽</div>
+      <template v-slot:header="{ text }">
+        <div>{{ text }}</div>
+      </template>
+    </test>
   </div>
 </template>
 <script>
@@ -109,7 +104,7 @@ const schema = [
   { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left' },
   { label: '性别', key: 'sex', width: '200' },
   { label: '年龄', key: 'age', width: '1300', /* 启用排序 */ sortable: true },
-  { label: '地址', key: 'address', width: '200' }
+  { label: '地址', key: 'address', width: '200', /* 隐藏列 */visible: false }
 ];
 const list = [
   {
@@ -136,11 +131,14 @@ const list = [
 ];
 import Page from '@/pligins/table/Page.vue';
 import Opration from '@/pligins/table/Opration.vue';
+import LeftTools from '@/pligins/table/ToolBar/LeftTools.vue';
 export default {
   name: 'xy-component-table',
   components: {
     Page,
-    Opration
+    LeftTools,
+    Opration,
+    test: () => import( '@/pligins/table/TestTable2.vue' )
   },
 
   props: {
@@ -242,42 +240,47 @@ export default {
     },
     /**
      * 点击多选框事件
-     * @description: 
-     * @param {type} 
-     * @return: 
+     * @description:
+     * @param {type}
+     * @return:
      */
     handlerCheckboxChange( clickCurrent = {}, event ) {
       const { row = {} } = clickCurrent;
-      this.$emit( 'handleCheckboxChange', { event, current:row } );
+      this.$emit( 'handleCheckboxChange', { event, current: row } );
     }
   }
 };
 </script>
 <style lang="scss">
-/*滚动条整体部分*/
-.table-scrollbar div::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-/*滚动条的轨道*/
-.table-scrollbar div::-webkit-scrollbar-track {
-  background-color: #ffffff;
-}
-/*滚动条里面的小方块，能向上向下移动*/
-.table-scrollbar div::-webkit-scrollbar-thumb {
-  background-color: #bfbfbf;
-  border-radius: 5px;
-  border: 1px solid #f1f1f1;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
-.table-scrollbar div::-webkit-scrollbar-thumb:hover {
-  background-color: #a8a8a8;
-}
-.table-scrollbar div::-webkit-scrollbar-thumb:active {
-  background-color: #787878;
-}
-/*边角，即两个滚动条的交汇处*/
-.table-scrollbar div::-webkit-scrollbar-corner {
-  background-color: #ffffff;
+.xy-component-table {
+  /*滚动条整体部分*/
+  .table-scrollbar div::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  /*滚动条的轨道*/
+  .table-scrollbar div::-webkit-scrollbar-track {
+    background-color: #ffffff;
+  }
+  /*滚动条里面的小方块，能向上向下移动*/
+  .table-scrollbar div::-webkit-scrollbar-thumb {
+    background-color: #bfbfbf;
+    border-radius: 5px;
+    border: 1px solid #f1f1f1;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  }
+  .table-scrollbar div::-webkit-scrollbar-thumb:hover {
+    background-color: #a8a8a8;
+  }
+  .table-scrollbar div::-webkit-scrollbar-thumb:active {
+    background-color: #787878;
+  }
+  /*边角，即两个滚动条的交汇处*/
+  .table-scrollbar div::-webkit-scrollbar-corner {
+    background-color: #ffffff;
+  }
+  .vxe-toolbar {
+    height: auto;
+  }
 }
 </style>
