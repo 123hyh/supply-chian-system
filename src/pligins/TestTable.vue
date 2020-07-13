@@ -406,7 +406,7 @@ export default {
     handlerRefresh() {
       this.componentKey += 1;
       this.$emit( 'handleRefresh' );
-      // 关联表格 bug
+      // 刷新后重新赋值 ref 给querybar 管理 ，因为 ref 不是响应式
       this.$nextTick( () => {
         this.currentRefTable = this.$refs.table;
       } );
