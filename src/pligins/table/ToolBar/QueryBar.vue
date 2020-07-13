@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-12 15:22:52
- * @lastTime: 2020-07-13 16:36:41
+ * @lastTime: 2020-07-13 17:47:32
  * @LastAuthor: huangyuhui
  * @Description: 输入查询
  * @FilePath: \supply-chain-system\src\pligins\table\ToolBar\QueryBar.vue
@@ -28,7 +28,9 @@
         clearable
         />
       <!-- 操作按钮 插槽 -->
-      <slot class="query-bar-buttons"/>
+      <div class="query-bar-buttons">
+        <slot/>
+      </div>
     </template>
   </vxe-toolbar>
 </template>
@@ -67,7 +69,7 @@ export default {
     /* 关联的表格 */
     connectRef: {
       type: Object,
-      default: () => ( {} )
+      required: true
     }
   },
   data() {
@@ -83,7 +85,17 @@ export default {
     }
   },
   mounted() {
-    this.connectRef.connect( this.$refs.Toolbar );
+    this.$watch( 'connectRef', {
+      /**
+       * 关联表格
+       * @description: 
+       * @param {type} 
+       * @return: 
+       */
+      handler() {
+        this.connectRef.connect( this.$refs.Toolbar );
+      }
+    } );
   },
   methods: {
     /**

@@ -1,20 +1,22 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-08 23:40:10
- * @lastTime: 2020-07-13 10:30:54
+ * @lastTime: 2020-07-13 18:17:40
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\pligins\TestTable.vue
 -->
+
 <template>
   <div class="xy-component-table">
     <!-- 查询栏 - 工具栏 -->
-    <QueryBar :connectRef="$refs['table']">
+    <QueryBar :connectRef="currentRefTable">
       <template v-slot>
         <!-- 查询 按钮插槽 -->
         <slot name="QueryBarBtns"/>
       </template>
     </QueryBar>
+
     <!-- 表格主体 -->
     <vxe-table
       ref="table"
@@ -61,8 +63,35 @@
         :fixed="item.fixed"
         :sortable="item.sortable"
         :visible="item.visible"
+        :filters="item.filters"
+        :filterMethod="handlerFilterData"
         showOverflow
-        />
+        >
+        <template v-slot="current">
+          <!-- 每个列对应都由插槽，插槽name 为 schema的 key -->
+          <template v-if="$scopedSlots[item.key]">
+            <slot
+              :name="item.key"
+              :current="current"
+              />
+          </template>
+          <template v-else>
+            <div>{{ current.row[item.key] }}</div>
+          </template>
+        </template>
+        <!-- 过滤查询插槽 -->
+        <template v-slot:filter="{ $panel, column }">
+          <template v-if="item.filters">
+            <vxe-input
+              v-for="(option, index) in column.filters"
+              :key="index"
+              v-model="option.data"
+              type="type"
+              />
+          </template>
+        </template>
+      </vxe-table-column>
+
       <!-- 右侧操作按钮 -->
       <vxe-table-column
         v-if="rowContentButtons.length"
@@ -79,6 +108,7 @@
         </template>
       </vxe-table-column>
     </vxe-table>
+    
     <!-- 分页条 -->
     <Page
       :key="`xy-component-page-${total}`"
@@ -88,13 +118,16 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
+
 const schema = [
-  { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left' },
+  { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left', filters:[ { data: '', checked: true } ] },
   { label: '性别', key: 'sex', width: '200' },
   { label: '年龄', key: 'age', width: '1300', /* 启用排序 */ sortable: true },
   { label: '地址', key: 'address', width: '200', /* 隐藏列 */visible: false }
 ];
-const list = [
+
+const list = Vue.observable( [
   {
     name: '123asdkjlasjfsn dnjsdhfjksdjs',
     sex: '男',
@@ -116,16 +149,14 @@ const list = [
   { name: 'hyh', sex: '男', age: 19, address: '草铺' },
   { name: 'hyh', sex: '男', age: 19, address: '草铺' },
   { name: 'hyh', sex: '男', age: 19, address: '草铺' }
-];
+] );
 import Page from '@/pligins/table/Page.vue';
 import Opration from '@/pligins/table/Opration.vue';
-import LeftTools from '@/pligins/table/ToolBar/LeftTools.vue';
 import QueryBar from '@/pligins/table/ToolBar/QueryBar.vue';
 export default {
   name: 'XyComponentTable',
   components: {
     Page,
-    // LeftTools,
     Opration,
     QueryBar
   },
@@ -200,8 +231,13 @@ export default {
   },
   data() {
     return {
-      allAlign: 'center'
+      allAlign: 'center',
+      /* 标签表格 */
+      currentRefTable:{}
     };
+  },
+  mounted() {
+    this.currentRefTable = this.$refs.table;
   },
   methods: {
     /**
@@ -228,6 +264,16 @@ export default {
     handlerCheckboxChange( clickCurrent = {}, event ) {
       const { row = {} } = clickCurrent;
       this.$emit( 'handleCheckboxChange', { event, current: row } );
+    },
+    /**
+     * 列 筛选事件
+     * @description: 
+     * @param {type} 
+     * @return: 
+     */
+    handlerFilterData( { value, row, column:{ property } } = {} ) {
+      
+      debugger;
     }
   }
 };
