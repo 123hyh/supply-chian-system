@@ -35,8 +35,10 @@
       highlightHoverRow
       highlightCurrentRow
       class="table-scrollbar"
+      :filterConfig="{remote: true}"
       @sort-change="sortChangeEvent"
       @checkbox-change="handlerCheckboxChange"
+      @filter-change="handlerFilterData"
       >
       <!-- 序号列 -->
       <vxe-table-column
@@ -64,8 +66,9 @@
         :sortable="item.sortable"
         :visible="item.visible"
         :filters="item.filters"
-        :filterMethod="handlerFilterData"
+        remoteSort
         showOverflow
+        filter
         >
         <template v-slot="current">
           <!-- 每个列对应都由插槽，插槽name 为 schema的 key -->
@@ -82,12 +85,63 @@
         <!-- 过滤查询插槽 -->
         <template v-slot:filter="{ $panel, column }">
           <template v-if="item.filters">
-            <vxe-input
-              v-for="(option, index) in column.filters"
-              :key="index"
-              v-model="option.data"
-              type="type"
-              />
+            <!-- 筛选表单类型 -->
+            <template v-for="(option, index) in column.filters">
+              <!-- 文字输入 -->
+              <template v-if="item.type ==='string'">
+                <vxe-input
+                  :key="`${item.key}-string-${index}}`"
+                  v-model="option.data"
+                  placeholder="请输入关键字"
+                  :type="item.filters[index].type"
+                  @input="$panel.changeOption($event, !!option.data, option)"
+                  />
+              </template>
+              <!-- 下拉选择 -->
+              <template v-else-if="item.type ==='select'">
+                <vxe-select
+                  :key="`${item.key}-select-${index}}`"
+                  v-model="option.data"
+                  placeholder="请选择选项"
+                  :options="item.selectOptions"
+                  clearable
+                  @input="$panel.changeOption($event, !!option.data, option)"
+                  >
+                  <vxe-option
+                    v-for="(current,oIndex) in item.selectOptions"
+                    :key="`${item.key}-option-${oIndex}`"
+                    :value="current.value"
+                    :label="current.label"
+                    />
+                </vxe-select>
+              </template>
+              <!-- 日期选择器 -->
+              <template v-else-if="item.type === 'date'">
+                <vxe-input
+                  :key="`${item.key}-date-${index}}`"
+                  v-model="option.data"
+                  placeholder="请选择日期"
+                  type="date"
+                  @input="$panel.changeOption($event, !!option.data, option)"
+                  />
+              </template>
+              <!-- 复选框 -->
+              <template v-else-if="item.type === 'checkbox'">
+                <vxe-checkbox-group
+                  :key="`${item.key}-checkbox-${index}}`"
+                  v-model="option.data"
+                  @input="$panel.changeOption($event, !!option.data, option)"
+                  >
+                  <vxe-checkbox
+                    v-for="(currentOption,oIndex) in item.checkboxOptions"
+                    :key="`checkbox-option-${oIndex}`"
+                    :label="currentOption.value"
+                    >
+                    {{ currentOption.label }}
+                  </vxe-checkbox>
+                </vxe-checkbox-group>
+              </template>
+            </template>
           </template>
         </template>
       </vxe-table-column>
@@ -108,7 +162,7 @@
         </template>
       </vxe-table-column>
     </vxe-table>
-    
+
     <!-- 分页条 -->
     <Page
       :key="`xy-component-page-${total}`"
@@ -121,10 +175,56 @@
 import Vue from 'vue';
 
 const schema = [
-  { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left', filters:[ { data: '' } ] },
-  { label: '性别', key: 'sex', width: '200' },
-  { label: '年龄', key: 'age', width: '1300', /* 启用排序 */ sortable: true },
-  { label: '地址', key: 'address', width: '200', /* 隐藏列 */visible: false }
+  {
+    label: '姓名',
+    key: 'name',
+    width: '100',
+    /* 固定定位 */ fixed: 'left',
+    /* 表单类型 */
+    type: 'select',
+    /* 下拉选项 */
+    selectOptions: [
+      { label: '很遗憾1', value: '1' },
+      { label: '很遗憾2', value: '2' }
+    ],
+    filters: [
+      {
+        /* 初始值 */
+        data: '',
+        /* 是否默认选中 */
+        checked: false
+      }
+    ]
+  },
+  {
+    label: '性别',
+    key: 'sex',
+    width: '200',
+    type: 'checkbox',
+    checkboxOptions: [
+      { label: '男', value: 0 },
+      { label: '女', value: 1 },
+      { label: '中', value: 2 }
+    ],
+    filters: [ { data: [], checked: false } ]
+  },
+  {
+    label: '年龄',
+    key: 'age',
+    width: '1300',
+    /* 启用排序 */ sortable: true,
+    type: 'date',
+
+    filters: [
+      {
+        /* 初始值 */
+        data: '',
+        /* 是否默认选中 */
+        checked: false
+      }
+    ]
+  },
+  { label: '地址', key: 'address', width: '200', /* 隐藏列 */ visible: false }
 ];
 
 const list = Vue.observable( [
@@ -233,7 +333,9 @@ export default {
     return {
       allAlign: 'center',
       /* 标签表格 */
-      currentRefTable:{}
+      currentRefTable: {},
+      // 表头过滤筛选form数据集合
+      columnFilterFormData: {} 
     };
   },
   mounted() {
@@ -248,7 +350,7 @@ export default {
      */
     sortChangeEvent( currentClick, event ) {
       const { field, order } = currentClick;
-      this.$emit( 'handlerClickSort', {
+      this.$emit( 'handlerColumnSort', /* 传递 当前字段，排序参数 */{
         field,
         order,
         event
@@ -263,17 +365,26 @@ export default {
      */
     handlerCheckboxChange( clickCurrent = {}, event ) {
       const { row = {} } = clickCurrent;
-      this.$emit( 'handleCheckboxChange', { event, current: row } );
+      this.$emit( 'handleCheckboxChange', /* 传递 当前你点击行 数据 */{ event, current: row } );
     },
+
     /**
      * 列 筛选事件
-     * @description: 
-     * @param {type} 
-     * @return: 
+     * @description:
+     * @param {type}
+     * @return:
      */
-    handlerFilterData( { value, row, column:{ property } } = {} ) {
-      
-      debugger;
+    handlerFilterData( ...args ) {
+      const [ { filters = [] } = {} ] = args;
+      let data = filters.reduce( ( prev, { prop, datas = [] } = {} ) => {
+        prev[prop] =  datas.join() ;
+
+        // 删除空参数
+        prev[prop] === '' &&  delete prev[prop];
+
+        return prev;
+      }, {} );
+      this.$emit( 'handlerColumnFilter', /* 传递 查询参数 */ data );
     }
   }
 };
@@ -308,6 +419,26 @@ export default {
   }
   .vxe-toolbar {
     height: auto;
+  }
+
+  // 列 筛选样式
+  .vxe-table--filter-wrapper {
+    .vxe-table--filter-template {
+      padding: 10px;
+      // 复选框
+      .vxe-checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        .vxe-checkbox {
+          flex-basis: 100%;
+          margin: 10px 0;
+        }
+      }
+    }
+  }
+
+  .vxe-input--date-picker-suffix {
+    height: 50%;
   }
 }
 </style>

@@ -91,7 +91,7 @@
     "indent": ["error", 2],
     "max-len": [
       "error",
-      { "code": 80, "ignoreStrings": true, "ignoreTemplateLiterals": true }
+      { "code": 100, "ignoreStrings": true, "ignoreTemplateLiterals": true }
     ],
     "vue/no-spaces-around-equal-signs-in-attribute": ["error"],
     "vue/prop-name-casing": ["error", "camelCase"],
