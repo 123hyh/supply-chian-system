@@ -121,7 +121,7 @@
 import Vue from 'vue';
 
 const schema = [
-  { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left', filters:[ { data: '', checked: true } ] },
+  { label: '姓名', key: 'name', width: '100', /* 固定定位 */ fixed: 'left', filters:[ { data: '' } ] },
   { label: '性别', key: 'sex', width: '200' },
   { label: '年龄', key: 'age', width: '1300', /* 启用排序 */ sortable: true },
   { label: '地址', key: 'address', width: '200', /* 隐藏列 */visible: false }
