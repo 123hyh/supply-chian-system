@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-12 15:22:52
- * @lastTime: 2020-07-13 11:28:33
+ * @lastTime: 2020-07-13 16:36:41
  * @LastAuthor: huangyuhui
  * @Description: 输入查询
  * @FilePath: \supply-chain-system\src\pligins\table\ToolBar\QueryBar.vue
@@ -9,7 +9,7 @@
 <template>
   <vxe-toolbar
     ref="Toolbar"
-    class="xy-table-query-bar"
+    class="xy-table-query-bar-box"
     size="medium"
     :loading="loading"
     custom
@@ -17,6 +17,7 @@
     :refresh="{ query: handlerRefresh }"
     >
     <template v-slot:buttons>
+      <!-- 查询输入框 -->
       <vxeInput
         v-for="(value, key) in formSchema"
         :key="key"
@@ -26,7 +27,8 @@
         :placeholder="value.placeholder"
         clearable
         />
-      <slot/>
+      <!-- 操作按钮 插槽 -->
+      <slot class="query-bar-buttons"/>
     </template>
   </vxe-toolbar>
 </template>
@@ -59,7 +61,7 @@ export default {
     /* 按钮schema */
     buttonSchma: {
       type: Array,
-      default:()=>( [] )
+      default: () => []
     },
     loading: Boolean,
     /* 关联的表格 */
@@ -97,15 +99,19 @@ export default {
 };
 </script>
 <style lang="scss">
-.xy-table-query-bar {
+.xy-table-query-bar-box {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  > * {
-    flex-basis: calc(25% - 0.4em);
-    margin: 0.2em;
-    .vxe-input--inner {
-      border-radius: 0;
+  > .vxe-button--wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    > * {
+      flex-basis: calc(25% - 0.4em);
+      margin: 0.2em;
+      .vxe-input--inner {
+        border-radius: 0;
+      }
     }
   }
 }
