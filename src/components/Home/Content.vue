@@ -8,12 +8,12 @@
 -->
 <template>
   <main>
-    <slot></slot>
+    <slot/>
   </main>
 </template>
 <script>
 export default {
-  name:'content-component'
+  name:'ContentComponent'
 };
 </script>
 <style lang="scss">

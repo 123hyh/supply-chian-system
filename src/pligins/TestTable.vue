@@ -1,28 +1,23 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-08 23:40:10
- * @LastEditTime: 2020-07-12 21:10:45
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-13 10:30:54
+ * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
- * @FilePath: /supply-chian-system/src/pligins/TestTable.vue
+ * @FilePath: \supply-chain-system\src\pligins\TestTable.vue
 -->
 <template>
   <div class="xy-component-table">
-    <!-- 工具栏 -->
-    <vxe-toolbar
-      size="medium"
-      :loading="loading"
-      custom
-      :perfect="true"
-      :refresh="{ query: handlerRefresh }"
-    >
-      <template v-slot:buttons>
-        <!-- 左侧按钮 -->
-        <LeftTools :buttons="leftButtons" />
+    <!-- 查询栏 - 工具栏 -->
+    <QueryBar :connectRef="$refs['table']">
+      <template v-slot>
+        <!-- 查询 按钮插槽 -->
+        <slot name="QueryBarBtns"/>
       </template>
-    </vxe-toolbar>
-
+    </QueryBar>
+    <!-- 表格主体 -->
     <vxe-table
+      ref="table"
       :size="size"
       :height="height"
       :loading="loading"
@@ -30,17 +25,17 @@
       :data="list"
       border
       round
-      show-header-overflow
-      show-overflow
+      showHeaderOverflow
+      showOverflow
       resizable
-      highlight-hover-column
-      highlight-current-column
-      highlight-hover-row
-      highlight-current-row
+      highlightHoverColumn
+      highlightCurrentColumn
+      highlightHoverRow
+      highlightCurrentRow
       class="table-scrollbar"
       @sort-change="sortChangeEvent"
       @checkbox-change="handlerCheckboxChange"
-    >
+      >
       <!-- 序号列 -->
       <vxe-table-column
         v-if="isJoinSeq"
@@ -48,14 +43,14 @@
         title="序号"
         width="60"
         fixed="left"
-      ></vxe-table-column>
+        />
 
       <!-- 多选框 -->
       <vxe-table-column
         type="checkbox"
         width="60"
         fixed="left"
-      ></vxe-table-column>
+        />
 
       <vxe-table-column
         v-for="item in schema"
@@ -65,22 +60,22 @@
         :width="item.width"
         :fixed="item.fixed"
         :sortable="item.sortable"
-        :visible='item.visible'
-        show-overflow
-      ></vxe-table-column>
+        :visible="item.visible"
+        showOverflow
+        />
       <!-- 右侧操作按钮 -->
       <vxe-table-column
         v-if="rowContentButtons.length"
         title="操作"
         fixed="right"
         :width="rowContentButtons.length * 100 - rowContentButtons.length * 20"
-      >
+        >
         <template v-slot="data">
           <Opration
             :currentData="data"
             :buttons="rowContentButtons"
             @handlerToolbarEvent="(data) => $emit('handlerToolbarEvent', data)"
-          />
+            />
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -89,14 +84,7 @@
       :key="`xy-component-page-${total}`"
       :total="total"
       @handlePageChange="(data) => $emit('handlePageChange', data || {})"
-    />
-    <!-- 测试插槽 -->
-    <test>
-      <div>测试jsx插槽</div>
-      <template v-slot:header="{ text }">
-        <div>{{ text }}</div>
-      </template>
-    </test>
+      />
   </div>
 </template>
 <script>
@@ -132,13 +120,14 @@ const list = [
 import Page from '@/pligins/table/Page.vue';
 import Opration from '@/pligins/table/Opration.vue';
 import LeftTools from '@/pligins/table/ToolBar/LeftTools.vue';
+import QueryBar from '@/pligins/table/ToolBar/QueryBar.vue';
 export default {
-  name: 'xy-component-table',
+  name: 'XyComponentTable',
   components: {
     Page,
-    LeftTools,
+    // LeftTools,
     Opration,
-    test: () => import( '@/pligins/table/TestTable2.vue' )
+    QueryBar
   },
 
   props: {
@@ -229,15 +218,7 @@ export default {
         event
       } );
     },
-    /**
-     * 点击工具栏刷新列表按钮
-     * @description:
-     * @param {type}
-     * @return:
-     */
-    handlerRefresh() {
-      this.$emit( 'handleRefresh' );
-    },
+
     /**
      * 点击多选框事件
      * @description:

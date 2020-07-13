@@ -11,8 +11,8 @@
     border
     size="medium"
     :loading="loading"
-    :current-page="page.pageIndex"
-    :page-size="page.pageSize"
+    :currentPage="page.pageIndex"
+    :pageSize="page.pageSize"
     :total="total"
     :layouts="[
       'PrevPage',
@@ -23,12 +23,11 @@
       'Total',
     ]"
     @page-change="handlePageChange"
-  >
-  </vxe-pager>
+    />
 </template>
 <script>
 export default {
-  name: 'page-component',
+  name: 'PageComponent',
   props: {
     /* 数据总条目数 */
     total: {

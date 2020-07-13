@@ -7,40 +7,45 @@
  * @FilePath: \supply-chain-cli\src\components\Home\Menu\MenuItem.vue
 -->
 <template>
-    <Submenu
-      v-if="currentMenu.children && currentMenu.children.length" 
-      :index="currentMenu.menuCode"
+  <Submenu
+    v-if="currentMenu.children && currentMenu.children.length" 
+    :index="currentMenu.menuCode"
     >
-      <template slot="title">
-        <i class="el-icon-menu"></i>
-        <span>{{ currentMenu.menuCnName }}</span>
-      </template>
-      <menu-item-node
-        v-for="item in currentMenu.children"
-        :key="item.menuCode"
-        :currentMenu="item"
+    <template slot="title">
+      <i class="el-icon-menu"/>
+      <span>{{ currentMenu.menuCnName }}</span>
+    </template>
+    <menu-item-node
+      v-for="item in currentMenu.children"
+      :key="item.menuCode"
+      :currentMenu="item"
       />
-    </Submenu>
-    <MenuItem v-else :index="currentMenu.menuCode">
-      <i class="el-icon-menu"></i>
-      <span slot="title">{{ currentMenu.menuCnName }}</span>
-    </MenuItem>
+  </Submenu>
+  <MenuItem
+    v-else
+    :index="currentMenu.menuCode"
+    >
+    <i class="el-icon-menu"/>
+    <span slot="title">
+      {{ currentMenu.menuCnName }}
+    </span>
+  </MenuItem>
 </template>
 <script>
 import { MenuItem, Submenu } from 'element-ui';
 
 
 export default {
-  name: 'menu-item-node',
+  name: 'MenuItemNode',
+  components: {
+    MenuItem,
+    Submenu
+  },
   props: {
     currentMenu: {
       type: Object,
       required: true
     }
-  },
-  components: {
-    MenuItem,
-    Submenu
   }
 };
 </script>

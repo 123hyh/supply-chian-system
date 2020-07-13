@@ -52,9 +52,7 @@
     "yargs": "^15.4.0"
   },
   "dependencies": {
-    "-": "0.0.1",
     "@types/node": "^14.0.18",
-    "D": "^1.0.0",
     "file-loader": "^6.0.0",
     "url-loader": "^4.1.0"
   }

@@ -1,34 +1,37 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-12 15:22:52
- * @LastEditTime: 2020-07-12 20:53:00
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-13 11:28:33
+ * @LastAuthor: huangyuhui
  * @Description: 输入查询
- * @FilePath: /supply-chian-system/src/pligins/table/ToolBar/QueryBar.vue
+ * @FilePath: \supply-chain-system\src\pligins\table\ToolBar\QueryBar.vue
 -->
 <template>
-  <div class="xy-table-query-bar">
-    <vxe-input
-      :type="value.type"
-      :key="key"
-      :title='$data.$$formData[key]'
-      :placeholder="value.placeholder"
-      v-for="(value, key) in formSchema"
-      v-model="$data.$$formData[key]"
-      clearable
-    ></vxe-input>
-    <slot></slot>
-  </div>
+  <vxe-toolbar
+    ref="Toolbar"
+    class="xy-table-query-bar"
+    size="medium"
+    :loading="loading"
+    custom
+    :perfect="true"
+    :refresh="{ query: handlerRefresh }"
+    >
+    <template v-slot:buttons>
+      <vxeInput
+        v-for="(value, key) in formSchema"
+        :key="key"
+        v-model="$data.$$formData[key]"
+        :type="value.type"
+        :title="$data.$$formData[key]"
+        :placeholder="value.placeholder"
+        clearable
+        />
+      <slot/>
+    </template>
+  </vxe-toolbar>
 </template>
 <script>
 export default {
-  computed:{
-    formData: {
-      get() {
-        return { ...this.$data.$$formData };
-      }
-    }
-  },
   name: 'QueryBar',
   props: {
     /* 查询栏表单配置 */
@@ -43,21 +46,53 @@ export default {
           type: 'number',
           placeholder: '请输入年龄'
         },
-        startDate:{
+        startDate: {
           type: 'date',
-          placeholder:'请选择日期'
+          placeholder: '请选择日期'
         },
-        sex:{
+        sex: {
           type: 'select',
-          placeholder:'请选择性别'
+          placeholder: '请选择性别'
         }
       } )
+    },
+    /* 按钮schema */
+    buttonSchma: {
+      type: Array,
+      default:()=>( [] )
+    },
+    loading: Boolean,
+    /* 关联的表格 */
+    connectRef: {
+      type: Object,
+      default: () => ( {} )
     }
   },
   data() {
     return {
       $$formData: {}
     };
+  },
+  computed: {
+    formData: {
+      get() {
+        return { ...this.$data.$$formData };
+      }
+    }
+  },
+  mounted() {
+    this.connectRef.connect( this.$refs.Toolbar );
+  },
+  methods: {
+    /**
+     * 点击工具栏刷新列表按钮
+     * @description:
+     * @param {type}
+     * @return:
+     */
+    handlerRefresh() {
+      this.$emit( 'handleRefresh' );
+    }
   }
 };
 </script>

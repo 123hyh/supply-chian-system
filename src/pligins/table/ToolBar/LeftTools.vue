@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-12 15:09:45
- * @LastEditTime: 2020-07-12 16:50:42
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-13 10:41:52
+ * @LastAuthor: huangyuhui
  * @Description: 表格工具栏左侧操作组件
- * @FilePath: /supply-chian-system/src/pligins/table/ToolBar/LeftTools.vue
+ * @FilePath: \supply-chain-system\src\pligins\table\ToolBar\LeftTools.vue
 -->
 
 <template>
@@ -22,8 +22,9 @@
                 event: $event,
               })
           "
-          >{{ btnItem.label }}</vxe-button
-        >
+          >
+          {{ btnItem.label }}
+        </vxe-button>
       </div>
     </QueryBar>
   </div>
@@ -37,7 +38,10 @@ export default {
   },
   props: {
     /* 按钮schema */
-    buttons: Array
+    buttons: {
+      type: Array,
+      default :()=>( [] )
+    }
   },
   methods: {
     handlerClickButton( target = {} ) {

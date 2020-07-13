@@ -11,21 +11,21 @@
     <!-- 左边菜单操作按钮 -->
     <div class="menu-opration">
       <i
-        @click.stop="() => SET_MENU_STATUS()"
         :class="classList"
         style="font-size: 25px"
-      ></i>
+        @click.stop="() => SET_MENU_STATUS()"
+        />
     </div>
     <!-- nav  -->
-    <div></div>
+    <div/>
     <!-- 用户操作区域 -->
     <div class="block-opration">
       <div>
         <i
-          @click.stop="handlerFullscreen"
           class="el-icon-full-screen"
           style="font-size: 25px"
-        ></i>
+          @click.stop="handlerFullscreen"
+          />
       </div>
     </div>
   </header>
@@ -33,7 +33,7 @@
 <script>
 import { mapMutations, mapState } from 'vuex';
 export default {
-  name: 'header-component',
+  name: 'HeaderComponent',
   computed: {
     ...mapState( 'opration', [ 'closeMenu' ] ),
     classList() {

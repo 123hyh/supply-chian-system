@@ -8,9 +8,9 @@
 -->
 <template>
   <div class="block-home">
-    <Menu class="block-menu" />
+    <Menu class="block-menu"/>
     <div class="block-content-box">
-      <HeaderCom class="block-header" />
+      <HeaderCom class="block-header"/>
       <Content class="block-content">
         <!-- <router-view></router-view> -->
         主页
@@ -23,12 +23,12 @@ import Content from '@/components/Home/Content.vue';
 import Menu from '@/components/Home/Menu.vue';
 import Header from '@/components/Home/Header.vue';
 export default {
+  name: 'Home',
   components: {
     Content,
     Menu,
     HeaderCom: Header
-  },
-  name: 'home'
+  }
 };
 </script>
 <style lang="scss">

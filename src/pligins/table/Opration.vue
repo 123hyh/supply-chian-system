@@ -9,11 +9,11 @@
 <template>
   <div>
     <XyButton
+      v-for="btnItem in buttons"
+      :key="btnItem.code"
       icon="el-icon-edit-outline"
       circle
       size="small"
-      v-for="btnItem in buttons"
-      :key="btnItem.code"
       :disabled="currentData | oprationDisable"
       :title="btnItem.label"
       @click.stop="
@@ -24,7 +24,7 @@
             currentData,
           })
       "
-    />
+      />
     <!-- <vxe-button
       v-for="btnItem in buttons"
       size="mini"
@@ -42,6 +42,13 @@ export default {
   components: {
     XyButton: Button
   },
+  filters: {
+    /* 操作按钮禁用状态 */
+    oprationDisable( currentData = {} ) {
+      const { row = {} } = currentData;
+      return !!row.status;
+    }
+  },
   props: {
     currentData: {
       type: Object,
@@ -50,13 +57,6 @@ export default {
     buttons: {
       type: Array,
       default: () => []
-    }
-  },
-  filters: {
-    /* 操作按钮禁用状态 */
-    oprationDisable( currentData = {} ) {
-      const { row = {} } = currentData;
-      return !!row.status;
     }
   },
   methods: {

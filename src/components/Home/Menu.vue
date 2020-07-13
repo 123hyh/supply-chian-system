@@ -8,21 +8,21 @@
 -->
 <template>
   <menu>
-    <el-menu
+    <ElMenu
       class="menu-box"
       :style="{ width: closeMenu ? 'auto' : '200px' }"
+      :collapse="closeMenu"
+      :collapseTransition="false"
       @open="handleOpen"
       @close="handleClose"
-      :collapse="closeMenu"
-      :collapse-transition="false"
-    >
+      >
       <!-- 递归菜单组件 -->
       <MenuItemComponent
         v-for="item in menuList"
-        :currentMenu="item"
         :key="item.menuCode"
-      />
-    </el-menu>
+        :currentMenu="item"
+        />
+    </ElMenu>
   </menu>
 </template>
 <script>
@@ -30,7 +30,7 @@ import { Menu } from 'element-ui';
 import MenuItemComponent from '@/components/Home/Menu/MenuItem.vue';
 import { mapGetters, mapState } from 'vuex';
 export default {
-  name: 'menu-component',
+  name: 'MenuComponent',
   components: {
     ElMenu: Menu,
     MenuItemComponent
