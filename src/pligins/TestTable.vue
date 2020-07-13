@@ -10,7 +10,10 @@
 <template>
   <div class="xy-component-table">
     <!-- 查询栏 - 工具栏 -->
-    <QueryBar :connectRef="currentRefTable">
+    <QueryBar
+      :connectRef="currentRefTable"
+      @handleRefresh="handlerRefresh"
+      >
       <template v-slot>
         <!-- 查询 按钮插槽 -->
         <slot name="QueryBarBtns"/>
@@ -19,6 +22,7 @@
 
     <!-- 表格主体 -->
     <vxe-table
+      :key="`table-key-${componentKey}`"
       ref="table"
       :size="size"
       :height="height"
@@ -165,7 +169,7 @@
 
     <!-- 分页条 -->
     <Page
-      :key="`xy-component-page-${total}`"
+      :key="`xy-component-table-${componentKey}-page-${total}`"
       :total="total"
       @handlePageChange="(data) => $emit('handlePageChange', data || {})"
       />
@@ -212,7 +216,8 @@ const schema = [
     label: '年龄',
     key: 'age',
     width: '1300',
-    /* 启用排序 */ sortable: true,
+    /* 启用排序 */ 
+    sortable: true,
     type: 'date',
 
     filters: [
@@ -224,7 +229,11 @@ const schema = [
       }
     ]
   },
-  { label: '地址', key: 'address', width: '200', /* 隐藏列 */ visible: false }
+  {
+    label: '地址', key: 'address', width: '200', 
+    /* 隐藏列 */
+    visible: false 
+  }
 ];
 
 const list = Vue.observable( [
@@ -332,6 +341,8 @@ export default {
   data() {
     return {
       allAlign: 'center',
+      /* 重置组件的 key */
+      componentKey: 1,
       /* 标签表格 */
       currentRefTable: {},
       // 表头过滤筛选form数据集合
@@ -385,6 +396,20 @@ export default {
         return prev;
       }, {} );
       this.$emit( 'handlerColumnFilter', /* 传递 查询参数 */ data );
+    },
+    /**
+     * 点击刷新表格
+     * @description:
+     * @param {type}
+     * @return:
+     */
+    handlerRefresh() {
+      this.componentKey += 1;
+      this.$emit( 'handleRefresh' );
+      // 关联表格 bug
+      this.$nextTick( () => {
+        this.currentRefTable = this.$refs.table;
+      } );
     }
   }
 };
