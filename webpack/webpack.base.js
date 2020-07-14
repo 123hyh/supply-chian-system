@@ -2,9 +2,9 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:26:29
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-08 17:09:56
+ * @lastTime: 2020-07-14 11:03:49
  * @message:
- * @FilePath: \supply-chain-cli\webpack\webpack.base.js
+ * @FilePath: \supply-chain-system\webpack\webpack.base.js
  */
 const path = require('path');
 
@@ -68,7 +68,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'images/[name].[hash:7].[ext]',
+          name: 'images/[name].[contenthash].[ext]',
         },
       },
       {
@@ -76,7 +76,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'media/[name].[hash:7].[ext]',
+          name: 'media/[name].[contenthash].[ext]',
         },
       },
       {
@@ -84,7 +84,7 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: 10000,
-          name: 'fonts/[name].[hash:7].[ext]',
+          name: 'style/[name].[contenthash].[ext]',
         },
       },
       {

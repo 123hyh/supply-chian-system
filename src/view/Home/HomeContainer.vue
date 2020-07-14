@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 20:24:47
- * @lastTime: 2020-07-08 16:16:46
+ * @lastTime: 2020-07-14 09:46:23
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
- * @FilePath: \supply-chain-cli\src\view\Home\HomeContainer.vue
+ * @FilePath: \supply-chain-system\src\view\Home\HomeContainer.vue
 -->
 <template>
   <div class="block-home">
@@ -12,8 +12,7 @@
     <div class="block-content-box">
       <HeaderCom class="block-header"/>
       <Content class="block-content">
-        <!-- <router-view></router-view> -->
-        主页
+        <router-view/>
       </Content>
     </div>
   </div>

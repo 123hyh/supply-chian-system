@@ -2,9 +2,9 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:29:19
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-08 09:34:18
+ * @lastTime: 2020-07-14 11:06:25
  * @message:
- * @FilePath: \supply-chain-cli\webpack\webpack.prod.js
+ * @FilePath: \supply-chain-system\webpack\webpack.prod.js
  */
 
 const baseConf = require('./webpack.base');
@@ -22,7 +22,7 @@ module.exports = merge(baseConf, {
   mode: 'production',
   devtool: 'nosources-source-map',
   output: {
-    filename: `[name].[chunkhash].js`,
+    filename: `js/[name].[chunkhash].js`,
     path: path.join(process.cwd(), 'dist'),
     chunkFilename: `js/[name].[chunkhash].js`,
     publicPath: isProduction && isLocal ? './' : '/',
@@ -34,8 +34,8 @@ module.exports = merge(baseConf, {
       test: /\.(js|css|html|svg)$/,
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css',
-      chunkFilename: 'css/[name].[contenthash].css',
+      filename: 'style/[name].[contenthash].css',
+      chunkFilename: 'style/[name].[contenthash].css',
     }),
   ],
 });
