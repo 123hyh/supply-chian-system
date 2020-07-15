@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-08 23:40:10
- * @lastTime: 2020-07-14 11:19:25
+ * @lastTime: 2020-07-15 14:18:29
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\pligins\TestTable.vue
@@ -10,15 +10,18 @@
 <template>
   <div class="xy-component-table">
     <!-- 查询栏 - 工具栏 -->
-    <QueryBar
+    <Toolbar
       :connectRef="currentRefTable"
       @handleRefresh="handlerRefresh"
       >
       <template v-slot>
         <!-- 查询 按钮插槽 -->
-        <slot name="QueryBarBtns"/>
+        <slot
+          name="toolbarButtons"
+          :currentRow="currentRow"
+          />
       </template>
-    </QueryBar>
+    </Toolbar>
 
     <!-- 表格主体 -->
     <vxe-table
@@ -27,7 +30,7 @@
       :size="size"
       :height="height"
       :loading="loading"
-      :align="allAlign"
+      :align="align"
       :data="list"
       border
       round
@@ -43,6 +46,7 @@
       @sort-change="sortChangeEvent"
       @checkbox-change="handlerCheckboxChange"
       @filter-change="handlerFilterData"
+      @current-change="handlerClickCurrentRow"
       >
       <!-- 序号列 -->
       <vxe-table-column
@@ -213,7 +217,7 @@ const schema = [
       { label: '女', value: 1 },
       { label: '中', value: 2 }
     ],
-    filters: [ { data: [], checked: false } ]
+    filters: [ { data: [ 0, 1 ], checked: false } ]
   },
   {
     label: '年龄',
@@ -268,33 +272,21 @@ const list = Vue.observable( [
 ] );
 import Page from '@/pligins/table/Page.vue';
 import Opration from '@/pligins/table/Opration.vue';
-import QueryBar from '@/pligins/table/ToolBar/QueryBar.vue';
+import Toolbar from '@/pligins/table/ToolBar/Toolbar.vue';
 export default {
   name: 'XyComponentTable',
   components: {
     Page,
     Opration,
-    QueryBar
+    Toolbar
   },
 
   props: {
+
+    /*分页数据总条数 */
     total: {
       type: Number,
       default: 0
-    },
-
-    /* 左部按钮集合 */
-    leftButtons: {
-      type: Array,
-      default: () => [
-        {
-          label: '查询',
-          type: 'primary',
-          code: 'search'
-        },
-        { label: '新增', code: 'insert' },
-        { label: '保存', code: 'save' }
-      ]
     },
 
     /* 表格行数据操作按钮 */
@@ -339,7 +331,7 @@ export default {
       default: () => schema
     },
 
-    /* 表格尺寸 */
+    /* 表格尺寸 medium | small | mini */
     size: {
       type: String,
       default: 'small',
@@ -351,11 +343,16 @@ export default {
         }
         return true;
       }
+    },
+
+    /* 表格 文字布局 left | center | right  */
+    align:{
+      type: String,
+      default: 'left'
     }
   },
   data () {
     return {
-      allAlign: 'center',
 
       /* 重置组件的 key */
       componentKey: 1,
@@ -363,8 +360,11 @@ export default {
       /* 标签表格 */
       currentRefTable: {},
 
-      // 表头过滤筛选form数据集合
-      columnFilterFormData: {} 
+      /* 表头过滤筛选form数据集合 */
+      columnFilterFormData: {},
+
+      /* 当前选中的行 */
+      currentRow:{}
     };
   },
   mounted () {
@@ -431,6 +431,18 @@ export default {
       this.$nextTick( () => {
         this.currentRefTable = this.$refs.table;
       } );
+    },
+
+    /**
+     * 点击当前行事件
+     * @description: 
+     * @param {type} 
+     * @return: 
+     */
+    handlerClickCurrentRow ( current = {}, event ) {
+      const { row = {} } = current;
+      this.currentRow = { ...row };
+      this.$emit( 'handClickRow', { data:this.currentRow, event } );
     }
   }
 };
@@ -470,7 +482,8 @@ export default {
   // 列 筛选样式
   .vxe-table--filter-wrapper {
     .vxe-table--filter-template {
-      padding: 10px;
+      width: 300px;
+      padding: 20px;
       // 复选框
       .vxe-checkbox-group {
         display: flex;
