@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-12 15:22:52
- * @lastTime: 2020-07-15 12:05:20
+ * @lastTime: 2020-07-15 15:21:34
  * @LastAuthor: huangyuhui
  * @Description: 表格顶部按钮
  * @FilePath: \supply-chain-system\src\pligins\table\ToolBar\Toolbar.vue
@@ -24,7 +24,9 @@
     </template>
   </vxe-toolbar>
 </template>
+
 <script>
+import ToolbarButtons from '@/pligins/table/ToolBar/ToolbarButtons.vue';
 export default {
   name: 'Toolbar',
   props: {
@@ -68,6 +70,7 @@ export default {
 </script>
 <style lang="scss">
 .xy-component-toolbar {
+  padding: 5px;
   width: 100%;
   display: flex;
   flex-wrap: wrap;

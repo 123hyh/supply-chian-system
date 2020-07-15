@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2020-07-08 23:12:14
- * @LastEditTime: 2020-07-11 23:01:00
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-15 16:44:05
+ * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
- * @FilePath: /supply-chian-system/src/pligins/table/index.js
+ * @FilePath: \supply-chain-system\src\pligins\table\index.js
  */
 
 import {

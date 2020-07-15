@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 22:02:56
- * @lastTime: 2020-07-15 11:51:33
+ * @lastTime: 2020-07-15 15:20:00
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Login.vue
@@ -17,11 +17,11 @@
     <TestTable>
       <!-- 测试 查询栏 按钮 插槽 -->
       <template v-slot:toolbarButtons="{currentRow}">
-        <div>{{ currentRow }}</div>
+        <div>当前点击行数据：{{ currentRow }}</div>
       </template>
       <!-- 测试表格列 字段 插槽 -->
       <template v-slot:age>
-        <span>111</span>
+        <span>测试slot 插槽</span>
       </template>
     </TestTable>
     <!-- 模态窗 -->

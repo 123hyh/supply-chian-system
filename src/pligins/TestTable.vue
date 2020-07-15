@@ -1,21 +1,24 @@
 <!--
- * @Author: your name
+ * @Author: huangyuhui
  * @Date: 2020-07-08 23:40:10
- * @lastTime: 2020-07-15 14:18:29
+ * @lastTime: 2020-07-15 18:07:25
  * @LastAuthor: huangyuhui
- * @Description: In User Settings Edit
+ * @Description: 表格公共组件
  * @FilePath: \supply-chain-system\src\pligins\TestTable.vue
 -->
 
 <template>
-  <div class="xy-component-table">
+  <div
+    class="xy-component-table"
+    :data-table-id="$data.$$id"
+    >
     <!-- 查询栏 - 工具栏 -->
     <Toolbar
       :connectRef="currentRefTable"
       @handleRefresh="handlerRefresh"
       >
       <template v-slot>
-        <!-- 查询 按钮插槽 -->
+        <!-- 工具栏按钮插槽 -->
         <slot
           name="toolbarButtons"
           :currentRow="currentRow"
@@ -42,9 +45,10 @@
       highlightHoverRow
       highlightCurrentRow
       class="table-scrollbar"
-      :filterConfig="{remote: true}"
+      :filterConfig="{ remote: true }"
       @sort-change="sortChangeEvent"
       @checkbox-change="handlerCheckboxChange"
+      @checkbox-all="handlerCheckboxChange"
       @filter-change="handlerFilterData"
       @current-change="handlerClickCurrentRow"
       >
@@ -65,7 +69,7 @@
         />
 
       <vxe-table-column
-        v-for="item in schema"
+        v-for="item in columnCombination"
         :key="item.key"
         :field="item.key"
         :title="item.label"
@@ -96,7 +100,7 @@
             <!-- 筛选表单类型 -->
             <template v-for="(option, index) in column.filters">
               <!-- 文字输入 -->
-              <template v-if="item.type ==='string'">
+              <template v-if="item.type === 'string'">
                 <vxe-input
                   :key="`${item.key}-string-${index}}`"
                   v-model="option.data"
@@ -106,7 +110,7 @@
                   />
               </template>
               <!-- 下拉选择 -->
-              <template v-else-if="item.type ==='select'">
+              <template v-else-if="item.type === 'select'">
                 <vxe-select
                   :key="`${item.key}-select-${index}}`"
                   v-model="option.data"
@@ -116,7 +120,7 @@
                   @input="$panel.changeOption($event, !!option.data, option)"
                   >
                   <vxe-option
-                    v-for="(current,oIndex) in item.selectOptions"
+                    v-for="(current, oIndex) in item.selectOptions"
                     :key="`${item.key}-option-${oIndex}`"
                     :value="current.value"
                     :label="current.label"
@@ -141,7 +145,7 @@
                   @input="$panel.changeOption($event, !!option.data, option)"
                   >
                   <vxe-checkbox
-                    v-for="(currentOption,oIndex) in item.checkboxOptions"
+                    v-for="(currentOption, oIndex) in item.checkboxOptions"
                     :key="`checkbox-option-${oIndex}`"
                     :label="currentOption.value"
                     >
@@ -165,7 +169,7 @@
           <Opration
             :currentData="data"
             :buttons="rowContentButtons"
-            @handlerToolbarEvent="(data) => $emit('handlerToolbarEvent', data)"
+            @handlerToolbarEvent="(data) => $emit('handleToolbarEvent', data)"
             />
         </template>
       </vxe-table-column>
@@ -187,63 +191,69 @@ const schema = [
     label: '姓名',
     key: 'name',
     width: '100',
-    /* 固定定位 */ fixed: 'left',
-    /* 表单类型 */
-    type: 'select',
 
-    /* 下拉选项 */
-    selectOptions: [
-      { label: '很遗憾1', value: '1' },
-      { label: '很遗憾2', value: '2' }
-    ],
-    filters: [
-      {
+    /* 固定定位 */
+    fixed: 'left',
 
-        /* 初始值 */
-        data: '',
+    filter: {
 
-        /* 是否默认选中 */
-        checked: false
-      }
-    ]
+      /* 表单类型 */
+      type: 'select',
+
+      /* 下拉选项 */
+      selectOptions: [
+        { label: '很遗憾1', value: '1' },
+        { label: '很遗憾2', value: '2' }
+      ],
+
+      /* 初始值 */
+      data: '',
+
+      /* 是否默认选中 */
+      checked: false
+    }
   },
   {
     label: '性别',
     key: 'sex',
     width: '200',
-    type: 'checkbox',
-    checkboxOptions: [
-      { label: '男', value: 0 },
-      { label: '女', value: 1 },
-      { label: '中', value: 2 }
-    ],
-    filters: [ { data: [ 0, 1 ], checked: false } ]
+
+    filter: {
+      type: 'checkbox',
+      checkboxOptions: [
+        { label: '男', value: 0 },
+        { label: '女', value: 1 },
+        { label: '中', value: 2 }
+      ],
+      data: [ 0, 1 ],
+      checked: false
+    }
   },
   {
     label: '年龄',
     key: 'age',
     width: '1300',
 
-    /* 启用排序 */ 
+    /* 启用排序 */
+
     sortable: true,
-    type: 'date',
+    filter: {
+      type: 'date',
 
-    filters: [
-      {
+      /* 初始值 */
+      data: '',
 
-        /* 初始值 */
-        data: '',
-
-        /* 是否默认选中 */
-        checked: false
-      }
-    ]
+      /* 是否默认选中 */
+      checked: false
+    }
   },
   {
-    label: '地址', key: 'address', width: '200', 
+    label: '地址',
+    key: 'address',
+    width: '200',
 
     /* 隐藏列 */
-    visible: false 
+    visible: false
   }
 ];
 
@@ -270,9 +280,12 @@ const list = Vue.observable( [
   { name: 'hyh', sex: '男', age: 19, address: '草铺' },
   { name: 'hyh', sex: '男', age: 19, address: '草铺' }
 ] );
+
 import Page from '@/pligins/table/Page.vue';
 import Opration from '@/pligins/table/Opration.vue';
 import Toolbar from '@/pligins/table/ToolBar/Toolbar.vue';
+
+let id = 0;
 export default {
   name: 'XyComponentTable',
   components: {
@@ -316,7 +329,7 @@ export default {
     /* 表格容器高度 */
     height: {
       type: String,
-      default: '400px'
+      default: ''
     },
 
     /* 列表数据 */
@@ -346,7 +359,7 @@ export default {
     },
 
     /* 表格 文字布局 left | center | right  */
-    align:{
+    align: {
       type: String,
       default: 'left'
     }
@@ -357,6 +370,9 @@ export default {
       /* 重置组件的 key */
       componentKey: 1,
 
+      /* 当前组件 */
+      $$id: ( id += 1 ),
+
       /* 标签表格 */
       currentRefTable: {},
 
@@ -364,8 +380,49 @@ export default {
       columnFilterFormData: {},
 
       /* 当前选中的行 */
-      currentRow:{}
+      currentRow: {}
     };
+  },
+  computed: {
+
+    /* 处理 schema */
+    columnCombination () {
+      try {
+        const types = {
+          string: () => ( {} ),
+          select: () => ( { selectOptions: [] } ),
+          checkbox: () => ( { checkboxOptions: [] } )
+        };
+
+        const arr = [];
+        for ( const { filter, ...option } of this.schema ) {
+          let newItem = { ...option };
+          if (
+            Object.prototype.toString.call( filter ).slice( 8, -1 ) === 'Object'
+          ) {
+            const { type = 'string', checkboxOptions, selectOptions } = filter;
+
+            /* 查找选项 */
+            let op = {};
+            switch ( type ) {
+            case 'checkbox' :
+              op = { checkboxOptions };
+              break;
+            case 'select' :
+              op = { selectOptions };
+            }
+
+            /* 重新赋值item */
+            newItem = { ...op, ...newItem, type, filters: [ filter ] };
+          }
+          arr.push( newItem );
+        }
+        return arr;
+      } catch ( error ) {
+        console.log( error );
+        return [];
+      }
+    }
   },
   mounted () {
     this.currentRefTable = this.$refs.table;
@@ -380,11 +437,14 @@ export default {
      */
     sortChangeEvent ( currentClick, event ) {
       const { field, order } = currentClick;
-      this.$emit( 'handlerColumnSort', /* 传递 当前字段，排序参数 */{
-        field,
-        order,
-        event
-      } );
+      this.$emit(
+        'handleColumnSort',
+        /* 传递 当前字段，排序参数 */ {
+          field,
+          order,
+          event
+        }
+      );
     },
 
     /**
@@ -394,8 +454,11 @@ export default {
      * @return:
      */
     handlerCheckboxChange ( clickCurrent = {}, event ) {
-      const { row = {} } = clickCurrent;
-      this.$emit( 'handleCheckboxChange', /* 传递 当前你点击行 数据 */{ event, current: row } );
+      const { selection = {} } = clickCurrent;
+      this.$emit(
+        'handleCheckboxChange',
+        /* 传递 当前你点击行 数据 */ { event, current: selection }
+      );
     },
 
     /**
@@ -407,14 +470,14 @@ export default {
     handlerFilterData ( ...args ) {
       const [ { filters = [] } = {} ] = args;
       let data = filters.reduce( ( prev, { prop, datas = [] } = {} ) => {
-        prev[ prop ] =  datas.join() ;
+        prev[ prop ] = datas.join();
 
         // 删除空参数
-        prev[ prop ] === '' &&  delete prev[ prop ];
+        prev[ prop ] === '' && delete prev[ prop ];
 
         return prev;
       }, {} );
-      this.$emit( 'handlerColumnFilter', /* 传递 查询参数 */ data );
+      this.$emit( 'handleColumnFilter', /* 传递 查询参数 */ data );
     },
 
     /**
@@ -435,14 +498,14 @@ export default {
 
     /**
      * 点击当前行事件
-     * @description: 
-     * @param {type} 
-     * @return: 
+     * @description:
+     * @param {type}
+     * @return:
      */
     handlerClickCurrentRow ( current = {}, event ) {
       const { row = {} } = current;
       this.currentRow = { ...row };
-      this.$emit( 'handClickRow', { data:this.currentRow, event } );
+      this.$emit( 'handleClickRow', { data: this.currentRow, event } );
     }
   }
 };
