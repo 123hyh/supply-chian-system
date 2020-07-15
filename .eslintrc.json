@@ -149,6 +149,24 @@
     "comma-dangle": ["error", "never"],
     "func-call-spacing": ["error", "never"],
     "comma-style": ["error", "last"],
-    "camelcase": ["error", {"properties": "always"}]
+    "camelcase": ["error", {"properties": "always"}],
+    "arrow-spacing": ["error",{ "before": true, "after": true }],
+    "space-before-function-paren": ["error","always"],
+    "computed-property-spacing": ["error", "always"],
+    "line-comment-position": ["error", { "position": "above" }],
+    "lines-around-comment": ["error", { "beforeBlockComment": true,"beforeLineComment": true }],
+    "lines-between-class-members": ["error", "always"],
+    "no-multi-assign": "error",
+    "no-whitespace-before-property": "error",
+    "nonblock-statement-body-position": ["error", "beside"],
+    "no-constant-condition": ["error", { "checkLoops": false }],
+    "no-extra-semi": "error",
+    "use-isnan": "error",
+    "dot-location": ["error", "object"],
+    "dot-notation": "error",
+    "no-case-declarations": "error",
+    "no-empty-pattern": "error",
+    "no-eval": "error",
+    "no-floating-decimal": "error"
   }
 }

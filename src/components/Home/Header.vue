@@ -36,7 +36,7 @@ export default {
   name: 'HeaderComponent',
   computed: {
     ...mapState( 'opration', [ 'closeMenu' ] ),
-    classList() {
+    classList () {
       return {
         'el-icon-s-unfold': this.closeMenu,
         'el-icon-s-fold': !this.closeMenu
@@ -45,6 +45,7 @@ export default {
   },
   methods: {
     ...mapMutations( 'opration', [ 'SET_MENU_STATUS' ] ),
+
     /**
      * 点击全屏事件
      * @description:
@@ -52,7 +53,7 @@ export default {
      * @return:
      */
 
-    handlerFullscreen() {
+    handlerFullscreen () {
       if ( document.fullscreen ) {
         document.exitFullscreen();
       } else {

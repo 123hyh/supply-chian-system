@@ -43,7 +43,8 @@ VXETable.setup( {
   i18n: ( key, value ) => XEUtils.get( zhCNLocat, key )
 } );
 
-export default function registerTableComponent( Vue ) {
+export default function registerTableComponent ( Vue ) {
+
   // 先安装依赖模块
   Vue.use( Icon );
   Vue.use( Column );

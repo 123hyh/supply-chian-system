@@ -2,9 +2,9 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:26:35
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-08 11:43:20
+ * @lastTime: 2020-07-14 16:38:06
  * @message:
- * @FilePath: \supply-chain-cli\webpack\webpack.dev.js
+ * @FilePath: \supply-chain-system\webpack\webpack.dev.js
  */
 
 const baseConf = require('./webpack.base');
@@ -28,7 +28,6 @@ module.exports = merge(baseConf, {
     progress: true,
     compress: true,
     host: '0.0.0.0',
-    port: 8090,
     overlay: {
       warnings: false,
       errors: true,

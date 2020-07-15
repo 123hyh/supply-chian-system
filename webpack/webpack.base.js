@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:26:29
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-14 11:03:49
+ * @lastTime: 2020-07-14 18:23:12
  * @message:
  * @FilePath: \supply-chain-system\webpack\webpack.base.js
  */
@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        use: ['babel-loader'],
+        use: [isProduction && 'cache-loader','babel-loader'].filter(Boolean),
         exclude: /node_modules/,
       },
       {
@@ -108,7 +108,7 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    isProduction && new CleanWebpackPlugin(),
+    // isProduction && new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(process.cwd(), 'public/index.html'),
     }),

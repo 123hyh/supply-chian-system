@@ -9,11 +9,12 @@
 const isDev = process.env.NODE_ENV  ===  'development';
 import { VueConstructor } from 'vue';
 
-function errHandler( ...args: any[] ) {
+function errHandler ( ...args: any[] ) {
   const [ err, vm, info ] = args;
   if ( !isDev ) {
     console.log( err.message, err.stack, '\n', vm, '\n', info );
   }
+
 /**
  * 全局捕抓 Vue 错误 log
  * @description: 
@@ -21,14 +22,14 @@ function errHandler( ...args: any[] ) {
  * @return: 
  */  
 }
-export function errorHandler( Vue: VueConstructor ) {
+export function errorHandler ( Vue: VueConstructor ) {
   Vue.config.errorHandler = errHandler;
-  Vue.prototype.$throw = ( ...args: any[] )=> errHandler( ...args );
+  Vue.prototype.$throw = ( ...args: any[] ) => errHandler( ...args );
 }
 
-function handlerDb() {
+function handlerDb () {
   const db = window.indexedDB.open( 'errorLog' );
-  db.onerror = function( e ) {
+  db.onerror = function ( e ) {
     console.log( '数据库打开失败' );
   };
 }

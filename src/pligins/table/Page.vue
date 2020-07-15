@@ -29,19 +29,22 @@
 export default {
   name: 'PageComponent',
   props: {
+
     /* 数据总条目数 */
     total: {
       type: Number,
       default: 10000
     },
+
     /* 分页条状态 */
     loading: {
       type: Boolean,
       default: false
     }
   },
+
   /* 分页条数据 */
-  data() {
+  data () {
     return {
       page: {
         pageIndex: 1,
@@ -50,16 +53,18 @@ export default {
     };
   },
   methods:{
+
     /**
      * 点击分页事件
      * @description: 
      * @param {type} 
      * @return: 
      */
-    get handlePageChange() {
+    get handlePageChange () {
       let prevPageParams = {};
-      return function( { currentPage:pageIndex = 1, pageSize = 10 } = {} ) {
+      return function ( { currentPage:pageIndex = 1, pageSize = 10 } = {} ) {
         const page = this.page;
+
         // 当pageSize变化时, pageIndex 重置 为 第一页 
         if ( 
           pageSize !== prevPageParams.pageSize &&  

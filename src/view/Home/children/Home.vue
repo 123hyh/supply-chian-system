@@ -17,7 +17,7 @@
 <script>
 export default {
   methods:{
-    handlerRefresh() {
+    handlerRefresh () {
       this.reload();
     }
   }

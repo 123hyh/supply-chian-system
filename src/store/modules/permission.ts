@@ -39,7 +39,7 @@ const permission: Module<PermissionStore, any> = {
     ]
   },
   getters:{
-    menuList( state ) {
+    menuList ( state ) {
       return state.menuList;
     }
   }

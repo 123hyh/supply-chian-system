@@ -7,7 +7,8 @@
  * @FilePath: \supply-chain-system\src\store\hooks.ts
  */ 
 
-export default function registerVuexHooks( store:any ) {
+export default function registerVuexHooks ( store:any ) {
+
   // 1、 页面卸载时保存vuex 的 store 数据
   window.onbeforeunload = (): void => {
     sessionStorage.setItem( 'store', JSON.stringify( store.state ) );

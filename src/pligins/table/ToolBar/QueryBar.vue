@@ -38,6 +38,7 @@
 export default {
   name: 'QueryBar',
   props: {
+
     /* 查询栏表单配置 */
     formSchema: {
       type: Object,
@@ -60,51 +61,55 @@ export default {
         }
       } )
     },
+
     /* 按钮schema */
     buttonSchma: {
       type: Array,
       default: () => []
     },
     loading: Boolean,
+
     /* 关联的表格 */
     connectRef: {
       type: Object,
       required: true
     }
   },
-  data() {
+  data () {
     return {
       $$formData: {}
     };
   },
   computed: {
     formData: {
-      get() {
+      get () {
         return { ...this.$data.$$formData };
       }
     }
   },
-  mounted() {
+  mounted () {
     this.$watch( 'connectRef', {
+
       /**
        * 关联表格
        * @description: 
        * @param {type} 
        * @return: 
        */
-      handler() {
+      handler () {
         this.connectRef.connect( this.$refs.Toolbar );
       }
     } );
   },
   methods: {
+
     /**
      * 点击工具栏刷新列表按钮
      * @description:
      * @param {type}
      * @return:
      */
-    handlerRefresh() {
+    handlerRefresh () {
       this.$emit( 'handleRefresh' );
     }
   }

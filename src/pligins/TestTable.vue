@@ -186,6 +186,7 @@ const schema = [
     /* 固定定位 */ fixed: 'left',
     /* 表单类型 */
     type: 'select',
+
     /* 下拉选项 */
     selectOptions: [
       { label: '很遗憾1', value: '1' },
@@ -193,8 +194,10 @@ const schema = [
     ],
     filters: [
       {
+
         /* 初始值 */
         data: '',
+
         /* 是否默认选中 */
         checked: false
       }
@@ -216,14 +219,17 @@ const schema = [
     label: '年龄',
     key: 'age',
     width: '1300',
+
     /* 启用排序 */ 
     sortable: true,
     type: 'date',
 
     filters: [
       {
+
         /* 初始值 */
         data: '',
+
         /* 是否默认选中 */
         checked: false
       }
@@ -231,6 +237,7 @@ const schema = [
   },
   {
     label: '地址', key: 'address', width: '200', 
+
     /* 隐藏列 */
     visible: false 
   }
@@ -275,6 +282,7 @@ export default {
       type: Number,
       default: 0
     },
+
     /* 左部按钮集合 */
     leftButtons: {
       type: Array,
@@ -288,6 +296,7 @@ export default {
         { label: '保存', code: 'save' }
       ]
     },
+
     /* 表格行数据操作按钮 */
     rowContentButtons: {
       type: Array,
@@ -299,36 +308,42 @@ export default {
         { label: '编辑', code: 'edit' }
       ]
     },
+
     /* 表格加载状态 */
     loading: {
       type: Boolean,
       default: false
     },
+
     /* 是否启用序号 */
     isJoinSeq: {
       type: Boolean,
       default: true
     },
+
     /* 表格容器高度 */
     height: {
       type: String,
       default: '400px'
     },
+
     /* 列表数据 */
     list: {
       type: Array,
       default: () => list
     },
+
     /* 表格配置 */
     schema: {
       type: Array,
       default: () => schema
     },
+
     /* 表格尺寸 */
     size: {
       type: String,
       default: 'small',
-      validator( val ) {
+      validator ( val ) {
         const options = [ 'medium', 'small', 'mini' ];
         const isExist = options.includes( val );
         if ( !isExist ) {
@@ -338,28 +353,32 @@ export default {
       }
     }
   },
-  data() {
+  data () {
     return {
       allAlign: 'center',
+
       /* 重置组件的 key */
       componentKey: 1,
+
       /* 标签表格 */
       currentRefTable: {},
+
       // 表头过滤筛选form数据集合
       columnFilterFormData: {} 
     };
   },
-  mounted() {
+  mounted () {
     this.currentRefTable = this.$refs.table;
   },
   methods: {
+
     /**
      * 点击表头字段排序事件
      * @description:
      * @param {type}
      * @return:
      */
-    sortChangeEvent( currentClick, event ) {
+    sortChangeEvent ( currentClick, event ) {
       const { field, order } = currentClick;
       this.$emit( 'handlerColumnSort', /* 传递 当前字段，排序参数 */{
         field,
@@ -374,7 +393,7 @@ export default {
      * @param {type}
      * @return:
      */
-    handlerCheckboxChange( clickCurrent = {}, event ) {
+    handlerCheckboxChange ( clickCurrent = {}, event ) {
       const { row = {} } = clickCurrent;
       this.$emit( 'handleCheckboxChange', /* 传递 当前你点击行 数据 */{ event, current: row } );
     },
@@ -385,27 +404,29 @@ export default {
      * @param {type}
      * @return:
      */
-    handlerFilterData( ...args ) {
+    handlerFilterData ( ...args ) {
       const [ { filters = [] } = {} ] = args;
       let data = filters.reduce( ( prev, { prop, datas = [] } = {} ) => {
-        prev[prop] =  datas.join() ;
+        prev[ prop ] =  datas.join() ;
 
         // 删除空参数
-        prev[prop] === '' &&  delete prev[prop];
+        prev[ prop ] === '' &&  delete prev[ prop ];
 
         return prev;
       }, {} );
       this.$emit( 'handlerColumnFilter', /* 传递 查询参数 */ data );
     },
+
     /**
      * 点击刷新表格
      * @description:
      * @param {type}
      * @return:
      */
-    handlerRefresh() {
+    handlerRefresh () {
       this.componentKey += 1;
       this.$emit( 'handleRefresh' );
+
       // 刷新后重新赋值 ref 给querybar 管理 ，因为 ref 不是响应式
       this.$nextTick( () => {
         this.currentRefTable = this.$refs.table;

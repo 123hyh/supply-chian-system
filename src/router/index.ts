@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-07 21:18:50
- * @lastTime: 2020-07-14 10:32:20
+ * @lastTime: 2020-07-15 09:49:09
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\router\index.ts
@@ -43,13 +43,3 @@ const routes: Array<RouteConfig> = [
   }
 ];
 export default new Router( { routes } );
-
-const obj = {
-  getData() {
-    return this;
-  },
-  postMsg() {
-    return this;
-  }
-};
-obj.getData().postMsg();

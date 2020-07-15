@@ -43,8 +43,9 @@ export default {
     XyButton: Button
   },
   filters: {
+
     /* 操作按钮禁用状态 */
-    oprationDisable( currentData = {} ) {
+    oprationDisable ( currentData = {} ) {
       const { row = {} } = currentData;
       return !!row.status;
     }
@@ -60,13 +61,14 @@ export default {
     }
   },
   methods: {
+
     /**
      * 点击左部按钮事件
      * @description:
      * @param {type}
      * @return:
      */
-    handlerToolbarEvent( currentTarget ) {
+    handlerToolbarEvent ( currentTarget ) {
       this.$emit( 'handlerClickToolbarEvent', currentTarget );
     }
   }

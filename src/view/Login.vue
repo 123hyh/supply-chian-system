@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 22:02:56
- * @lastTime: 2020-07-13 17:55:00
+ * @lastTime: 2020-07-15 09:50:28
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Login.vue
@@ -11,10 +11,10 @@
     <h2>
       登录loginPage
     </h2>
-    <button @click="handlerRefresh">
+    <button v-reload>
       刷新
     </button>
-    <TestTable :key="`${componentKey}-1`">
+    <TestTable>
       <!-- 测试 查询栏 按钮 插槽 -->
       <template v-slot:QueryBarBtns>
         <div>1234</div>
@@ -30,18 +30,8 @@
 import TestTable from '@/pligins/TestTable.vue';
 export default {
   name: 'Login',
-  components:{
+  components: {
     TestTable
-  },
-  data() {
-    return {
-      componentKey: 0
-    };
-  },
-  methods:{
-    handlerRefresh() {
-      this.componentKey += 1;
-    }
   }
 };
 </script>
