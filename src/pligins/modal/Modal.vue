@@ -2,9 +2,9 @@
  * @Author: huangyuhui
  * @since: 2020-07-15 10:18:15
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-15 15:20:13
+ * @lastTime: 2020-07-16 16:26:05
  * @message: 
- * @FilePath: \supply-chain-system\src\pligins\modal\modal.vue
+ * @FilePath: \supply-chain-system\src\pligins\modal\Modal.vue
 --> 
 <template>
   <vxe-modal
@@ -44,7 +44,7 @@ export default {
   props:{
     visible:{
       type: Boolean,
-      default: false
+      default: true
     },
 
     /* 是否显示底部按钮 */
