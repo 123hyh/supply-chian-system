@@ -7,6 +7,10 @@
  * @FilePath: \supply-chain-system\src\main.js
  */
 
+/* 加载bar */
+import { progressBar } from './router/hooks';
+progressBar.start();
+
 import Vue from 'vue';
 import { errorHandler } from '@/utils/errorLog.ts';
 

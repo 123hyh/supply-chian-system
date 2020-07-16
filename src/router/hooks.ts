@@ -5,30 +5,28 @@
  * @LastAuthor: huangyuhui
  * @Description: 路由钩子
  * @FilePath: \supply-chain-cli\src\router\hooks.ts
- */ 
+ */
+
 import QProgress from 'qier-progress';
+
+export const progressBar = new QProgress( {
+  minimum: 0.08,
+  height: 3,
+  color: '#e9a409'
+} );
+
 import vueRouter from 'vue-router/types';
-
-const progressBar = new QProgress(
-  {  
-    minimum: 0.08,
-    height: 3,
-    color: '#e9a409' 
-  }
-);
-
 
 export function registerRouterHooks ( router: vueRouter ) {
   router.beforeEach( ( to, from, next ) => {
     progressBar.start();
     next();
   } );
-  
-  router.afterEach( ( ) => {
+
+  router.afterEach( ( to, from ) => {
     progressBar.finish();
   } );
 
-  router.onError( ( err ) => {
-    
-  } );
+  router.onError( ( err ) => {} );
 }
+

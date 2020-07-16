@@ -33,9 +33,8 @@
 </template>
 <script>
 import { MenuItem, Submenu } from 'element-ui';
-
-
 export default {
+  abstract: true,
   name: 'MenuItemNode',
   components: {
     MenuItem,

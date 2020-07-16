@@ -10,11 +10,23 @@
   <header>
     <!-- 左边菜单操作按钮 -->
     <div class="menu-opration">
-      <i
-        :class="classList"
-        style="font-size: 25px"
-        @click.stop="() => SET_MENU_STATUS()"
-        />
+      <div>
+        <i
+          title="菜单"
+          :class="classList"
+          @click.stop="() => SET_MENU_STATUS()"
+          />
+        <i
+          v-reload
+          title="刷新"
+          class="el-icon-refresh"
+          />
+      </div>
+      <Breadcrumb>
+        <BreadcrumbItem>首页</BreadcrumbItem>
+        <BreadcrumbItem>列表</BreadcrumbItem>
+        <BreadcrumbItem>选项</BreadcrumbItem>
+      </Breadcrumb>
     </div>
     <!-- nav  -->
     <div/>
@@ -32,8 +44,17 @@
 </template>
 <script>
 import { mapMutations, mapState } from 'vuex';
+import { Breadcrumb, BreadcrumbItem } from 'element-ui';
 export default {
   name: 'HeaderComponent',
+  components:{
+    Breadcrumb,
+    BreadcrumbItem
+  },
+  mounted () {
+    console.log( '加载了' );
+  },
+  // eslint-disable-next-line vue/order-in-components
   computed: {
     ...mapState( 'opration', [ 'closeMenu' ] ),
     classList () {
@@ -70,8 +91,21 @@ export default {
   justify-content: space-between;
   padding: 0 20px;
   .menu-opration {
+    display: flex;
+    align-items: center;
     i {
+      font-size: 18px;
       cursor: pointer;
+      &:hover {
+        color: #409eff;
+      }
+      &:active {
+        transform: rotate(180deg);
+      transition: all 0.1s linear;
+      }
+    }
+    .el-breadcrumb{
+      margin-left: 1em;
     }
   }
   .block-opration {
