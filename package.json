@@ -57,6 +57,7 @@
   "dependencies": {
     "@types/node": "^14.0.18",
     "file-loader": "^6.0.0",
+    "qier-progress": "^1.0.4",
     "url-loader": "^4.1.0"
   }
 }

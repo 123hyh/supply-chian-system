@@ -9,6 +9,7 @@
 
 import Vue from 'vue';
 import Router, { RouteConfig } from 'vue-router';
+import { registerRouterHooks } from './hooks';
 Vue.use( Router );
 
 const routes: Array<RouteConfig> = [
@@ -42,4 +43,6 @@ const routes: Array<RouteConfig> = [
     ]
   }
 ];
-export default new Router( { routes } );
+const routerInstance =  new Router( { routes } );
+export default routerInstance;
+registerRouterHooks( routerInstance );
