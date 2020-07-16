@@ -8,6 +8,7 @@
 -->
 <template>
   <main>
+    <div>12</div>
     <slot/>
   </main>
 </template>
