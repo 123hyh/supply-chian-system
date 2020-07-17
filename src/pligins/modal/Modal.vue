@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-15 10:18:15
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-16 16:26:05
+ * @lastTime: 2020-07-17 17:06:58
  * @message: 
  * @FilePath: \supply-chain-system\src\pligins\modal\Modal.vue
 --> 
@@ -44,7 +44,7 @@ export default {
   props:{
     visible:{
       type: Boolean,
-      default: true
+      default: false
     },
 
     /* 是否显示底部按钮 */

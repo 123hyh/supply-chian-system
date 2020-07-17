@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 22:02:56
- * @lastTime: 2020-07-15 15:20:00
+ * @lastTime: 2020-07-17 18:13:52
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Login.vue
@@ -28,6 +28,13 @@
     <Modal>
       <div>测试模态窗</div>
     </Modal>
+    <TestTableTwo>
+      <template v-slot:age>
+        <div>
+          测试插槽
+        </div>
+      </template>
+    </TestTableTwo>
   </div>
 </template>
 <script>
@@ -37,7 +44,8 @@ export default {
   name: 'Login',
   components: {
     TestTable,
-    Modal
+    Modal,
+    TestTableTwo: () => import( '@/pligins/TestTableTwo.js' )
   }
 };
 </script>

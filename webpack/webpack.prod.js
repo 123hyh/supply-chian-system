@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:29:19
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-14 18:05:56
+ * @lastTime: 2020-07-17 08:59:51
  * @message:
  * @FilePath: \supply-chain-system\webpack\webpack.prod.js
  */
@@ -15,6 +15,7 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
 
 const path = require('path');
 const webpack = require('webpack');
+
 
 const {
   development: isDevelopment,

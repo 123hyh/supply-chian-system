@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 20:24:47
- * @lastTime: 2020-07-14 09:46:23
+ * @lastTime: 2020-07-17 09:38:13
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Home\HomeContainer.vue
@@ -12,7 +12,8 @@
     <div class="block-content-box">
       <HeaderCom class="block-header"/>
       <Content class="block-content">
-        <router-view/>
+        <Nav/>
+        <router-view class="main-block"/>
       </Content>
     </div>
   </div>
@@ -21,12 +22,14 @@
 import Content from '@/components/Home/Content.vue';
 import Menu from '@/components/Home/Menu.vue';
 import Header from '@/components/Home/Header.vue';
+import Nav from '@/components/Home/Nav.vue';
 export default {
   name: 'Home',
   components: {
     Content,
     Menu,
-    HeaderCom: Header
+    HeaderCom: Header,
+    Nav
   }
 };
 </script>
@@ -54,6 +57,10 @@ $header_height: 50px;
       flex-grow: 1;
       height: calc(100vh - #{$header_height});
     }
+  }
+  .main-block{
+    height: calc(100% - 51px);
+    box-sizing: border-box;
   }
 }
 </style>

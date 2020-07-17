@@ -2,13 +2,12 @@
  * @Author: huangyuhui
  * @since: 2020-07-08 11:50:04
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-08 16:18:05
+ * @lastTime: 2020-07-17 09:08:44
  * @message: 
- * @FilePath: \supply-chain-cli\src\components\Home\Content.vue
+ * @FilePath: \supply-chain-system\src\components\Home\Content.vue
 -->
 <template>
   <main>
-    <div>12</div>
     <slot/>
   </main>
 </template>
