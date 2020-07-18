@@ -1,0 +1,61 @@
+/* 图标 */
+$icon-variable: 700;
+$color-variable: #409eff;
+.xy-component-table{
+  .column-block{
+    display: flex;
+    flex-wrap: wrap;
+    .el-input {
+      input{
+        border-radius: 1px;
+      }
+    }
+    .el-select {
+      flex-basis: 100%;
+    }
+   .column-block-item{
+     margin-left: 10px;
+     display: flex;
+     font-size: 15px;
+     .el-popover__reference:hover{
+        color: $color-variable;
+        cursor: pointer;
+     }
+     .el-icon-search{
+      font-weight: $icon-variable;
+     }
+     .column-block-item-sort{
+        margin-left: 10px;
+        position: relative;
+        .sort-top{
+          position: absolute;
+          font-weight: $icon-variable;
+          top: 0;
+        }
+        .sort-bottom{
+            position: absolute;
+            font-weight: $icon-variable;
+            top: 8px;
+        }
+        .is-active-srot{
+          color: $color-variable;
+        }
+     }
+   }
+  }
+}
+.query-item-modal{
+  input{
+    border-radius: 1px;
+  }
+}
+
+.query-item-opration{
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px;
+  button{
+    border-radius: 1px;
+  }
+
+}

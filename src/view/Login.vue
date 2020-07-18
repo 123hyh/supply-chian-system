@@ -11,10 +11,10 @@
     <h2>
       登录loginPage
     </h2>
-    <button v-reload>
-      刷新
+    <button @click="handlerShowQuery">
+      查询
     </button>
-    <TestTable>
+    <TestTable v-if="false">
       <!-- 测试 查询栏 按钮 插槽 -->
       <template v-slot:toolbarButtons="{currentRow}">
         <div>当前点击行数据：{{ currentRow }}</div>
@@ -28,7 +28,10 @@
     <Modal>
       <div>测试模态窗</div>
     </Modal>
-    <TestTableTwo>
+    <TestTableTwo
+      :isQuery="isQuery"
+      @handFindList="handFindList"
+      >
       <template v-slot:age>
         <div>
           测试插槽
@@ -45,7 +48,20 @@ export default {
   components: {
     TestTable,
     Modal,
-    TestTableTwo: () => import( '@/pligins/TestTableTwo.js' )
+    TestTableTwo: () => import( '@/pligins/TableJsx' )
+  },
+  data () {
+    return {
+      isQuery: false
+    };
+  },
+  methods: {
+    handlerShowQuery () {
+      this.isQuery = !this.isQuery;
+    },
+    handFindList () {
+      debugger;
+    }
   }
 };
 </script>
