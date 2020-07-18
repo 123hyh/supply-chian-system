@@ -26,6 +26,9 @@ errorHandler( Vue );
 import { reload } from '@/directives/index.ts';
 Vue.use( reload() );
 
+import { loadingDirective } from './pligins/loadding';
+Vue.use( loadingDirective );
+
 import App from '@/App.vue';
 import store from '@/store';
 import router from '@/router';

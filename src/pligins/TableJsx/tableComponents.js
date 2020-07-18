@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-17 21:34:48
- * @LastEditTime: 2020-07-18 16:34:07
+ * @LastEditTime: 2020-07-18 22:04:47
  * @LastEditors: Please set LastEditors
  * @Description: 创建查询栏
  * @FilePath: /supply-chian-system/src/pligins/TableJsx/Query.js
@@ -17,9 +17,7 @@ function stringComponent ( createElement, { key: bindFiled } = {} ) {
       props: {
         size: 'small',
         value: this.queryData.fromData[ bindFiled ],
-        clearable: true
-      },
-      domProps: {
+        clearable: true,
         placeholder: '请输入查询的内容'
       },
       on: {
@@ -195,6 +193,7 @@ export const createQueryItem = () => {
                     on: {
                       'click': () => {
                         state.visible = false;
+                        console.log( sortObserve );
                         this.$emit( 'handFindList', this.queryData.fromData );
                         const ld = Loading.service( {
                           target: this.$el,
@@ -214,6 +213,9 @@ export const createQueryItem = () => {
             h(
               'i',
               {
+                attrs:{
+                  title: '查询'
+                },
                 class: 'el-icon-search',
                 slot: 'reference'
               }

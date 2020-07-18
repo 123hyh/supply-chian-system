@@ -53,7 +53,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
-        use: [isProduction && 'cache-loader','babel-loader'].filter(Boolean),
+        use: [isProduction && 'cache-loader', 'babel-loader'].filter(Boolean),
         exclude: /node_modules/,
       },
       {
@@ -91,7 +91,9 @@ module.exports = {
         test: /\.css$/i,
         use: [
           isDevelopment ? 'style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+          },
           'postcss-loader',
         ],
       },
@@ -99,7 +101,9 @@ module.exports = {
         test: /\.s[ac]ss$/i,
         use: [
           isDevelopment ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
-          'css-loader',
+          {
+            loader: 'css-loader',
+          },
           'sass-loader',
           'postcss-loader',
         ],

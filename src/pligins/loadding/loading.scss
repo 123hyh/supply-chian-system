@@ -1,0 +1,105 @@
+.loading-block{
+  @mixin baseItem {
+  width: 10px;
+  height: 10px;
+  background-color: #409eff;
+  border-radius: 50%;
+}
+  position: absolute;
+  z-index: 2000;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: #fff;
+  &::after{
+    display: block;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #979292;
+    opacity: .1;
+  }
+  .loading-box{
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50% , -50%);
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+
+
+@keyframes loadingItem1{
+  0%{
+   transform: scale(.8);
+  }
+  25%{
+    transform: scale(1.2);
+   }
+  50%{
+   transform: scale(1.5);
+  }
+  75%{
+    transform: scale(1.2);
+   }
+  100%{
+    transform: scale(.8);
+  }
+}
+@keyframes loadingItem2{
+  0%{
+   transform: scale(1.2);
+  }
+  25%{
+    transform: scale(1.35);
+   }
+  50%{
+   transform: scale(1.5);
+  }
+  75%{
+    transform: scale(1.35);
+   }
+  100%{
+    transform: scale(1.2);
+  }
+}
+
+@keyframes loadingItem3{
+  0%{
+    transform: scale(.8);
+   }
+   25%{
+     transform: scale(1.2);
+    }
+   50%{
+    transform: scale(1.5);
+   }
+   75%{
+     transform: scale(1.2);
+    }
+   100%{
+     transform: scale(.8);
+   }
+}
+.loading-item-1{
+  @include baseItem;
+  left: 0;
+  animation: loadingItem1 1s infinite;
+}
+.loading-item-2{
+  @include baseItem;
+  left: 50%;
+  animation: loadingItem2 1s infinite;
+}
+.loading-item-3{
+  @include baseItem;
+  left: 100%;
+  animation: loadingItem3 1s infinite;
+}
+}

@@ -7,7 +7,10 @@
  * @FilePath: \supply-chain-system\src\view\Login.vue
 --> 
 <template>
-  <div>
+  <div
+    v-loading="visibled"
+    class="login-block"
+    >
     <h2>
       登录loginPage
     </h2>
@@ -27,6 +30,7 @@
       <div>测试模态窗</div>
     </Modal>
     <TestTableTwo
+      
       @handFindList="handFindList"
       >
       <template v-slot:sex="{sex}">
@@ -40,6 +44,7 @@
 <script>
 import TestTable from '@/pligins/TestTable.vue';
 import Modal from '@/pligins/modal/Modal.vue';
+import loading from '../pligins/loadding';
 export default {
   name: 'Login',
   components: {
@@ -49,7 +54,16 @@ export default {
   },
   data () {
     return {
+      visibled: false
     };
+  },
+  mounted () {
+    setTimeout( () => {
+      this.visibled = true;
+      setTimeout( () => {
+        this.visibled = false;
+      }, 1000 );
+    }, 2000 );
   },
   methods: {
    
@@ -59,3 +73,9 @@ export default {
   }
 };
 </script>
+<style lang="scss">
+.login-block{
+  width: 100%;
+  height: 100%;
+}
+</style>
