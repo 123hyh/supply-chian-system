@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-17 21:34:48
- * @LastEditTime: 2020-07-18 15:48:20
+ * @LastEditTime: 2020-07-18 16:34:07
  * @LastEditors: Please set LastEditors
  * @Description: 创建查询栏
  * @FilePath: /supply-chian-system/src/pligins/TableJsx/Query.js
@@ -10,7 +10,7 @@ import Vue from 'vue';
 import { Loading } from 'element-ui';
 
 /* 普通文字输入框 */
-function stringComponent ( createElement, bindFiled, options = {} ) {
+function stringComponent ( createElement, { key: bindFiled } = {} ) {
   return createElement(
     'InputComponent',
     {
@@ -45,15 +45,15 @@ function stringComponent ( createElement, bindFiled, options = {} ) {
 }
 
 /* 下拉框 */
-function selectComponent ( createElement, bindFiled, { selectOption = [] } = {} ) {
+function selectComponent ( createElement, { key: bindFiled, options: selectOption, label } = {} ) {
   return createElement( 'SelectComponent', {
     props: {
       size: 'small',
       value: this.queryData.fromData[ bindFiled ],
-      clearable: true
+      clearable: true,
+      placeholder: `请选择${label}`
     },
     domProps: {
-      placeholder: '请输入查询的内容'
     },
     on: {
       input: ( data = '' ) => {
@@ -75,6 +75,7 @@ function selectComponent ( createElement, bindFiled, { selectOption = [] } = {} 
     }
   },
 
+  /* 下拉选项 */
   selectOption.map(
     (
       { label, value } = {}
@@ -93,7 +94,7 @@ function selectComponent ( createElement, bindFiled, { selectOption = [] } = {} 
 }
 
 /* 时间输入框 */
-function dateComponent ( createElement, bindFiled ) {
+function dateComponent ( createElement, { key: bindFiled } = {} ) {
   return createElement(
     'DatePickerComponent',
     {
@@ -114,7 +115,7 @@ function dateComponent ( createElement, bindFiled ) {
 }
 
 /* 排序 ob */
-const sortObserve = Vue.observable( { filed: '', data:'' } );
+const sortObserve = Vue.observable( { filed: '', data: '' } );
 
 /* 创建 查询输入框 */
 export const createQueryItem = () => {
@@ -122,10 +123,9 @@ export const createQueryItem = () => {
   /* 每个查询框的 ob */
   const state = Vue.observable( { visible: false } );
 
-  return function createQueryItem ( ...args ) {
+  return function createQueryItem ( h, currentColumnConf = {} ) {
+    const { key: bindFiled, searchType: type, sortable = false } = currentColumnConf;
 
-    const [ h, bindFiled, { type } ] = args;
-    
     const components = {
       string: stringComponent,
       select: selectComponent,
@@ -139,7 +139,7 @@ export const createQueryItem = () => {
         class: 'column-block-item'
       },
       [
-        h(
+        type ? h(
           'PopoverComponent',
           {
             props: {
@@ -156,7 +156,7 @@ export const createQueryItem = () => {
           [
 
             /* 查询输入框 */
-            components[ type in components ? type : 'undefined' ].apply( this, args ),
+            components[ type in components ? type : 'undefined' ].call( this, h, currentColumnConf ),
 
             /* 按钮 */
             h(
@@ -219,10 +219,10 @@ export const createQueryItem = () => {
               }
             )
           ]
-        ),
+        ) : h( 'div' ),
 
         /* 排序图标 */
-        h(
+        sortable &&  h(
           'div',
           {
             class: 'column-block-item-sort'
@@ -234,7 +234,7 @@ export const createQueryItem = () => {
                 class: [
                   'sort-top',
                   'el-icon-caret-top',
-                  { 'is-active-srot': sortObserve.filed === bindFiled  &&  sortObserve.data === 'asc' }
+                  { 'is-active-srot': sortObserve.filed === bindFiled && sortObserve.data === 'asc' }
                 ],
                 on: {
                   'click': () => {
@@ -260,7 +260,7 @@ export const createQueryItem = () => {
                 class: [
                   'sort-bottom',
                   'el-icon-caret-bottom',
-                  { 'is-active-srot': sortObserve.filed === bindFiled  &&  sortObserve.data  === 'desc' }
+                  { 'is-active-srot': sortObserve.filed === bindFiled && sortObserve.data === 'desc' }
                 ],
                 on: {
                   'click': () => {

@@ -3,7 +3,7 @@
  * @since: 2020-07-17 16:56:35
  * @LastAuthor: huangyuhui
  * @lastTime: 2020-07-17 18:24:33
- * @message: 
+ * @message: 表格公共组件
  * @FilePath: \supply-chain-system\src\pligins\TestTableTwo.js
  */
 import { Table, TableColumn, Input, FormItem, Select, Option, Popover, Button, DatePicker } from 'element-ui';
@@ -27,25 +27,43 @@ export default {
     schema: {
       type: Array,
       default: () => ( [
-        { label: '姓名', key: 'name', width: 300, sortable: true, query: { type: 'string' } },
         {
-          label: '年龄', key: 'age',
-          query: {
+          label: '姓名',
+          key: 'name',
+          width: 300,
+          sortable: true,
+          searchType: 'string'
+        },
+        {
+          label: '年龄',
+          key: 'age'
+        },
+        {
+          label: '性别',
+          key: 'sex',
 
-            /* 查询表单类型 */
-            type: 'select',
+          /* 查询表单类型 */
+          searchType: 'select',
 
-            /* 查询栏选项 */
-            selectOption: [ { label: '男', value: 1 } ]
-          }
+          /* 查询栏选项 */
+          options: [ { label: '男', value: 1 }, { label: '女', value: 0 } ]
         },
         {
           label: '出生',
           key: 'createTime',
-          query: {
-            type: 'date'
-          }
+          searchType: 'date'
+        },
+        {
+          label: '入职时间',
+          key: 'entryTime'
         }
+      ] )
+    },
+    list: {
+      type: Array,
+      default: () => ( [
+        { name: 'mff', age: 18, createTime: '1993-09-01', entryTime: '2019-02-25', sex: 0 },
+        { name: 'hyh', age: 18, createTime: '1999-09-01', entryTime: '2020-6-30', sex: 1 }
       ] )
     }
 
@@ -82,10 +100,7 @@ export default {
             'TableComponent',
             {
               props: {
-                data: [
-                  { name: 'hyhhyh', age: 18 },
-                  { name: 'hyh', age: 18 }
-                ],
+                data: this.list,
                 size: 'small',
                 highlightCurrentRow: true,
                 border: true
@@ -121,16 +136,64 @@ export default {
               createElement( 'TableColumnComponent', {
                 props: {
                   type: 'index',
-                  label: '序号'
+                  label: '序号',
+                  align: 'center'
                 }
               } ),
 
               /* 选择列 */
               createElement( 'TableColumnComponent', {
                 props: {
-                  type: 'selection'
+                  type: 'selection',
+                  align: 'center'
                 }
               } ),
+
+              /* 展开详情 */
+              createElement(
+                'TableColumnComponent',
+                {
+                  props: {
+                    type: 'expand',
+                    align: 'center'
+                  },
+                  scopedSlots: {
+                    default: ( { row: current } = {} ) => {
+                      return createElement(
+                        'ul',
+                        {
+                          class:'column-block-expand-content'
+                        },
+                        this.schema.map( ( { label, key } = {} ) => {
+                          return createElement( 'li',
+                            { class:'column-block-expand-content-item' },
+                            [
+                              createElement( 
+                                'div', 
+                                { 
+                                  domProps:{
+                                    innerHTML: label
+                                  },
+                                  class:'content-item-label' 
+                                }
+                              ),
+                              createElement( 
+                                'div', 
+                                { 
+                                  class: 'content-item-value',
+                                  domProps:{
+                                    innerHTML:  current[ key ]
+                                  }
+                                }
+                              )
+                            ] );
+                        } )
+                      );
+                    }
+                  }
+                }
+
+              ),
 
               /* 数据列 */
               ...this.schema.map( ( columnConf = {} ) => {
@@ -140,9 +203,7 @@ export default {
                   width,
                   align,
                   className,
-                  sortable = false,
-                  fixed,
-                  query = {}
+                  fixed
                 } = columnConf;
 
                 /* 闭包保存组件的查询栏显示状态 */
@@ -158,9 +219,6 @@ export default {
                       width,
                       align,
                       className,
-
-                      /* 暂时去掉 */
-                      // sortable: sortable && this.isQuery === false ? 'custom' : false,
                       fixed
                     },
 
@@ -182,7 +240,7 @@ export default {
                                 }
                               }
                             ),
-                            queryItem.call( this, createElement, key, query )
+                            queryItem.call( this, createElement, columnConf )
                           ]
                         );
                       },

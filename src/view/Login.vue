@@ -11,9 +11,7 @@
     <h2>
       登录loginPage
     </h2>
-    <button @click="handlerShowQuery">
-      查询
-    </button>
+    
     <TestTable v-if="false">
       <!-- 测试 查询栏 按钮 插槽 -->
       <template v-slot:toolbarButtons="{currentRow}">
@@ -29,7 +27,6 @@
       <div>测试模态窗</div>
     </Modal>
     <TestTableTwo
-      :isQuery="isQuery"
       @handFindList="handFindList"
       >
       <template v-slot:age>
@@ -52,13 +49,10 @@ export default {
   },
   data () {
     return {
-      isQuery: false
     };
   },
   methods: {
-    handlerShowQuery () {
-      this.isQuery = !this.isQuery;
-    },
+   
     handFindList () {
       debugger;
     }
