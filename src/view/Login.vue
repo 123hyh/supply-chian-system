@@ -29,9 +29,9 @@
     <TestTableTwo
       @handFindList="handFindList"
       >
-      <template v-slot:age>
+      <template v-slot:sex="{sex}">
         <div>
-          测试插槽
+          {{ sex === 1 ? '男':'女' }}
         </div>
       </template>
     </TestTableTwo>

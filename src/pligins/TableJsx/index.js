@@ -251,7 +251,7 @@ export default {
                         const currentScoped = this.$scopedSlots[ key ];
                         return createElement(
                           'div',
-                          currentScoped ? currentScoped( currentData ) : row[ key ]
+                          currentScoped ? currentScoped( currentData.row ) : row[ key ]
                         );
                       }
                     }
