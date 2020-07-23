@@ -1,16 +1,16 @@
 /*
  * @Author: your name
  * @Date: 2020-07-17 21:34:48
- * @LastEditTime: 2020-07-18 22:04:47
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-22 16:21:34
+ * @LastAuthor: huangyuhui
  * @Description: 创建查询栏
- * @FilePath: /supply-chian-system/src/pligins/TableJsx/Query.js
+ * @FilePath: \supply-chain-system\src\pligins\TableJsx\tableComponents.js
  */
 import Vue from 'vue';
 import { Loading } from 'element-ui';
 
 /* 普通文字输入框 */
-function stringComponent ( createElement, { key: bindFiled } = {} ) {
+function stringComponent ( createElement, { prop: bindFiled } = {} ) {
   return createElement(
     'InputComponent',
     {
@@ -43,7 +43,7 @@ function stringComponent ( createElement, { key: bindFiled } = {} ) {
 }
 
 /* 下拉框 */
-function selectComponent ( createElement, { key: bindFiled, options: selectOption, label } = {} ) {
+function selectComponent ( createElement, { prop: bindFiled, options: selectOption, label } = {} ) {
   return createElement( 'SelectComponent', {
     props: {
       size: 'small',
@@ -92,7 +92,7 @@ function selectComponent ( createElement, { key: bindFiled, options: selectOptio
 }
 
 /* 时间输入框 */
-function dateComponent ( createElement, { key: bindFiled } = {} ) {
+function dateComponent ( createElement, { prop: bindFiled } = {} ) {
   return createElement(
     'DatePickerComponent',
     {
@@ -122,7 +122,7 @@ export const createQueryItem = () => {
   const state = Vue.observable( { visible: false } );
 
   return function createQueryItem ( h, currentColumnConf = {} ) {
-    const { key: bindFiled, searchType: type, sortable = false } = currentColumnConf;
+    const { prop: bindFiled, searchType: type, sortable = false } = currentColumnConf;
 
     const components = {
       string: stringComponent,

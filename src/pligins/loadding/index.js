@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2020-07-18 22:08:06
- * @LastEditTime: 2020-07-19 00:49:10
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-20 08:54:36
+ * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
- * @FilePath: /supply-chian-system/src/pligins/loadding/index.js
+ * @FilePath: \supply-chain-system\src\pligins\loadding\index.js
  */
 import './loading.scss';
 import Vue from 'vue';
@@ -65,7 +65,6 @@ export default function loading ( { el = document.body } ) {
       state.visibled = true;
     },
     close () {
-      debugger;
       state.visibled = false;
     },
     get isMounted () {

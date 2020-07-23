@@ -2,8 +2,8 @@
  * @Author: huangyuhui
  * @since: 2020-07-20 08:48:33
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-20 18:01:50
- * @message: 
+ * @lastTime: 2020-07-22 15:10:51
+ * @message: 动态组件原理
  * @FilePath: \supply-chain-system\src\TestCom.js
  */
 const cache = {};

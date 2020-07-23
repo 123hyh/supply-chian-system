@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 22:02:56
- * @lastTime: 2020-07-17 18:13:52
+ * @lastTime: 2020-07-22 15:21:32
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Login.vue
@@ -29,16 +29,10 @@
     <Modal>
       <div>测试模态窗</div>
     </Modal>
-    <TestTableTwo
-      
-      @handFindList="handFindList"
-      >
-      <template v-slot:sex="{sex}">
-        <div>
-          {{ sex === 1 ? '男':'女' }}
-        </div>
-      </template>
-    </TestTableTwo>
+    <TestTableTwo/>
+    <TestCom :cname="cname">
+      <div>测试</div>
+    </TestCom>
   </div>
 </template>
 <script>
@@ -50,11 +44,13 @@ export default {
   components: {
     TestTable,
     Modal,
-    TestTableTwo: () => import( '@/pligins/TableJsx' )
+    TestCom:() => import( '@/TestCom.js' ),
+    TestTableTwo: () => import( '@/pligins/TableJsx/spec.vue' )
   },
   data () {
     return {
-      visibled: false
+      visibled: false,
+      cname: 'TestTableTwo'
     };
   },
   mounted () {
@@ -64,12 +60,6 @@ export default {
         this.visibled = false;
       }, 1000 );
     }, 2000 );
-  },
-  methods: {
-   
-    handFindList () {
-      debugger;
-    }
   }
 };
 </script>

@@ -2,10 +2,11 @@
  * @Author: huangyuhui
  * @since: 2020-07-17 16:56:35
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-17 18:24:33
+ * @lastTime: 2020-07-22 17:53:30
  * @message: 表格公共组件
- * @FilePath: \supply-chain-system\src\pligins\TestTableTwo.js
+ * @FilePath: \supply-chain-system\src\pligins\TableJsx\index.js
  */
+
 import { Table, TableColumn, Input, FormItem, Select, Option, Popover, Button, DatePicker } from 'element-ui';
 import './table.scss';
 import { createQueryItem } from './tableComponents';
@@ -23,24 +24,30 @@ export default {
   },
   props: {
 
+    /* 查询 */
+    isQuery:{
+      type: Boolean,
+      default: true
+    },
+
     /* 表格配置 */
     schema: {
       type: Array,
       default: () => ( [
         {
           label: '姓名',
-          key: 'name',
+          prop: 'name',
           width: 300,
           sortable: true,
           searchType: 'string'
         },
         {
           label: '年龄',
-          key: 'age'
+          prop: 'age'
         },
         {
           label: '性别',
-          key: 'sex',
+          prop: 'sex',
 
           /* 查询表单类型 */
           searchType: 'select',
@@ -50,21 +57,54 @@ export default {
         },
         {
           label: '出生',
-          key: 'createTime',
+          prop: 'createTime',
           searchType: 'date'
         },
         {
           label: '入职时间',
-          key: 'entryTime'
+          prop: 'entryTime'
+        },
+        {
+          label: '地址',
+          prop: 'addess',
+          children:[
+            {
+              label: '省',
+              prop: 'province',
+              children:[
+                {
+                  label:'测试3',
+                  prop: 'test3'
+                }
+              ]
+            },
+            {
+              label: '市',
+              prop: 'city'
+            },
+            {
+              label: '区',
+              prop: 'district'
+            }
+          ]
         }
       ] )
     },
     list: {
       type: Array,
       default: () => ( [
-        { name: 'mff', age: 18, createTime: '1993-09-01', entryTime: '2019-02-25', sex: 0 },
+        { 
+          name: 'mff', age: 18, createTime: '1993-09-01', entryTime: '2019-02-25', sex: 0,
+          test3: '测试三级', province:'广东省', city:'深圳市', district:'罗湖区' 
+        },
         { name: 'hyh', age: 18, createTime: '1999-09-01', entryTime: '2020-6-30', sex: 1 }
       ] )
+    },
+
+    /* 统计方法 */
+    summaryMethod:{
+      type: Function,
+      default: () => () => {}
     }
 
   },
@@ -103,7 +143,9 @@ export default {
                 data: this.list,
                 size: 'small',
                 highlightCurrentRow: true,
-                border: true
+                border: true,
+                'show-summary': true,
+                'summary-method': this.summaryMethod
               },
               on: {
 
@@ -164,7 +206,7 @@ export default {
                         {
                           class:'column-block-expand-content'
                         },
-                        this.schema.map( ( { label, key } = {} ) => {
+                        this.schema.map( ( { label, prop } = {} ) => {
                           return createElement( 'li',
                             { class:'column-block-expand-content-item' },
                             [
@@ -182,7 +224,7 @@ export default {
                                 { 
                                   class: 'content-item-value',
                                   domProps:{
-                                    innerHTML:  current[ key ]
+                                    innerHTML:  current[ prop ]
                                   }
                                 }
                               )
@@ -197,66 +239,75 @@ export default {
 
               /* 数据列 */
               ...this.schema.map( ( columnConf = {} ) => {
-                const {
-                  label,
-                  key,
-                  width,
-                  align,
-                  className,
-                  fixed
-                } = columnConf;
 
                 /* 闭包保存组件的查询栏显示状态 */
                 const queryItem = createQueryItem();
 
-                return createElement(
-                  'TableColumnComponent',
-                  {
-                    props: {
-                      label,
-                      prop: key,
-                      showOverflowTooltip: true,
-                      width,
-                      align,
-                      className,
-                      fixed
+                /* 递归 多级表头 */
+                const recursion = ( current ) => { 
+                  const {
+                    label,
+                    prop,
+                    width,
+                    align,
+                    className,
+                    fixed,
+                    children = []
+                  } = current;
+                  return  createElement(
+                    'TableColumnComponent',
+                    {
+                      props: {
+                        label,
+                        prop: prop,
+                        showOverflowTooltip: true,
+                        width,
+                        align,
+                        className,
+                        fixed,
+                        'show-overflow-tooltip': true
+                      },
+
+                      scopedSlots: {
+
+                        /* 表头插槽 */
+                        header: ( props ) => {
+                          return createElement(
+                            'div',
+                            {
+                              class: 'column-block'
+                            },
+                            [
+                              createElement(
+                                'div',
+                                {
+                                  domProps: {
+                                    innerHTML: label
+                                  }
+                                }
+                              ),
+                              queryItem.call( this, createElement, columnConf )
+                            ]
+                          );
+                        },
+                        default: ( currentData = {} ) => {
+                          const { row } = currentData;
+
+                          /* 每个字段都可有插槽 */
+                          const currentScoped = this.$scopedSlots[ prop ];
+                          return createElement(
+                            'div',
+                            currentScoped ? currentScoped( currentData.row ) : row[ prop ]
+                          );
+                        }
+                      }
                     },
 
-                    scopedSlots: {
-
-                      /* 表头插槽 */
-                      header: ( props ) => {
-                        return createElement(
-                          'div',
-                          {
-                            class: 'column-block'
-                          },
-                          [
-                            createElement(
-                              'div',
-                              {
-                                domProps: {
-                                  innerHTML: label
-                                }
-                              }
-                            ),
-                            queryItem.call( this, createElement, columnConf )
-                          ]
-                        );
-                      },
-                      default: ( currentData = {} ) => {
-                        const { row } = currentData;
-
-                        /* 每个字段都可有插槽 */
-                        const currentScoped = this.$scopedSlots[ key ];
-                        return createElement(
-                          'div',
-                          currentScoped ? currentScoped( currentData.row ) : row[ key ]
-                        );
-                      }
-                    }
-                  }
-                );
+                    /* 多级表头 */
+                    children.map( cItem => recursion( cItem ) )
+                  );
+                };
+                return recursion( columnConf );
               } )
             ]
           )
