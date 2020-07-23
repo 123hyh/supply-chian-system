@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:26:29
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-14 18:23:12
+ * @lastTime: 2020-07-23 10:24:42
  * @message:
  * @FilePath: \supply-chain-system\webpack\webpack.base.js
  */
@@ -112,7 +112,7 @@ module.exports = {
   },
   plugins: [
     new VueLoaderPlugin(),
-    // isProduction && new CleanWebpackPlugin(),
+    isProduction && new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(process.cwd(), 'public/index.html'),
     }),

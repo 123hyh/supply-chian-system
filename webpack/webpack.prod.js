@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-07 16:29:19
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-17 08:59:51
+ * @lastTime: 2020-07-23 10:54:55
  * @message:
  * @FilePath: \supply-chain-system\webpack\webpack.prod.js
  */
@@ -12,6 +12,8 @@ const { merge } = require('webpack-merge');
 var MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin')
+const ProgressBarPlugin = require('progress-bar-webpack-plugin');
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const path = require('path');
 const webpack = require('webpack');
@@ -21,6 +23,7 @@ const {
   development: isDevelopment,
   local: isLocal,
   production: isProduction,
+  volume: isShowVolume
 } = require('yargs').argv;
 
 module.exports = merge(baseConf, {
@@ -50,6 +53,10 @@ module.exports = merge(baseConf, {
     }),
     new AddAssetHtmlPlugin({
       filepath: path.resolve(process.cwd(), "dll/*.dll.js")
-    })
-  ],
+    }),
+    /* 打包进度条 */
+    new ProgressBarPlugin(),
+    /* 体积可视化 */
+    isShowVolume && new BundleAnalyzerPlugin()
+  ].filter(Boolean),
 });

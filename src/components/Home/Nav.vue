@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-17 09:09:28
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-17 10:33:22
+ * @lastTime: 2020-07-23 18:14:46
  * @message: 
  * @FilePath: \supply-chain-system\src\components\Home\Nav.vue
 -->
@@ -12,26 +12,30 @@
       <ul class="scroll-list">
         <li
           v-for="item in list"
-          :key="item.path"
+          :key="item.fullPath"
           class="list-item"
           >
-          {{ item.title }}
+          {{ item.meta.title }}
+          <!-- 首页不可关闭 -->
+          <i
+            v-if="!/^\/(home|'')/.test(item.fullPath)"
+            class="el-icon-close"
+            @click.stop="() => handlerCloseTag(item)"
+            />
         </li>
       </ul>
-      <Dropdown>
+      <Dropdown trigger="click">
         <ButtonComponent
-          size="small"
+          size="mini"
           type="plain"
           >
           <i class="el-icon-arrow-down el-icon--right"/>
         </ButtonComponent>
-        <DropdownMenu
-          slot="dropdown"
-          >
+        <DropdownMenu slot="dropdown">
           <DropdownItem>
             关闭其它
           </DropdownItem>
-          <DropdownItem divided>
+          <DropdownItem>
             关闭全部
           </DropdownItem>
         </DropdownMenu>
@@ -42,6 +46,7 @@
 <script>
 import { mapState } from 'vuex';
 import { Dropdown, DropdownMenu, DropdownItem, Button } from 'element-ui';
+
 export default {
   name: 'NavComponent',
   components: {
@@ -52,23 +57,75 @@ export default {
   },
   data () {
     return {
+
+      /* 页签数据 */
       list: [
-        { title: '首页', path: '/' },
-        { title: '主控台', path: '/M00' }
+        { fullPath: '/test1', meta: { title: '测试1' } },
+        { fullPath: '/test2', meta: { title: '测试2' } }
       ]
     };
   },
   computed: {
-    ...mapState( 'opration', [ 'closeMenu' ] )
+    ...mapState( 'opration', [ 'closeMenu' ] ),
+
+    /* paths 集合 */
+    currentPaths () {
+      return this.list.reduce( ( prev, cur ) => {
+        prev[ cur.fullPath ] = true;
+        return prev;
+      }, {} );
+    }
+  },
+  created () {
+    this.$watch( '$route', {
+      handler: this.handlerList,
+      deep: true,
+      immediate: true
+    } );
+  },
+
+  methods: {
+    handlerList ( currentRoute = {} ) {
+      const { fullPath, meta = {} } = currentRoute;
+      if (
+        /^\/refresh/.test( fullPath ) ||
+        meta.title === undefined ||
+        // eslint-disable-next-line no-prototype-builtins
+        this.currentPaths.hasOwnProperty( fullPath )
+      ) {
+        return;
+      }
+      this.list.push( currentRoute );
+    },
+
+    /**
+     * 关闭页签
+     * @description:
+     * @param {type}
+     * @return:
+     */
+    handlerCloseTag ( current = {} ) {
+      const { fullPath } = current;
+      const index = this.list.findIndex( item => item.fullPath === fullPath );
+      if ( ~index ) {
+        this.$delete( this.list, index );
+      }
+    }
   }
 };
 </script>
 <style lang="scss">
 .nav-box {
+  $base_color: #1890ff;
   width: 100%;
   padding: 5px 10px;
-  height: 35px;
+  height: 40px;
+  background-color: #fff;
+  border-top: 1px solid #f0f0f0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   .close-menu {
     width: calc(100% - 70px);
   }
@@ -82,12 +139,6 @@ export default {
         margin-left: inherit;
       }
     }
-    .el-button:focus,
-    .el-button:hover {
-    /*   color: initial;
-      border-color: initial;
-      background-color: initial; */
-    }
     .scroll-list {
       all: unset;
       display: flex;
@@ -95,12 +146,32 @@ export default {
       list-style: none;
       flex-basis: calc(100% - 50px);
       .list-item {
-        color: #808695;
-        padding: 5px 16px 4px;
+        color: #606266;
+        border: 1px solid #f0f0f0;
+        box-sizing: border-box;
+        padding: 5px 20px 4px;
         margin-right: 6px;
         background-color: #fff;
+        position: relative;
+        transition: all .5s linear;
         &:hover {
-          color: #2d8cf0;
+          color: $base_color;
+          .el-icon-close {
+            color: $base_color;
+            display: block;
+            position: absolute;
+            font-size: 12px;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            &:hover {
+              font-display: 14px;
+              cursor: pointer;
+            }
+          }
+        }
+        .el-icon-close {
+          display: none;
         }
       }
     }

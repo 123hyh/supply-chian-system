@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-07 21:18:50
- * @lastTime: 2020-07-15 09:49:09
+ * @lastTime: 2020-07-23 11:40:18
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\router\index.ts
@@ -21,6 +21,9 @@ const routes: Array<RouteConfig> = [
   {
     alias: '',
     path: '/Home',
+    meta:{
+      title:''
+    },
     component: () =>
       import(
         /* webpackChunkName: "HomeContainer" */ '@/view/Home/HomeContainer.vue'
@@ -28,6 +31,9 @@ const routes: Array<RouteConfig> = [
     children: [
       {
         path: '',
+        meta:{
+          title:'首页'
+        },
         component: () =>
           import(
             /* webpackChunkName: "Home" */ '@/view/Home/children/Home.vue'

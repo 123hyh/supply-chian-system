@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 20:24:47
- * @lastTime: 2020-07-17 09:38:13
+ * @lastTime: 2020-07-23 14:40:32
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Home\HomeContainer.vue
@@ -34,7 +34,7 @@ export default {
 };
 </script>
 <style lang="scss">
-$header_height: 50px;
+$header_height: 60px;
 
 .block-home {
   display: flex;
@@ -55,7 +55,7 @@ $header_height: 50px;
     }
     .block-content {
       flex-grow: 1;
-      height: calc(100vh - #{$header_height});
+      height: calc(100vh - #{$header_height} - 10px);
     }
   }
   .main-block{

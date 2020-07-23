@@ -2,9 +2,9 @@
  * @Author: huangyuhui
  * @since: 2020-07-08 11:48:47
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-08 16:58:01
+ * @lastTime: 2020-07-23 15:43:41
  * @message: 
- * @FilePath: \supply-chain-cli\src\components\Home\Header.vue
+ * @FilePath: \supply-chain-system\src\components\Home\Header.vue
 -->
 <template>
   <header>
@@ -15,11 +15,6 @@
           title="菜单"
           :class="classList"
           @click.stop="() => SET_MENU_STATUS()"
-          />
-        <i
-          v-reload
-          title="刷新"
-          class="el-icon-refresh"
           />
       </div>
       <Breadcrumb>
@@ -34,8 +29,13 @@
     <div class="block-opration">
       <div>
         <i
-          class="el-icon-full-screen"
-          style="font-size: 25px"
+          v-reload
+          title="刷新"
+          class="el-icon-refresh icon-size"
+          />
+        <i
+          title="全屏"
+          class="el-icon-full-screen icon-size"
           @click.stop="handlerFullscreen"
           />
       </div>
@@ -47,7 +47,7 @@ import { mapMutations, mapState } from 'vuex';
 import { Breadcrumb, BreadcrumbItem } from 'element-ui';
 export default {
   name: 'HeaderComponent',
-  components:{
+  components: {
     Breadcrumb,
     BreadcrumbItem
   },
@@ -99,18 +99,20 @@ export default {
       &:hover {
         color: #409eff;
       }
-      &:active {
-        transform: rotate(180deg);
-      transition: all 0.1s linear;
-      }
     }
-    .el-breadcrumb{
+    .el-breadcrumb {
       margin-left: 1em;
     }
   }
   .block-opration {
-    .el-icon-full-screen {
+    .icon-size {
+      font-size: 20px;
+    }
+    i {
       cursor: pointer;
+      &:hover {
+        color: #409eff;
+      }
     }
   }
 }
