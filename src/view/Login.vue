@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 22:02:56
- * @lastTime: 2020-07-22 15:21:32
+ * @lastTime: 2020-07-24 08:51:16
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Login.vue
@@ -36,16 +36,16 @@
   </div>
 </template>
 <script>
-import TestTable from '@/pligins/TestTable.vue';
-import Modal from '@/pligins/modal/Modal.vue';
-import loading from '../pligins/loadding';
+import TestTable from '@/plugins/TestTable.vue';
+import Modal from '@/plugins/modal/Modal.vue';
+import loading from '../plugins/loadding';
 export default {
   name: 'Login',
   components: {
     TestTable,
     Modal,
     TestCom:() => import( '@/TestCom.js' ),
-    TestTableTwo: () => import( '@/pligins/TableJsx/spec.vue' )
+    TestTableTwo: () => import( '@/plugins/TableJsx/spec.vue' )
   },
   data () {
     return {

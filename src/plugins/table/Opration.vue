@@ -4,7 +4,7 @@
  * @LastEditTime: 2020-07-12 12:49:45
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
- * @FilePath: /supply-chian-system/src/pligins/table/Opration.vue
+ * @FilePath: /supply-chian-system/src/plugins/table/Opration.vue
 -->
 <template>
   <div>

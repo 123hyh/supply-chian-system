@@ -4,7 +4,7 @@
  * @LastEditTime: 2020-07-12 00:53:25
  * @LastEditors: Please set LastEditors
  * @Description: 分页条
- * @FilePath: /supply-chian-system/src/pligins/table/Page.vue
+ * @FilePath: /supply-chian-system/src/plugins/table/Page.vue
 -->
 <template>
   <vxe-pager

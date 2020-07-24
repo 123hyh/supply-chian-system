@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import ToolbarButtons from '@/pligins/table/ToolBar/ToolbarButtons.vue';
+import ToolbarButtons from '@/plugins/table/ToolBar/ToolbarButtons.vue';
 export default {
   name: 'Toolbar',
   props: {

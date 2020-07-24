@@ -18,7 +18,7 @@ import { errorHandler } from '@/utils/errorLog.ts';
 import 'xe-utils';
 
 /* 添加 错误处理 */
-import registerTableComponent from '@/pligins/table/index.js';
+import registerTableComponent from '@/plugins/table/index.js';
 registerTableComponent( Vue );
 errorHandler( Vue );
 
@@ -26,7 +26,7 @@ errorHandler( Vue );
 import { reload } from '@/directives/index.ts';
 Vue.use( reload() );
 
-import { loadingDirective } from './pligins/loadding';
+import { loadingDirective } from './plugins/loadding';
 Vue.use( loadingDirective );
 
 import App from '@/App.vue';

@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import TableJsx from '@/pligins/TableJsx/index.js';
+import TableJsx from '@/plugins/TableJsx/index.js';
 export default {
   components:{
     TableJsx

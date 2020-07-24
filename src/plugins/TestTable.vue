@@ -281,9 +281,9 @@ const list = Vue.observable( [
   { name: 'hyh', sex: '男', age: 19, address: '草铺' }
 ] );
 
-import Page from '@/pligins/table/Page.vue';
-import Opration from '@/pligins/table/Opration.vue';
-import Toolbar from '@/pligins/table/ToolBar/Toolbar.vue';
+import Page from '@/plugins/table/Page.vue';
+import Opration from '@/plugins/table/Opration.vue';
+import Toolbar from '@/plugins/table/ToolBar/Toolbar.vue';
 
 let id = 0;
 export default {
