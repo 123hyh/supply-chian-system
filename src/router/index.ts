@@ -38,6 +38,15 @@ const routes: Array<RouteConfig> = [
           import(
             /* webpackChunkName: "Home" */ '@/view/Home/children/Home.vue'
           )
+      }, {
+        path: 'test',
+        meta:{
+          title:'测试FORM组件'
+        },
+        component: () =>
+          import(
+            /* webpackChunkName: "Test" */ '@/view/Test.vue'
+          )
       },
       {
         path: 'refresh',

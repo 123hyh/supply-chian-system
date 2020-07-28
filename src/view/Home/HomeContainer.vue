@@ -54,6 +54,7 @@ $header_height: 60px;
       height: $header_height;
     }
     .block-content {
+      overflow: auto;
       flex-grow: 1;
       height: calc(100vh - #{$header_height} - 10px);
     }
