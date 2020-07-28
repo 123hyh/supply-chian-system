@@ -1,16 +1,17 @@
 /*
  * @Author: your name
  * @Date: 2020-07-09 23:43:39
- * @LastEditTime: 2020-07-09 23:46:45
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-28 09:03:02
+ * @LastAuthor: huangyuhui
  * @Description: 捕抓错误日志
- * @FilePath: /supply-chian-system/src/utils/errorLog.ts
+ * @FilePath: \supply-chain-system\src\utils\errorLog.ts
  */ 
 const isDev = process.env.NODE_ENV  ===  'development';
 import { VueConstructor } from 'vue';
 
 function errHandler ( ...args: any[] ) {
   const [ err, vm, info ] = args;
+  console.error( err.message, err.stack, '\n', vm, '\n', info );
   if ( !isDev ) {
     console.log( err.message, err.stack, '\n', vm, '\n', info );
   }

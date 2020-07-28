@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-07 21:18:50
- * @lastTime: 2020-07-23 11:40:18
+ * @lastTime: 2020-07-24 11:28:58
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\router\index.ts
@@ -38,6 +38,13 @@ const routes: Array<RouteConfig> = [
           import(
             /* webpackChunkName: "Home" */ '@/view/Home/children/Home.vue'
           )
+      },
+      {
+        path: '/test',
+        meta:{
+          title:'测试组件'
+        },
+        component: () => import( '@/view/Test/index.vue' )
       },
       {
         path: 'refresh',
