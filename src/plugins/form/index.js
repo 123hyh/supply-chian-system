@@ -1,19 +1,27 @@
 /*
  * @Author: your name
  * @Date: 2020-07-25 21:43:12
- * @LastEditTime: 2020-07-26 22:02:00
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-28 10:52:51
+ * @LastAuthor: huangyuhui
  * @Description: 表单组件
- * @FilePath: /supply-chian-system/src/plugins/form/index.js
+ * @FilePath: \supply-chain-system\src\plugins\form\index.js
  */
-import { Form, FormItem, Input, InputNumber, Select, Option, TimePicker, DatePicker } from 'element-ui';
+import {
+  Form, FormItem, Input, InputNumber, Select, Option,
+  TimePicker, DatePicker, CheckboxGroup, Checkbox,
+  Switch
+} from 'element-ui';
 import { forEachObject } from '@/utils/index.ts';
 import { cloneDeepWith } from 'lodash';
+import './form.scss';
 
 /* 表单type转组件名称 */
 const TYPE_TO_COMPONENT = {
   string: 'InputComponent',
-  number: 'InputNumberComponent'
+  number: 'InputNumberComponent',
+  checkbox: 'CheckboxComponent',
+  select: 'SelectComponent',
+  switch:'SwitchComponent'
 };
 
 /* 生成表单元素 */
@@ -28,7 +36,7 @@ function generateGroupChildren ( h ) {
           {
             class: `form-group form-group-${key}`
           },
-          value.map( 
+          value.map(
             currentItemConf => {
               const { label, type, prop } = currentItemConf;
               return h(
@@ -39,21 +47,26 @@ function generateGroupChildren ( h ) {
                     label
                   }
                 },
-                h(
-                  TYPE_TO_COMPONENT[ type ],
-                  {
-                    props: {  
-                      value: this.state[ prop ]
-                    },
-                    on: {
-                      'input': ( e ) => {
-                        debugger;
+                [
+                  h(
+                    TYPE_TO_COMPONENT[ type ],
+                    {
+                      props: {
+                        value: this.state[ prop ] ?? '',
+
+                        /* 当前选项conf */
+                        currentConf: currentItemConf
+                      },
+                      on: {
+                        'input': ( data ) => {
+                          this.$set( this.state, prop, data );
+                        }
                       }
                     }
-                  }
-                )
+                  )
+                ]
               );
-            } 
+            }
           )
         )
       );
@@ -68,10 +81,22 @@ export default {
     FormItemComponent: FormItem,
     InputComponent: Input,
     InputNumberComponent: InputNumber,
-    SelectComponent: Select,
-    OptionComponent: Option
+    CheckboxGroup,
+    Checkbox,
+    CheckboxComponent: () => import( '@/plugins/form/checkbox.js' ),
+    Select,
+    Option,
+    SelectComponent: () => import( '@/plugins/form/select.js' ),
+    SwitchCom: Switch,
+    SwitchComponent:() => import( '@/plugins/form/switch.js' )
   },
   props: {
+
+    /* 表单大小 */
+    size: {
+      type: String,
+      default: 'small'
+    },
     schema: {
       type: Object,
       default: () => ( {
@@ -112,6 +137,29 @@ export default {
             type: 'number',
             label: '年龄',
             group: 2
+          },
+          hobby: {
+            type: 'checkbox',
+            options:[
+              { label:'踢球', value:'1' },
+              { label:'打篮球', value:'2' }
+            ],
+            label: '爱好',
+            group: 3
+          },
+          sex:{
+            type: 'select',
+            group: 4,
+            label:'性别',
+            options:[
+              { label:'男', value:1 },
+              { label:'女', value:0 }
+            ]
+          },
+          isOut:{
+            type: 'switch',
+            group: 5,
+            label:'离职'
           }
         }
       } )
@@ -121,7 +169,8 @@ export default {
     return {
 
       /* 表单数据 */
-      state: {}
+      state: {
+      }
     };
   },
   computed: {
@@ -141,12 +190,12 @@ export default {
   name: 'FormComponentBox',
 
   render ( createElement ) {
-    console.log( 1 );
-
     return createElement(
       'FormComponent',
       {
+        class: [ 'form-component-box' ],
         props: {
+          size: this.size,
           mode: this.state,
           rules: this.formRules
         }
