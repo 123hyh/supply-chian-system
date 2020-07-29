@@ -6,13 +6,27 @@
  * @Description: 懒加载组件
  * @FilePath: \supply-chain-system\src\plugins\lazyComponent\index.js
  */
-import '@/plugins/lazyComponent/lazy.scss';
 
-const LazyComponent =  {
+import '@/plugins/lazyComponent/lazy.scss';
+import DynamicComponent from '@/DynamicComponent.js';
+// eslint-disable-next-line new-cap
+const [ removeComponent, Dynamic ] = DynamicComponent();
+const LazyComponent = {
+
   name: 'lazy-box',
+
   data: () => ( {
-    showCom: false
+
+    /* 是否进入可视区域 */
+    showCom: false,
+
+    /* 子组件是否加载完成 */
+    childLoad: false
   } ),
+
+  destroyed () {
+    removeComponent( this.$attrs.cname );
+  },
 
   mounted () {
 
@@ -30,38 +44,48 @@ const LazyComponent =  {
 
   render () {
     const h = this.$parent.$createElement;
+
+    /* 最小高度，防止坍塌 */
     let { height = '500px' } = this.$attrs;
     if ( /^\d+$/.test( height ) ) {
       height = height + 'px';
     }
     return h(
-      'div', {
+      'div',
+      {
         class: 'lazy-box',
         style: {
 
           // 必须设置高度参数
-          'min-height':  height
+          'min-height': height
         }
       },
-
-      this.showCom ? [
-        h(
+      [
+        ( this.showCom === false || this.childLoad === false ) &&  ( this.$slots.default ?? [] ),
+        this.showCom && h(
           'DynamicComponent',
           {
-            props: this.$attrs
-          }
+            props: this.$attrs,
+            on: {
+              ...this.$listeners,
+              __setChildLoad:() => {
+                this.childLoad = true;
+              }
+            }
+          },
+
+          /* 插槽content */
+          this.$slots.content ?? []
         )
-      ] :
-        ( this.$slots.default ?? [] )
+      ].filter( Boolean ) 
     );
   }
-}; 
-import DynamicComponent from '@/TestCom.js';
+};
 export default () => {
   return {
     // eslint-disable-next-line no-undef
     LazyComponent,
     // eslint-disable-next-line new-cap
-    DynamicComponent: DynamicComponent()
+    DynamicComponent: Dynamic
   };
 };

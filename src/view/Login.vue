@@ -30,9 +30,6 @@
       <div>测试模态窗</div>
     </Modal>
     <TestTableTwo/>
-    <TestCom :cname="cname">
-      <div>测试</div>
-    </TestCom>
   </div>
 </template>
 <script>
@@ -44,7 +41,6 @@ export default {
   components: {
     TestTable,
     Modal,
-    TestCom:() => import( '@/TestCom.js' ),
     TestTableTwo: () => import( '@/plugins/TableJsx/spec.vue' )
   },
   data () {

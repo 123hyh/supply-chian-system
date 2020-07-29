@@ -8,14 +8,23 @@
 -->
 <template>
   <div class="test-box">
-    测试1
+    <button @click="handler">
+      click
+    </button>
+    <slot/>
   </div>
 </template>
 
 <script>
 export default {
   mounted () {
+    debugger;
     console.log( '加载了' );
+  },
+  methods:{
+    handler () {
+      this.$emit( 'testlisteners' );
+    }
   }
 };
 </script>
