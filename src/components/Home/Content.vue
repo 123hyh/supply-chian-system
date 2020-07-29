@@ -2,7 +2,7 @@
  * @Author: huangyuhui
  * @since: 2020-07-08 11:50:04
  * @LastAuthor: huangyuhui
- * @lastTime: 2020-07-23 18:25:34
+ * @lastTime: 2020-07-29 14:36:55
  * @message: 
  * @FilePath: \supply-chain-system\src\components\Home\Content.vue
 -->
@@ -17,7 +17,6 @@ export default {
   watch:{
     '$route' :{
       handler ( to, from ) {
-        debugger;
       },
       deep: true,
       immediate: true

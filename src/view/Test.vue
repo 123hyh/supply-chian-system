@@ -1,20 +1,26 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-25 21:45:07
- * @lastTime: 2020-07-29 10:34:06
+ * @lastTime: 2020-07-29 17:58:44
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Test.vue
---> 
+-->
 <template>
-  <div>
-    <lazyComponent cname="TableCom">
+  <div
+    style="margin-top:900px"
+    class="test-lazy-box"
+    >
+    <lazyComponent
+      cname="TestOne"
+      height="500"
+      >
       <img
         :src="url"
         alt=""
         >
     </lazyComponent>
-    <lazyComponent cname="TableCom">
+    <lazyComponent cname="TestOne">
       <img
         :src="url"
         alt=""
@@ -26,18 +32,23 @@
 import lazyComponent from '@/plugins/lazyComponent/index.js';
 export default {
   name: 'TestLazy',
-  components:{
-    lazyComponent:lazyComponent(),
+  
+  components: {
+    ...lazyComponent(),
     // eslint-disable-next-line vue/no-unused-components
-    TableCom: () => import( '@/plugins/TableJsx/index.js' ),
-    // eslint-disable-next-line vue/no-unused-components
-    TestCom: () => import( '@/TestCom.js' )
-
+    TestOne: () => import( '@/view/Test/index.vue' )
   },
   data () {
     return {
-      url: 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595954602672&di=3e5562582a15f4d52077854b0570b272&imgtype=0&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3458475739%2C295617657%26fm%3D214%26gp%3D0.jpg'
+      url:
+        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1595954602672&di=3e5562582a15f4d52077854b0570b272&imgtype=0&src=http%3A%2F%2Fimg4.imgtn.bdimg.com%2Fit%2Fu%3D3458475739%2C295617657%26fm%3D214%26gp%3D0.jpg'
     };
+  },
+  mounted () {
+    console.log( this.$options );
   }
 };
 </script>
+<style lang="scss">
+
+</style>
