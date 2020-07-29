@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-07 20:24:47
- * @lastTime: 2020-07-23 14:40:32
+ * @lastTime: 2020-07-29 10:42:58
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Home\HomeContainer.vue
@@ -9,7 +9,10 @@
 <template>
   <div class="block-home">
     <Menu class="block-menu"/>
-    <div class="block-content-box">
+    <div
+      class="block-content-box"
+      :style="{width: closeMenu ? 'calc(100% - 70px)' : 'calc(100% - 201px)'}"
+      >
       <HeaderCom class="block-header"/>
       <Content class="block-content">
         <Nav/>
@@ -23,13 +26,19 @@ import Content from '@/components/Home/Content.vue';
 import Menu from '@/components/Home/Menu.vue';
 import Header from '@/components/Home/Header.vue';
 import Nav from '@/components/Home/Nav.vue';
+import { mapGetters, mapState } from 'vuex';
+
 export default {
+
   name: 'Home',
   components: {
     Content,
     Menu,
     HeaderCom: Header,
     Nav
+  },
+  computed:{
+    ...mapState( 'opration', [ 'closeMenu' ] )
   }
 };
 </script>
@@ -37,6 +46,7 @@ export default {
 $header_height: 60px;
 
 .block-home {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 
@@ -56,7 +66,7 @@ $header_height: 60px;
     .block-content {
       overflow: auto;
       flex-grow: 1;
-      height: calc(100vh - #{$header_height} - 10px);
+      height: calc(100vh - #{$header_height} );
     }
   }
   .main-block{

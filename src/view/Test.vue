@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-25 21:45:07
- * @LastEditTime: 2020-07-28 23:13:17
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-07-29 10:34:06
+ * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
- * @FilePath: /supply-chian-system/src/view/Test.vue
+ * @FilePath: \supply-chain-system\src\view\Test.vue
 --> 
 <template>
   <div>

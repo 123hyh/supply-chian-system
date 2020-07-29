@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-25 21:43:12
- * @lastTime: 2020-07-28 10:52:51
+ * @lastTime: 2020-07-28 16:53:08
  * @LastAuthor: huangyuhui
  * @Description: 表单组件
  * @FilePath: \supply-chain-system\src\plugins\form\index.js
@@ -21,7 +21,8 @@ const TYPE_TO_COMPONENT = {
   number: 'InputNumberComponent',
   checkbox: 'CheckboxComponent',
   select: 'SelectComponent',
-  switch:'SwitchComponent'
+  switch:'SwitchComponent',
+  date: 'DateComponent'
 };
 
 /* 生成表单元素 */
@@ -88,7 +89,9 @@ export default {
     Option,
     SelectComponent: () => import( '@/plugins/form/select.js' ),
     SwitchCom: Switch,
-    SwitchComponent:() => import( '@/plugins/form/switch.js' )
+    SwitchComponent:() => import( '@/plugins/form/switch.js' ),
+    DatePicker,
+    DateComponent: () => import( '@/plugins/form/date.js' )
   },
   props: {
 
@@ -136,7 +139,7 @@ export default {
           age: {
             type: 'number',
             label: '年龄',
-            group: 2
+            group: 1
           },
           hobby: {
             type: 'checkbox',
@@ -145,11 +148,11 @@ export default {
               { label:'打篮球', value:'2' }
             ],
             label: '爱好',
-            group: 3
+            group: 1
           },
           sex:{
             type: 'select',
-            group: 4,
+            group: 1,
             label:'性别',
             options:[
               { label:'男', value:1 },
@@ -160,6 +163,11 @@ export default {
             type: 'switch',
             group: 5,
             label:'离职'
+          },
+          birthTime:{
+            type: 'date',
+            label:'出生日期',
+            group: 5
           }
         }
       } )

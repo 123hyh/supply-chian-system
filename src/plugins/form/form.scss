@@ -1,7 +1,14 @@
-.form-component-box{
-  .el-form-item__content{
-    input{
-      border-radius: 1px;
+.form-component-box {
+  max-width: 100%;
+  .form-group {
+    display: flex;
+    .el-form-item {
+      flex-basis: 25%;
+      .el-form-item__content {
+        input {
+          border-radius: 1px;
+        }
+      }
     }
   }
 }

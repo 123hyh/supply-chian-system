@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-07 21:18:50
- * @lastTime: 2020-07-24 11:28:58
+ * @lastTime: 2020-07-29 10:34:38
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\router\index.ts
@@ -53,7 +53,7 @@ const routes: Array<RouteConfig> = [
         meta:{
           title:'测试组件'
         },
-        component: () => import( '@/view/Test/index.vue' )
+        component: () => import( '@/view/Test.vue' )
       },
       {
         path: 'refresh',
