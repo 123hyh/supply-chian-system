@@ -115,6 +115,7 @@ module.exports = {
     isProduction && new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.resolve(process.cwd(), 'public/index.html'),
+      chunks:['app']
     }),
   ].filter(Boolean),
 };

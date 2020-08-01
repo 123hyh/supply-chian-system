@@ -13,8 +13,12 @@ const { merge } = require('webpack-merge');
 const path = require('path');
 
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = merge(baseConf, {
+  entry: {
+    docs: path.resolve(__dirname, '../docs/main.js')
+  },
   mode: 'development',
   output: {
     path: path.resolve(process.cwd(), 'dist'),
@@ -38,10 +42,20 @@ module.exports = merge(baseConf, {
     },
   },
   devtool: 'source-map',
+  resolve:{
+    alias:{
+      '@docs': path.resolve(process.cwd(),'docs/src') 
+    }
+  },
   plugins: [
-    
+
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(process.cwd(), 'public/index.html'),
+      filename: 'docs.html',
+      chunks:['docs']
+    }),
     new FriendlyErrorsWebpackPlugin({
       compilationSuccessInfo: {
         messages: [`您的应用程序正在这里运行:  http://localhost:${8090}\n`],
