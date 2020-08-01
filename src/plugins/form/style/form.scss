@@ -1,0 +1,50 @@
+/* 表单 item 宽度 */
+@mixin formItem {
+  flex-basis: 25%;
+}
+
+.form-component-box {
+  max-width: 100%;
+  .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    .el-form-item {
+      display: flex;
+      @include formItem;
+      
+      .el-form-item__content {
+        flex-grow: 1;
+        input {
+          border-radius: 1px;
+        }
+        .el-input-number,.el-select,.el-date-editor {
+          width: 100%;
+          .el-input__inner{
+            text-align: start;
+          }
+        }
+        
+      }
+    }
+  }
+  .el-form-item__label{
+    flex-basis: 5em;
+  }
+  /* prefix 输入框 */
+  .prefix-form-item-box{
+    display: flex;
+    @include formItem;
+
+    .prefix-form-item-select{
+      .el-select .el-input__inner{
+        border-right: 0
+      }
+      .el-select .el-input__inner:focus{
+        border-color: #DCDFE6
+      }
+    }
+    .prefix-form-item-string{
+      flex-grow: 1;
+    }
+  }
+}

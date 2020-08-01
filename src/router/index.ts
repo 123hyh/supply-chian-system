@@ -56,6 +56,13 @@ const routes: Array<RouteConfig> = [
         component: () => import( '@/view/Test.vue' )
       },
       {
+        path: '/testform',
+        meta:{
+          title:'测试组件'
+        },
+        component: () => import( '@/view/Test/form.vue' )
+      },
+      {
         path: 'refresh',
         component: () =>
           import(
