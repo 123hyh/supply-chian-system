@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-08-01 16:21:44
- * @LastEditTime: 2020-08-02 18:11:07
+ * @LastEditTime: 2020-08-02 19:51:49
  * @LastEditors: Please set LastEditors
  * @Description: 表单文档
  * @FilePath: /supply-chian-system/docs/src/view/form.js
- */ 
-const HTMLTEMPLATE = 
-`<template>
+ */
+const HTMLTEMPLATE =
+  `<template>
   <div>
     <FormComponent :form="form"/>
   </div>
@@ -51,44 +51,80 @@ function transformEncode ( source = '' ) {
 import '@docs/styles/form.scss';
 export default {
   render ( h ) {
-    return h( 
+    return h(
       'div',
       [
-        h( 
-          'div', 
+        h(
+          'div',
           [
-            h( 'h3', '1:  导入Form组件' ),
-            h( 
-              'div', 
-              { 
-                class:[ 'text-indent', 'code-box' ] 
-              }, 
+            h(
+              'h3',
+              '1:  导入Form组件'
+            ),
+            h(
+              'div',
+              {
+                class: [
+                  'text-indent',
+                  'code-box'
+                ]
+              },
               [
-                h( 'code', 'import { FormComponent, useForm } from \'@/plugins/form/index.js\';' ) 
+                h(
+                  'code',
+                  'import { FormComponent, useForm } from \'@/plugins/form/index.js\';'
+                )
               ]
-            ) 
+            ),
+            h( 'hr' )
           ]
         ),
-        h( 
-          'div', 
+        h(
+          'div',
           [
-            h( 'h3', '2:  使用' ),
-            h( 
-              'pre', 
+            h(
+              'h3', 
+              '2:  使用' 
+            ),
+            h(
+              'pre',
               {
-                class:[ 'code-box' ],
-                domProps:{
-                  innerHTML:  transformEncode( HTMLTEMPLATE )
+                class: [ 'code-box' ],
+                domProps: {
+                  innerHTML: transformEncode( HTMLTEMPLATE )
                 }
               }
-              
+
+            ),
+            h( 'hr' )
+          ]
+        ),
+        h(
+          'div',
+          [
+            h(
+              'h3',
+              '3: useForm 方法'
+            ),
+            h(
+              'ol',
+              [
+                h( 
+                  'li', 
+                  [
+                    h( 'div', '参数 类型: Object' )
+                  ]
+                ),
+                h( 'li', '返回值' ),
+                h( 'li', 'demo' )
+              ]
             )
-          ] 
+          ]
         )
-      ] 
+      ]
     );
   },
   mounted () {
-    console.log( this.$vnode.data   );
+    console.log( this.$vnode.data );
   }
 };

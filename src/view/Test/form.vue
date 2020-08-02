@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-30 21:20:00
- * @LastEditTime: 2020-08-02 19:15:39
+ * @LastEditTime: 2020-08-02 20:41:32
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/view/Test/form.vue
@@ -116,14 +116,12 @@ export default {
             label: '年龄',
             group: 1,
             decimal: 2
-          }
+          },
 
-          /* selectInput:{
-            type: 'selectInput',
-            label:'下拉+输入框',
-            selectProp:'select1',
-            inputProp: 'input1'
-          } */
+          textarea1:{
+            type: 'textarea',
+            label:'输入框'
+          }
         }
       } )
     };

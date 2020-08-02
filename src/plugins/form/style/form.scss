@@ -30,7 +30,10 @@
             text-align: start;
           }
         }
-        
+        /* 文本输入框 */
+        .el-textarea__inner{
+          border-radius: 1px;
+        }
       }
     }
   }
