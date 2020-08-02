@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-08-02 23:44:01
- * @LastEditTime: 2020-08-03 00:00:00
+ * @LastEditTime: 2020-08-03 00:01:05
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/plugins/service/index.ts
@@ -29,7 +29,8 @@ type InitFetchParams = {
 export function useFetch (
   baseParams: InitFetchParams
 ) {
-  return ( { url, ...options }: RequestParams ) => {
+  return ( requestParams: RequestParams ) => {
+    const { url, method, data } = requestParams;
     return fetch( url );
   };
 }
