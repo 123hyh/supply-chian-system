@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-30 21:20:00
- * @LastEditTime: 2020-08-02 21:09:40
+ * @LastEditTime: 2020-08-02 23:45:52
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/src/view/Test/form.vue
@@ -27,6 +27,7 @@
 </template>
 <script>
 import { FormComponent, useForm } from '@/plugins/form/index.js';
+import x from '@/plugins/service/index.ts';
 export default {
   components: {
     FormCom: FormComponent
