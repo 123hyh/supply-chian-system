@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-31 12:40:09
- * @LastEditTime: 2020-07-31 16:29:08
+ * @LastEditTime: 2020-08-02 18:01:31
  * @LastEditors: Please set LastEditors
  * @Description: 字符串输入
  * @FilePath: /supply-chian-system/src/plugins/form/src/string.js
@@ -29,11 +29,16 @@ export default {
     SelectComponent: () => import( '@/plugins/form/src/select.js' )
   },
   render ( h ) {
-    let { prop, disabled, readonly, rules = [], label = '', prefix } = this.currentConf;
+    let { prop, disabled, readonly, rules = [], label = '', prefix, placeholder = '' } = this.currentConf;
+    console.log( prop );
+    const isPrefix = !!prefix;
     return h(
       'div',
       {
-        class: [ 'prefix-form-item-box' ]
+        class: {
+          'prefix-form-item-box': isPrefix,
+          'string-input': !isPrefix
+        }
       },
       [
         ...(
@@ -42,7 +47,10 @@ export default {
               h(
                 'label',
                 {
-                  class: [ 'el-form-item__label' ]
+                  class: [ 'el-form-item__label' ],
+                  attrs:{
+                    for: prefix.prop
+                  }
                 },
                 label
               ),
@@ -63,7 +71,9 @@ export default {
         h(
           'FormItem',
           {
-            class: { 'prefix-form-item-string': !!prefix },
+            class: { 
+              'prefix-form-item-string': !!prefix 
+            },
             props: {
               label: prefix ? '' : label,
               prop,
@@ -74,6 +84,10 @@ export default {
             h(
               'InputComponent',
               {
+                attrs: {
+                  placeholder,
+                  id: prop
+                },
                 props: {
                   value: this.state[ prop ] ?? '',
                   disabled,

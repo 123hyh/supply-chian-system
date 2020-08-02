@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-31 12:32:56
- * @LastEditTime: 2020-07-31 15:14:51
+ * @LastEditTime: 2020-08-02 18:08:57
  * @LastEditors: Please set LastEditors
  * @Description: 时间输入框
  * @FilePath: /supply-chian-system/src/plugins/form/src/date.js
@@ -50,7 +50,7 @@ export default {
     DatePicker
   },
   render ( h ) {
-    const { prop, disabled, readonly, rules = [], options = [], label = '', format = 'yyyy-MM-dd' } = this.currentConf;
+    const { prop, disabled, readonly, rules = [], options = [], label = '', format = 'yyyy-MM-dd', placeholder = '请选择日期' } = this.currentConf;
     return h(
       'FormItem',
       {
@@ -71,6 +71,8 @@ export default {
               clearable: true,
               id:prop,
               format,
+              placeholder,
+              appendToBody: false,
               'picker-options': pickerOptions
             },
             on: {

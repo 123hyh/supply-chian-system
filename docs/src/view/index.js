@@ -1,11 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2020-08-01 15:53:36
- * @LastEditTime: 2020-08-01 16:28:21
+ * @LastEditTime: 2020-08-01 22:28:44
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /supply-chian-system/docs/src/view/index.js
  */
+// import '@docs/styles/index.scss';
 import { Tabs, TabPane } from 'element-ui';
 const list = [
   { label: '表单', value: 'FormDoc' },
@@ -19,7 +20,7 @@ export default {
   },
   data () {
     return {
-      activeName: 'table'
+      activeName: 'FormDoc'
     };
   },
   render ( h ) {
@@ -31,8 +32,12 @@ export default {
           {
             props: {
               value: this.activeName,
-              type: 'card',
-              lazy: true
+              'tab-position':'left'
+            },
+            on:{
+              input: data  => {
+                this.activeName = data;
+              }
             }
           }, 
           list.map(
@@ -40,18 +45,18 @@ export default {
               'TabPane',
               {
                 props: {
+                  lazy: true,
                   label,
                   name: value
                 }
-              }
+              },
+              [
+                h(
+                  this.activeName
+                )
+              ]
             )
           )
-        ),
-        h( 
-          'components',
-          {
-            is: 'FormDoc'
-          } 
         )
       ]
     );

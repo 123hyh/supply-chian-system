@@ -5,6 +5,13 @@
 
 .form-component-box {
   max-width: 100%;
+  .el-form-item--mini.el-form-item, .el-form-item--small.el-form-item{
+    margin-bottom: 5px;
+  }
+  /* 错误信息 */
+  .el-form-item__error{
+    z-index: 1;
+  }
   .form-group {
     display: flex;
     flex-wrap: wrap;
@@ -46,5 +53,9 @@
     .prefix-form-item-string{
       flex-grow: 1;
     }
+  }
+  /* 字符串输入框 */
+  .string-input{
+    @include formItem;
   }
 }

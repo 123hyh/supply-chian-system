@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-31 12:32:56
- * @LastEditTime: 2020-07-31 16:25:32
+ * @LastEditTime: 2020-08-02 18:07:35
  * @LastEditors: Please set LastEditors
  * @Description: 下拉选择
  * @FilePath: /supply-chian-system/src/plugins/form/src/select.js
@@ -32,7 +32,7 @@ export default {
     Option
   },
   render ( h ) {
-    const { prop, disabled, readonly, rules = [], options = [], label = '' } = this.currentConf;
+    const { prop, disabled, readonly, rules = [], options = [], label = '', placeholder = '请选择' } = this.currentConf;
     return h(
       'FormItem',
       {
@@ -52,7 +52,11 @@ export default {
               id: prop,
               disabled,
               readonly,
-              clearable: true
+              placeholder,
+              clearable: true,
+
+              /* 不插入body */
+              popperAppendToBody: false
             },
             on:{
               input: ( data ) => {

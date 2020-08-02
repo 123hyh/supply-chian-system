@@ -1,10 +1,10 @@
 /*
  * @Author: your name
- * @Date: 2020-07-31 15:34:56
- * @LastEditTime: 2020-08-02 17:59:40
+ * @Date: 2020-08-02 18:13:08
+ * @LastEditTime: 2020-08-02 18:13:33
  * @LastEditors: Please set LastEditors
- * @Description: 数字输入框
- * @FilePath: /supply-chian-system/src/plugins/form/src/number.js
+ * @Description: In User Settings Edit
+ * @FilePath: /supply-chian-system/src/plugins/form/src/textarea.js
  */ 
 import { FormItem, Input } from 'element-ui';
 export default {
@@ -47,6 +47,7 @@ export default {
               placeholder
             },
             props: {
+              type: 'textarea',
               value: this.state[ prop ] ?? '',
               disabled,
               readonly,

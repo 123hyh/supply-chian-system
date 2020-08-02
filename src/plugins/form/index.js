@@ -24,7 +24,8 @@ const TYPE_TO_COMPONENT = {
   switch: 'SwitchComponent',
   date: 'DateComponent',
   radio: 'RadioComponent',
-  selectInput: 'selectInput'
+  selectInput: 'selectInput',
+  textarea: 'TextareaComponent'
 };
 
 function isObject ( data ) {
@@ -259,8 +260,8 @@ export const FormComponent = {
     DateComponent: () => import( /* webpackChunkName: "date" */ '@/plugins/form/src/date.js' ),
     CheckboxComponent: () => import( /* webpackChunkName: "checkbox" */'@/plugins/form/src/checkbox.js' ),
     RadioComponent: () => import( /* webpackChunkName: "radio" */'@/plugins/form/src/radio.js' ),
-    SwitchComponent: () => import( /* webpackChunkName: "switch" */'@/plugins/form/src/switch.js' )
-
+    SwitchComponent: () => import( /* webpackChunkName: "switch" */'@/plugins/form/src/switch.js' ),
+    TextareaComponent:() => import( /* webpackChunkName: "textarea" */'@/plugins/form/src/textarea.js' )
   },
   props: {
 
