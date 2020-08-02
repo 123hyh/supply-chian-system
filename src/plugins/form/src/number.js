@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-07-31 15:34:56
- * @LastEditTime: 2020-08-02 19:18:47
+ * @LastEditTime: 2020-08-02 19:41:56
  * @LastEditors: Please set LastEditors
  * @Description: 数字输入框
  * @FilePath: /supply-chian-system/src/plugins/form/src/number.js
  */
 import { FormItem, Input } from 'element-ui';
-import { debounce } from 'lodash';
+
 export default {
   abstract: true,
   props: {
@@ -40,7 +40,7 @@ export default {
             ...rules,
             {
               validator:
-                ( _, value, callback ) => {
+                ( _, value = '', callback ) => {
                   value = String( value );
 
                   /* 校验是否位数字 */
@@ -53,18 +53,16 @@ export default {
 
                   /* 提示信息 */
                   let msg = void 1;
-                  if ( decimal === 0 && decimalLen > decimal ) {
+                  if ( rules.length === 0 && value === '' ) {
+                    msg = void 1;
+                  } else if ( decimal === 0 && decimalLen > decimal ) {
                     msg = '请输入整数';
                   } else if ( decimalLen > decimal ) {
                     msg = `超过${decimal}位小数`;
-                  } else if ( rules.length === 0 ) {
-                    msg = void 1;
                   } else if ( isNumber === false ) {
                     msg = '请输入正确数值';
                   }
-                  callback(
-                    msg
-                  );
+                  callback( msg );
                 }
             }
           ]
