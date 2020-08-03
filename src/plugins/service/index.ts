@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2020-08-02 23:44:01
- * @lastTime: 2020-08-03 18:51:14
+ * @lastTime: 2020-08-03 19:24:21
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\plugins\service\index.ts
  */
 
-type anyObj = { [prop: string]: string };
+type anyObj = { [prop: string]: any };
 type RequestParams = {
   url: string;
   method: 'GET' | 'POST' | 'PUT' | 'DELETE';
@@ -27,45 +27,88 @@ type RequestParams = {
 
 type InitFetchParams = {
   baseUrl?: string;
-  before?: () => void;
-  after?: () => void;
-  initHeaders?: anyObj
+  before?: <T>( requestConf: T ) => T;
+  after?: ( response: anyObj ) => any;
+  initHeaders?: anyObj;
 };
+
+interface customerRequest extends RequestInit {
+  url: string;
+  data:
+    | string
+    | Blob
+    | ArrayBufferView
+    | ArrayBuffer
+    | FormData
+    | URLSearchParams
+    | ReadableStream<Uint8Array>
+    | null
+    | undefined;
+}
 
 export function useFetch ( baseParams: InitFetchParams ) {
 
   /* 初始化请求头, 默认 json */
-  let baseHeaders: anyObj = { 
-    ...(
-      baseParams.initHeaders ?? { 'content-type': 'application/json' } 
-    )
+  let baseHeaders: anyObj = {
+    ...( baseParams.initHeaders ?? { 'content-type': 'application/json' } )
   };
 
   return {
-    fetch: ( requestParams: RequestParams ) => {
+
+    /**
+     * 请求方法
+     * @property {string} requestParams.url 请求路径
+     * @property {string} requestParams.method 请求方法
+     * @property {any} requestParams.data 请求方法
+     * @property {object} requestParams.headers 请求头集合
+     */
+    fetch: async ( requestParams: RequestParams ) => {
       
-      const { 
-        url = '',
-        method, data,
-        headers = {} 
-      } = requestParams;
+      let customer: customerRequest;
 
-      return fetch( 
-        baseParams.baseUrl + url,
-        {
-          body: data,
+      {
+        const { url = '', method, data, headers = {} } = requestParams;
 
-          /* 请求头 */
-          headers: { ...baseHeaders, ...headers },
+        customer = {
+          url: baseParams.baseUrl + url,
+          data,
           method,
-
-          /* 不缓存 */
+          headers: { ...baseHeaders, ...headers },
           cache: 'no-cache',
-
-          /* 默认同源cookie */
           credentials: 'same-origin'
-        } 
-      );
+        };
+
+        /* 请求拦截器 */
+        if ( baseParams.before ) {
+          customer = baseParams.before( customer );
+        }
+      }
+      
+      try {
+        const { url, data, method, headers, cache, credentials } = customer;
+
+        let response = await  fetch( url, {
+          body: data,
+  
+          /* 请求头 */
+          headers,
+          method,
+  
+          /* 不缓存 */
+          cache,
+  
+          /* 默认同源cookie */
+          credentials
+        } );
+        if ( baseParams.after && typeof baseParams.after === 'function' ) {
+          response = baseParams.after( response );
+        }
+        return response;
+        
+      } catch ( error ) {
+        return Promise.reject( error );
+      }
+      
     },
 
     /**

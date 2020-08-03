@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-30 21:20:00
- * @LastEditTime: 2020-08-02 23:45:52
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-08-03 19:21:31
+ * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
- * @FilePath: /supply-chian-system/src/view/Test/form.vue
+ * @FilePath: \supply-chain-system\src\view\Test\form.vue
 --> 
 <template>
   <div>
@@ -27,7 +27,7 @@
 </template>
 <script>
 import { FormComponent, useForm } from '@/plugins/form/index.js';
-import x from '@/plugins/service/index.ts';
+import { useFetch } from '@/plugins/service/index.ts';
 export default {
   components: {
     FormCom: FormComponent
@@ -127,10 +127,11 @@ export default {
       } )
     };
   },
-  mounted () {
+  async mounted () {
     const onwatch = this.form.registerChange( 'name', ( v, o ) => {
       console.log( '变化了~' );
     } );
+   
   },
   methods: {
     onevalidate () {
