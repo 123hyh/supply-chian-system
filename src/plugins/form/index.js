@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-25 21:43:12
- * @lastTime: 2020-07-28 16:53:08
+ * @lastTime: 2020-08-03 10:31:20
  * @LastAuthor: huangyuhui
  * @Description: 表单组件
  * @FilePath: \supply-chain-system\src\plugins\form\index.js
@@ -243,7 +243,7 @@ export function useForm ( formConfig = { groupOption: {}, config: {} } ) {
 }
 
 export const FormComponent = {
-  abstract: false,
+  abstract: true,
 
   /* 收集 form */
   created () {
