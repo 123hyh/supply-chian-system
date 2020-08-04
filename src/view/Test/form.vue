@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-30 21:20:00
- * @lastTime: 2020-08-03 19:21:31
+ * @lastTime: 2020-08-04 16:26:09
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Test\form.vue
@@ -9,6 +9,7 @@
 <template>
   <div>
     <FormCom :form="form"/>
+    <Modal :value="true"/>
     <div>
       <button @click="onevalidate">
         validate
@@ -28,8 +29,11 @@
 <script>
 import { FormComponent, useForm } from '@/plugins/form/index.js';
 import { useFetch } from '@/plugins/service/index.ts';
+import Modal from '@/plugins/modal/index.js';
+
 export default {
   components: {
+    Modal,
     FormCom: FormComponent
   },
   data () {

@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2020-07-25 21:43:12
- * @lastTime: 2020-08-03 10:31:20
+ * @lastTime: 2020-08-04 10:28:20
  * @LastAuthor: huangyuhui
  * @Description: 表单组件
  * @FilePath: \supply-chain-system\src\plugins\form\index.js
@@ -66,7 +66,7 @@ function generateGroupChildren ( h ) {
           },
           value.map(
             currentItemConf => {
-              const { type } = currentItemConf;
+              const { type, prop: key } = currentItemConf;
               return h(
                 TYPE_TO_COMPONENT[ type ],
                 {
@@ -79,7 +79,8 @@ function generateGroupChildren ( h ) {
 
                     /* 设置 state字段值 */
                     setState: setState.bind( this )
-                  }
+                  },
+                  key
                 }
               );
 
