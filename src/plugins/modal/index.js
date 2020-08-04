@@ -73,6 +73,11 @@ function mousedown ( MouseEvent, currentBarName ) {
  */
 function handlerHeaderMousedown ( MouseEvent ) {
 
+  /* 处理点击到关闭按钮bug */
+  if ( MouseEvent.target.classList.contains( 'el-icon-close' )  ) {
+    return; 
+  } 
+
   let { target, offsetX, offsetY } = MouseEvent;
 
   /* 查找 header 元素 */
@@ -99,7 +104,6 @@ function handlerHeaderMousedown ( MouseEvent ) {
     document.body.removeEventListener( 'mousemove', mousemove, false );
     this.removeEventListener( 'mouseup', mouseup, false );
   }
-
   document.body.addEventListener( 'mousemove', mousemove, false );
   this.addEventListener( 'mouseup', mouseup, false );
 }
