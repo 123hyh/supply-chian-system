@@ -74,9 +74,9 @@ function mousedown ( MouseEvent, currentBarName ) {
 function handlerHeaderMousedown ( MouseEvent ) {
 
   /* 处理点击到关闭按钮bug */
-  if ( MouseEvent.target.classList.contains( 'el-icon-close' )  ) {
-    return; 
-  } 
+  if ( MouseEvent.target.classList.contains( 'el-icon-close' ) ) {
+    return;
+  }
 
   let { target, offsetX, offsetY } = MouseEvent;
 
@@ -108,14 +108,23 @@ function handlerHeaderMousedown ( MouseEvent ) {
   this.addEventListener( 'mouseup', mouseup, false );
 }
 
+/* 模态窗 ID */
+let modalId = 0;
+
 /* 添加层叠 */
 let Z_INDEX = 2000;
 
-export default {
+/* 缓存模态窗实例 */
+const cacheModal = new Map();
+
+export const Modal =  {
+
   props: {
-    value: {
-      type: Boolean,
-      default: false
+
+    /* 模态窗实例 */
+    modal:{
+      type: Object,
+      default: () => ( {} )
     },
 
     /* 模态窗宽度 */
@@ -143,7 +152,19 @@ export default {
       default: () => Z_INDEX++
     }
   },
+  
+  beforeCreate () {
+    const { _modalId } =  this.$options.propsData.modal;
+    cacheModal.set(
+      _modalId, 
+      { instance: this, data: Vue.observable( { visible: false } ) } 
+    );
+  },
+
   render ( h ) {
+
+    const { _modalId } =  this.$options.propsData.modal;
+    const currentModalData = cacheModal.get( _modalId )?.data;
 
     /* 插槽 */
     const { header, content, footer } = this.$slots;
@@ -163,7 +184,7 @@ export default {
           'div',
           {
             class: [ 'content', {
-              'show-content': this.value ? true : false
+              'show-content': currentModalData.visible ? true : false
             } ],
 
             style: {
@@ -191,26 +212,28 @@ export default {
                 h(
                   'div',
                   {
-                    class:[ 'modal-opration' ]
+                    class: [ 'modal-opration' ]
                   },
-                  [ 
+                  [
                     h(
                       'i',
                       {
-                        on:{
-                          click:( e ) => {
-                            e.stopPropagation();
+                        on: {
+                          click: ( e ) => {
 
                             /* 关闭 模态窗 */
-                            this.$emit( 'input', false );
+
+                            e.stopPropagation();
+                            currentModalData.visible = false;
+
                           }
                         },
                         class: [ 'el-icon-close' ]
                       }
-                    ) 
+                    )
                   ]
                 )
-                
+
               ]
             ),
             h(
@@ -323,5 +346,39 @@ export default {
         };
       } )();
     }
+  },
+
+ 
+  methods: {
+
+    /**
+   * 关闭模态窗
+   * @description: 
+   * @param {type} 
+   * @return {type} 
+   */
+    handlerCloseModal () {
+
+    }
   }
 };
+export function useModal () {
+  const currentId = modalId++;
+  let currentModalData;
+  return {
+    get _modalId () {
+      return currentId;
+    },
+    closeModal () {
+      
+    },
+    openModal () {
+      if ( currentModalData ) {
+        currentModalData.visible = true;
+      } else {
+        currentModalData = cacheModal.get( currentId )?.data;
+        currentModalData.visible = true;
+      }
+    }
+  };
+}

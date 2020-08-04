@@ -9,7 +9,7 @@
 <template>
   <div>
     <FormCom :form="form"/>
-    <Modal v-model="showModal">
+    <Modal :modal="oneModal">
       <template v-slot:header>
         <div>header</div>
       </template>
@@ -41,7 +41,7 @@
 <script>
 import { FormComponent, useForm } from '@/plugins/form/index.js';
 import { useFetch } from '@/plugins/service/index.ts';
-import Modal from '@/plugins/modal/index.js';
+import { Modal, useModal } from '@/plugins/modal/index.js';
 
 export default {
   components: {
@@ -50,7 +50,6 @@ export default {
   },
   data () {
     return {
-      showModal: false,
       form: useForm( {
         groupOption: {
           1: {
@@ -144,6 +143,9 @@ export default {
       } )
     };
   },
+  computed:{
+    oneModal: useModal
+  },
   async mounted () {
     const onwatch = this.form.registerChange( 'name', ( v, o ) => {
       console.log( '变化了~' );
@@ -152,7 +154,7 @@ export default {
   },
   methods: {
     onevalidate () {
-      this.showModal = !this.showModal;
+      this.oneModal.openModal();
       console.log(
         this.form.onFinish( e => {
           console.log( '校验通过~' );
