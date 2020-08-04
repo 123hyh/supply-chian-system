@@ -114,22 +114,36 @@ export default {
       default: false
     },
 
+    /* 模态窗宽度 */
+
     width: {
       type: String,
       default: '60%'
     },
 
+    /* 模态窗高度 */
     height: {
       type: String,
       default: '50%'
     },
 
+    /* 模态窗标题 */
+    title: {
+      type: String,
+      default: ''
+    },
+
+    /* 层叠顺序 */
     zIndex: {
       type: Number,
       default: () => Z_INDEX++
     }
   },
   render ( h ) {
+
+    /* 插槽 */
+    const { header, content, footer } = this.$slots;
+
     return h(
       'div',
       {
@@ -144,7 +158,9 @@ export default {
         h(
           'div',
           {
-            class: [ 'content' ],
+            class: [ 'content', {
+              'show-content': this.value ? true : false
+            } ],
 
             style: {
               width: this.width,
@@ -167,7 +183,30 @@ export default {
                 }
               },
               [
-                h( 'div', 'header' )
+                header ? header : '',
+                h(
+                  'div',
+                  {
+                    class:[ 'modal-opration' ]
+                  },
+                  [ 
+                    h(
+                      'i',
+                      {
+                        on:{
+                          click:( e ) => {
+                            e.stopPropagation();
+
+                            /* 关闭 模态窗 */
+                            this.$emit( 'input', false );
+                          }
+                        },
+                        class: [ 'el-icon-close' ]
+                      }
+                    ) 
+                  ]
+                )
+                
               ]
             ),
             h(
@@ -175,16 +214,18 @@ export default {
               {
                 class: [ 'modal-main' ]
               },
-              'main'
+              [
+                content
+              ]
             ),
-            h(
+            footer && h(
               'div',
               {
                 class: [ 'modal-footer' ]
               },
-              'footer'
+              footer
             )
-          ]
+          ].filter( Boolean )
         )
       ]
     );

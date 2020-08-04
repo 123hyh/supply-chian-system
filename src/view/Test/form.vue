@@ -9,7 +9,19 @@
 <template>
   <div>
     <FormCom :form="form"/>
-    <Modal :value="true"/>
+    <Modal v-model="showModal">
+      <template v-slot:header>
+        <div>header</div>
+      </template>
+      <template v-slot:content>
+        <div>
+          中间内容
+        </div>
+      </template>
+      <template v-slot:footer>
+        <div>footer</div>
+      </template>
+    </Modal>
     <div>
       <button @click="onevalidate">
         validate
@@ -38,6 +50,7 @@ export default {
   },
   data () {
     return {
+      showModal: false,
       form: useForm( {
         groupOption: {
           1: {
@@ -139,6 +152,7 @@ export default {
   },
   methods: {
     onevalidate () {
+      this.showModal = !this.showModal;
       console.log(
         this.form.onFinish( e => {
           console.log( '校验通过~' );
