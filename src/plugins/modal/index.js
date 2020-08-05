@@ -2,6 +2,7 @@
 import '@/plugins/modal/style/modal.scss';
 
 import Vue from 'vue';
+import { useZoom } from '@/plugins/modal/src/zoom.js';
 
 function mousedown ( MouseEvent, currentBarName ) {
   const { target } = MouseEvent;
@@ -71,13 +72,23 @@ function mousedown ( MouseEvent, currentBarName ) {
 /**
  * 头部拖动事件
  * @param {*} MouseEvent 
+ * @param {boolean} isMax - 窗口是否最大化
  */
-function handlerHeaderMousedown ( MouseEvent ) {
+function handlerHeaderMousedown ( MouseEvent, isMax = false ) {
 
   /* 处理点击到关闭按钮bug */
-  if ( MouseEvent.target.classList.contains( 'el-icon-close' ) ) {
-    return;
+  {
+    const classStr = MouseEvent.target.classList.toString();
+    
+    if ( 
+      /el-icon-close/.test( classStr ) ||
+      /icon-zoom-/.test( classStr ) || 
+      isMax
+    ) {
+      return;
+    }
   }
+
 
   let { target, offsetX, offsetY } = MouseEvent;
 
@@ -119,7 +130,6 @@ let modalId = 0,
   cacheModal = new Map();
 
 export const ModalComponent = {
-
   props: {
 
     /* 模态窗实例 */
@@ -173,6 +183,10 @@ export const ModalComponent = {
       }
     );
   },
+  mounted () {
+    const { zoom, content }  = this.$refs;
+    this.currentZoom = useZoom( { onTarget:zoom, updateTarget:content } );
+  },
 
   destroyed () {
 
@@ -187,9 +201,12 @@ export const ModalComponent = {
 
     const currentModalData = cacheModal.get( _modalId )?.data;
 
+    /* 模态窗是否最大化 */
+    const isMax = this.currentZoom?.max;
+
     /* 插槽 */
     const { header, content, footer } = this.$slots;
-
+   
     return h(
       'div',
       {
@@ -204,6 +221,7 @@ export const ModalComponent = {
         h(
           'div',
           {
+            ref:'content',
             class: [ 'content' ],
 
             style: {
@@ -220,10 +238,11 @@ export const ModalComponent = {
               'div',
               {
                 class: [
-                  'modal-header'
+                  'modal-header',
+                  { 'cursor-all-scroll': !isMax }
                 ],
                 attrs: {
-                  title: '长按可拖动'
+                  title: !isMax && '长按可拖动'
                 }
               },
               [
@@ -234,6 +253,21 @@ export const ModalComponent = {
                     class: [ 'modal-opration' ]
                   },
                   [
+
+                    /* 缩放图标 */
+                    h(
+                      'i',
+                      {
+                        ref: 'zoom',
+                        attrs: {
+                          title: '缩放'
+                        },
+                        class: {
+                          [ `icon-zoom-${this.zIndex}` ]: true,
+                          'zoom-max': isMax
+                        }
+                      }
+                    ),
                     h(
                       'i',
                       {
@@ -242,7 +276,7 @@ export const ModalComponent = {
 
                             /* 关闭 模态窗 */
                             e.stopPropagation();
-                            closeModal(  );
+                            closeModal( true );
                           }
                         },
                         class: [ 'el-icon-close' ]
@@ -314,7 +348,7 @@ export const ModalComponent = {
       const resizeElem = new ResizeBox();
 
       return {
-        bind ( el ) {
+        bind ( el, _, vnode ) {
 
           // 挂载到组件上
           const box = document.createElement( 'div' );
@@ -324,11 +358,27 @@ export const ModalComponent = {
 
           const { _rightResizeBar, _bottomRightResizeBar, _bottomResizeBar } = resizeElem.$refs;
 
+          /* 当前组件实例 */
+          const ctx = vnode.context;
+
+          /* header 添加双击事件 */
+          headerElem.addEventListener( 'dblclick', function () {
+            ctx.currentZoom?.onResize();
+          }, 
+          false 
+          );
+
           /* header添加移动事件 */
           headerElem.addEventListener(
             'mousedown',
             function () {
-              handlerHeaderMousedown.call( this, ...arguments, 'header' );
+              handlerHeaderMousedown.call( 
+                this, 
+                ...arguments,
+
+                /* 窗口在放到最大时不允许拖到 */
+                ctx.currentZoom?.max 
+              );
             },
             false
           );
@@ -392,6 +442,12 @@ export function useModal ( {
         currentModalData.visible = false;
         if ( closeReset || isReset ) {
           currentModalData.onload = false;
+          const { width, height, $refs, currentZoom } = cacheModal.get( currentId ).instance;
+
+          /* 还原模态窗原始大小 */
+          $refs?.content.setAttribute( 'style', `width: ${width}; height: ${height}` );
+          currentZoom.max = false;
+
         }
       }
     },

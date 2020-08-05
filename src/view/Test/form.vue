@@ -57,11 +57,9 @@ export default {
   components: {
     TestComp: {
       render ( h ) {
-        return h( 'div', '测试组件' );
-      },
-      mounted () {
-        debugger;
+        return h( 'div', { style: { height:'1000PX' } }, '测试组件' );
       }
+      
     },
     ModalComponent,
     FormCom: FormComponent
