@@ -1,5 +1,6 @@
 
 import '@/plugins/modal/style/modal.scss';
+
 import Vue from 'vue';
 
 function mousedown ( MouseEvent, currentBarName ) {
@@ -109,20 +110,20 @@ function handlerHeaderMousedown ( MouseEvent ) {
 }
 
 /* 模态窗 ID */
-let modalId = 0;
+let modalId = 0,
 
-/* 添加层叠 */
-let Z_INDEX = 2000;
+  /* 添加层叠 */
+  Z_INDEX = 2000,
 
-/* 缓存模态窗实例 */
-const cacheModal = new Map();
+  /* 缓存模态窗实例 */
+  cacheModal = new Map();
 
-export const ModalComponent =  {
+export const ModalComponent = {
 
   props: {
 
     /* 模态窗实例 */
-    modal:{
+    modal: {
       type: Object,
       default: () => ( {} )
     },
@@ -152,27 +153,37 @@ export const ModalComponent =  {
       default: () => Z_INDEX++
     }
   },
-  
+
   beforeCreate () {
 
     /* 缓存当前modal实例 */
-    const { _modalId } =  this.$options.propsData.modal;
+    const { _modalId } = this.$options.propsData.modal;
     cacheModal.set(
-      _modalId, 
-      { instance: this, data: Vue.observable( { visible: false } ) } 
+      _modalId,
+      {
+        instance: this,
+        data: Vue.observable( {
+
+          /* 显示modal */
+          visible: false,
+
+          /* 加载modalflag */
+          onload: false
+        } )
+      }
     );
   },
 
   destroyed () {
 
     /* 清除当前实例 */
-    const { _modalId } =  this.$options.propsData.modal;
+    const { _modalId } = this.$options.propsData.modal;
     cacheModal.delete( _modalId );
   },
-  
+
   render ( h ) {
 
-    const { _modalId } =  this.$options.propsData.modal;
+    const { _modalId, closeModal } = this.$options.propsData.modal;
 
     const currentModalData = cacheModal.get( _modalId )?.data;
 
@@ -231,8 +242,7 @@ export const ModalComponent =  {
 
                             /* 关闭 模态窗 */
                             e.stopPropagation();
-                            currentModalData.visible = false;
-
+                            closeModal(  );
                           }
                         },
                         class: [ 'el-icon-close' ]
@@ -249,8 +259,8 @@ export const ModalComponent =  {
                 class: [ 'modal-main' ]
               },
               [
-                content
-              ]
+                ( currentModalData.visible || currentModalData.onload ) && content
+              ].filter( Boolean )
             ),
             footer && h(
               'div',
@@ -361,7 +371,9 @@ export const ModalComponent =  {
  * @param {type} 
  * @return {type} 
  */
-export function useModal () {
+export function useModal ( {
+  closeReset = false
+} = {} ) {
   const currentId = modalId++;
   let currentModalData;
   return {
@@ -372,12 +384,15 @@ export function useModal () {
     /**
      * 关闭模态窗
      * @description: 
-     * @param {type} 
+     * @param {boolean}  isReset 是否销毁模态窗
      * @return {type} 
      */
-    closeModal () {
+    closeModal ( isReset = false ) {
       if ( currentModalData ) {
         currentModalData.visible = false;
+        if ( closeReset || isReset ) {
+          currentModalData.onload = false;
+        }
       }
     },
 
@@ -393,6 +408,9 @@ export function useModal () {
       } else {
         currentModalData = cacheModal.get( currentId )?.data;
         currentModalData.visible = true;
+
+        /* 懒加载渲染 */
+        currentModalData.onload = true;
       }
     }
   };

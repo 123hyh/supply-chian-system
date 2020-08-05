@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-30 21:20:00
- * @lastTime: 2020-08-05 10:44:33
+ * @lastTime: 2020-08-05 14:06:35
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Test\form.vue
@@ -30,9 +30,7 @@
         <div>header</div>
       </template>
       <template v-slot:content>
-        <div>
-          中间内容
-        </div>
+        <TestComp/>
       </template>
       <template v-slot:footer>
         <div>footer</div>
@@ -49,12 +47,22 @@
   </div>
 </template>
 <script>
+
 import { FormComponent, useForm } from '@/plugins/form/index.js';
-import { useFetch } from '@/plugins/service/index.ts';
 import { ModalComponent, useModal } from '@/plugins/modal/index.js';
+
+import { useFetch } from '@/plugins/service/index.ts';
 
 export default {
   components: {
+    TestComp: {
+      render ( h ) {
+        return h( 'div', '测试组件' );
+      },
+      mounted () {
+        debugger;
+      }
+    },
     ModalComponent,
     FormCom: FormComponent
   },
@@ -160,11 +168,10 @@ export default {
     const onwatch = this.form.registerChange( 'name', ( v, o ) => {
       console.log( '变化了~' );
     } );
-   
+
   },
   methods: {
     onevalidate () {
-      this.oneModal.openModal();
       console.log(
         this.form.onFinish( e => {
           console.log( '校验通过~' );
@@ -187,7 +194,7 @@ export default {
       this.oneModal.openModal();
     },
     closeModal () {
-      this.oneModal.closeModal();
+      this.oneModal.closeModal( true );
     }
   }
 };

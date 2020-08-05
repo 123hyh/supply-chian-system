@@ -1,10 +1,10 @@
 /*
  * @Author: your name
  * @Date: 2020-07-31 12:40:09
- * @LastEditTime: 2020-08-02 18:01:31
- * @LastEditors: Please set LastEditors
+ * @lastTime: 2020-08-05 11:38:14
+ * @LastAuthor: huangyuhui
  * @Description: 字符串输入
- * @FilePath: /supply-chian-system/src/plugins/form/src/string.js
+ * @FilePath: \supply-chain-system\src\plugins\form\src\string.js
  */
 import { FormItem, Input } from 'element-ui';
 export default {
@@ -30,7 +30,6 @@ export default {
   },
   render ( h ) {
     let { prop, disabled, readonly, rules = [], label = '', prefix, placeholder = '' } = this.currentConf;
-    console.log( prop );
     const isPrefix = !!prefix;
     return h(
       'div',
