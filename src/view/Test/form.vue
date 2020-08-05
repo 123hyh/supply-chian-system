@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2020-07-30 21:20:00
- * @lastTime: 2020-08-04 16:26:09
+ * @lastTime: 2020-08-05 10:44:33
  * @LastAuthor: huangyuhui
  * @Description: In User Settings Edit
  * @FilePath: \supply-chain-system\src\view\Test\form.vue
@@ -9,19 +9,7 @@
 <template>
   <div>
     <FormCom :form="form"/>
-    <Modal :modal="oneModal">
-      <template v-slot:header>
-        <div>header</div>
-      </template>
-      <template v-slot:content>
-        <div>
-          中间内容
-        </div>
-      </template>
-      <template v-slot:footer>
-        <div>footer</div>
-      </template>
-    </Modal>
+    <!-- 表单操作 -->
     <div>
       <button @click="onevalidate">
         validate
@@ -36,16 +24,38 @@
         setFiledConf
       </button>
     </div>
+    <!-- 模态窗操作 -->
+    <ModalComponent :modal="oneModal">
+      <template v-slot:header>
+        <div>header</div>
+      </template>
+      <template v-slot:content>
+        <div>
+          中间内容
+        </div>
+      </template>
+      <template v-slot:footer>
+        <div>footer</div>
+      </template>
+    </ModalComponent>
+    <div>
+      <button @click="openModal">
+        openModal
+      </button>
+      <button @click="closeModal">
+        closeModal
+      </button>
+    </div>
   </div>
 </template>
 <script>
 import { FormComponent, useForm } from '@/plugins/form/index.js';
 import { useFetch } from '@/plugins/service/index.ts';
-import { Modal, useModal } from '@/plugins/modal/index.js';
+import { ModalComponent, useModal } from '@/plugins/modal/index.js';
 
 export default {
   components: {
-    Modal,
+    ModalComponent,
     FormCom: FormComponent
   },
   data () {
@@ -172,6 +182,12 @@ export default {
     },
     setFiledConf () {
       this.form.setFiledConfig( 'test1', { group:1, label:'测试', type: 'string' }, this );
+    },
+    openModal () {
+      this.oneModal.openModal();
+    },
+    closeModal () {
+      this.oneModal.closeModal();
     }
   }
 };

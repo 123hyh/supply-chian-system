@@ -117,7 +117,7 @@ let Z_INDEX = 2000;
 /* 缓存模态窗实例 */
 const cacheModal = new Map();
 
-export const Modal =  {
+export const ModalComponent =  {
 
   props: {
 
@@ -154,6 +154,8 @@ export const Modal =  {
   },
   
   beforeCreate () {
+
+    /* 缓存当前modal实例 */
     const { _modalId } =  this.$options.propsData.modal;
     cacheModal.set(
       _modalId, 
@@ -161,9 +163,17 @@ export const Modal =  {
     );
   },
 
+  destroyed () {
+
+    /* 清除当前实例 */
+    const { _modalId } =  this.$options.propsData.modal;
+    cacheModal.delete( _modalId );
+  },
+  
   render ( h ) {
 
     const { _modalId } =  this.$options.propsData.modal;
+
     const currentModalData = cacheModal.get( _modalId )?.data;
 
     /* 插槽 */
@@ -175,7 +185,7 @@ export const Modal =  {
         class: [ 'modal-box' ],
         style: {
           'z-index': this.zIndex,
-          'display': this.value ? 'block' : 'none'
+          'display': currentModalData.visible ? 'block' : 'none'
         },
         key: `modal-box-${this.zIndex}`
       },
@@ -183,9 +193,7 @@ export const Modal =  {
         h(
           'div',
           {
-            class: [ 'content', {
-              'show-content': currentModalData.visible ? true : false
-            } ],
+            class: [ 'content' ],
 
             style: {
               width: this.width,
@@ -222,7 +230,6 @@ export const Modal =  {
                           click: ( e ) => {
 
                             /* 关闭 模态窗 */
-
                             e.stopPropagation();
                             currentModalData.visible = false;
 
@@ -257,111 +264,103 @@ export const Modal =  {
       ]
     );
   },
+
   directives: {
     get resize () {
-      return ( () => {
-        const ResizeBox = Vue.extend( {
-          render ( h ) {
-            return h(
-              'div',
-              {
-                class: [ 'resize' ],
-                key: `resize-${Z_INDEX - 1}`
-              },
-              [
-                h(
-                  'div',
-                  {
-                    class: [ 'right-resize' ],
-                    ref: '_rightResizeBar'
-                  }
-                ),
-                h(
-                  'div',
-                  {
-                    class: [ 'bottom-right-resize' ],
-                    ref: '_bottomRightResizeBar'
-                  }
-                ),
-                h(
-                  'div',
-                  {
-                    class: [ 'bottom-resize' ],
-                    ref: '_bottomResizeBar'
-                  }
-                )
-              ]
-            );
-          }
-        } );
-        const resizeElem = new ResizeBox();
+      const ResizeBox = Vue.extend( {
+        render ( h ) {
+          return h(
+            'div',
+            {
+              class: [ 'resize' ],
+              key: `resize-${Z_INDEX - 1}`
+            },
+            [
+              h(
+                'div',
+                {
+                  class: [ 'right-resize' ],
+                  ref: '_rightResizeBar'
+                }
+              ),
+              h(
+                'div',
+                {
+                  class: [ 'bottom-right-resize' ],
+                  ref: '_bottomRightResizeBar'
+                }
+              ),
+              h(
+                'div',
+                {
+                  class: [ 'bottom-resize' ],
+                  ref: '_bottomResizeBar'
+                }
+              )
+            ]
+          );
+        }
+      } );
+      const resizeElem = new ResizeBox();
 
-        return {
-          bind ( el ) {
+      return {
+        bind ( el ) {
 
-            // 挂载到组件上
-            const box = document.createElement( 'div' );
-            const headerElem = el.children[ 0 ].classList.contains( 'modal-header' ) && el.children[ 0 ];
-            el.appendChild( box );
-            resizeElem.$mount( box );
+          // 挂载到组件上
+          const box = document.createElement( 'div' );
+          const headerElem = el.children[ 0 ].classList.contains( 'modal-header' ) && el.children[ 0 ];
+          el.appendChild( box );
+          resizeElem.$mount( box );
 
-            const { _rightResizeBar, _bottomRightResizeBar, _bottomResizeBar } = resizeElem.$refs;
+          const { _rightResizeBar, _bottomRightResizeBar, _bottomResizeBar } = resizeElem.$refs;
 
-            /* header添加移动事件 */
-            headerElem.addEventListener(
-              'mousedown',
-              function () {
-                handlerHeaderMousedown.call( this, ...arguments, 'header' );
-              },
-              false
-            );
+          /* header添加移动事件 */
+          headerElem.addEventListener(
+            'mousedown',
+            function () {
+              handlerHeaderMousedown.call( this, ...arguments, 'header' );
+            },
+            false
+          );
 
-            /* 右侧 */
-            _rightResizeBar.addEventListener(
-              'mousedown',
-              function () {
-                mousedown.call( this, ...arguments, 'right' );
-              },
-              false
-            );
+          /* 右侧 */
+          _rightResizeBar.addEventListener(
+            'mousedown',
+            function () {
+              mousedown.call( this, ...arguments, 'right' );
+            },
+            false
+          );
 
-            /* 底部 */
-            _bottomResizeBar.addEventListener(
-              'mousedown',
-              function () {
-                mousedown.call( this, ...arguments, 'bottom' );
-              },
-              false
-            );
+          /* 底部 */
+          _bottomResizeBar.addEventListener(
+            'mousedown',
+            function () {
+              mousedown.call( this, ...arguments, 'bottom' );
+            },
+            false
+          );
 
-            /* 右底 */
-            _bottomRightResizeBar.addEventListener(
-              'mousedown',
-              function () {
-                mousedown.call( this, ...arguments, 'bottomRight' );
-              },
-              false
-            );
-          }
-        };
-      } )();
-    }
-  },
-
- 
-  methods: {
-
-    /**
-   * 关闭模态窗
-   * @description: 
-   * @param {type} 
-   * @return {type} 
-   */
-    handlerCloseModal () {
-
+          /* 右底 */
+          _bottomRightResizeBar.addEventListener(
+            'mousedown',
+            function () {
+              mousedown.call( this, ...arguments, 'bottomRight' );
+            },
+            false
+          );
+        }
+      };
     }
   }
 };
+
+/**
+ * 模态窗操作方法
+ * @description: 
+ * @param {type} 
+ * @return {type} 
+ */
 export function useModal () {
   const currentId = modalId++;
   let currentModalData;
@@ -369,9 +368,25 @@ export function useModal () {
     get _modalId () {
       return currentId;
     },
+
+    /**
+     * 关闭模态窗
+     * @description: 
+     * @param {type} 
+     * @return {type} 
+     */
     closeModal () {
-      
+      if ( currentModalData ) {
+        currentModalData.visible = false;
+      }
     },
+
+    /**
+     * 打开模态窗
+     * @description: 
+     * @param {type} 
+     * @return {type} 
+     */
     openModal () {
       if ( currentModalData ) {
         currentModalData.visible = true;
