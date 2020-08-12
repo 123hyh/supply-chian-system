@@ -2,7 +2,7 @@
   display: flex;
   .xy-table-query-form {
     position: relative;
-    max-width: 82%;
+    max-width: calc(4 * 220px + 70px);
     [class^="form-group"] {
       > div {
         flex-basis: unset;

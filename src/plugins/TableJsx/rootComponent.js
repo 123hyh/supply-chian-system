@@ -60,7 +60,8 @@ export default {
       type: String,
       default: 'small'
     },
-    
+
+    /* useTable 返回值 */
     table: {
       type: Object,
       required: true
@@ -83,7 +84,7 @@ export default {
 
         /* 查询栏组件 */
         h(
-          queryBar,
+          'queryBar',
           {
             props: {
               size: this.size
