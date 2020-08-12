@@ -11,6 +11,7 @@ export function useTable ( params ) {
   /* 当前表格配置 */
   const currentConfig = Vue.observable( cloneDeepWith( params )  );
 
+  /* 保存配置 */
   cacheTable.set( cid, { config: currentConfig } );
   
   return Object.freeze( {
@@ -93,6 +94,11 @@ export default {
 
   created () {
     this.table._setVm( this );
+  },
+  
+  beforeDestroy () {
+    const cid = this.table._cid;
+    cacheTable.delete( cid );
   },
 
   props: {
