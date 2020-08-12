@@ -5,13 +5,16 @@
 import './queryBar.scss';
 
 import { FormComponent, useForm } from '@/plugins/form/index.js';
-import { Button } from 'element-ui';
+import { Button, Dropdown, DropdownMenu, DropdownItem } from 'element-ui';
 
 export default {
   name: 'QueryBar',
   components: {
     XyButton: Button,
-    FormComponent
+    FormComponent,
+    Dropdown, 
+    DropdownMenu,
+    DropdownItem
   },
   data () {
     return {
@@ -70,7 +73,10 @@ export default {
             ]
           }
         }
-      } )
+      } ),
+
+      /* 查询栏展开按钮 */
+      isElasticity: false
     };
   },
   render ( h ) {
@@ -85,7 +91,10 @@ export default {
         h(
           'div',
           {
-            class: [ 'xy-table-query-form' ]
+            class: [
+              'xy-table-query-form',
+              this.isElasticity && 'xy-table-query-form-max'
+            ].filter( Boolean )
           },
           [
             h(
@@ -95,6 +104,25 @@ export default {
                   form: this.form
                 }
               }
+            ),
+
+            /* 图标 */
+            h( 
+              'i',
+              {
+                class: [ 
+                  'icon',
+                  { [ `el-icon-arrow-${this.isElasticity ? 'down' : 'up'}` ]: true }
+                ],
+                attrs: {
+                  title: this.isElasticity ? '展开' : '收起'
+                },
+                on: {
+                  click:() => {
+                    this.isElasticity = !this.isElasticity;
+                  }
+                }
+              } 
             )
           ]
         ),
@@ -125,6 +153,90 @@ export default {
                 }
               },
               '查询'
+            )
+          ]
+        ),
+
+        /* 工具栏 */
+        h(
+          'div',
+          {
+            class:[ 'xy-table-query-tools' ]
+          },
+          [ 
+            h( 
+              'Dropdown', 
+              {
+                props:{
+                  trigger:'click'
+                }
+              },
+              [
+                h(
+                  'XyButton',
+                  {
+                    props: {
+                      size:'small',
+                      icon:'el-icon-s-grid'
+                    }
+                  }
+                ),
+
+                /* 表格列筛选 */
+                h(
+                  'DropdownMenu',
+                  {
+                    props:{
+                      appendToBody: false
+                    },
+                    slot: 'dropdown'
+                  },
+                  [
+                    h(
+                      'DropdownItem',
+                      1
+                    )
+                  ]
+                )
+              ] 
+            ),
+
+            /* 导出按钮 */
+            h( 
+              'Dropdown', 
+              {
+                props:{
+                  trigger:'click'
+                }
+              },
+              [
+                h(
+                  'XyButton',
+                  {
+                    props: {
+                      size:'small',
+                      icon:'el-icon-download'
+                    }
+                  }
+                ), 
+
+                /* 导出工具 */
+                h(
+                  'DropdownMenu',
+                  {
+                    props:{
+                      appendToBody: false
+                    },
+                    slot: 'dropdown'
+                  },
+                  [ '.cvs', '.text', '.doc', '.xlsx' ].map(
+                    item => h(
+                      'DropdownItem',
+                      item
+                    )
+                  )
+                ) 
+              ]
             )
           ]
         )

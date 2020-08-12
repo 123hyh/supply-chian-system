@@ -1,6 +1,7 @@
 .xy-table-query-box {
   display: flex;
   .xy-table-query-form {
+    position: relative;
     [class^="form-group"] {
       > div {
         flex-basis: unset;
@@ -25,10 +26,31 @@
       .el-date-editor {
       width: 215px;
     }
+    /*  */
+    .icon.el-icon-arrow-down, 
+    .icon.el-icon-arrow-up{
+      font-size: 1.5em;
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      top: 0;
+      &:hover{
+        color: #409EFF;
+      }
+    }
   }
-  .xy-table-query-buttons {
+  .xy-table-query-form-max{
+    max-height: 38px;
+    overflow: hidden;
+  }
+  .xy-table-query-buttons,.xy-table-query-tools {
     button {
       border-radius: 1px;
     }
+  }
+  .xy-table-query-tools{
+    width: 200px;
+    display: flex;
+    justify-content: space-evenly;
   }
 }
