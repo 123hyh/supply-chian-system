@@ -56,7 +56,10 @@ export default {
   },
 
   props: {
-
+    size: {
+      type: String,
+      default: 'small'
+    },
     table: {
       type: Object,
       required: true
@@ -81,6 +84,9 @@ export default {
         h(
           queryBar,
           {
+            props: {
+              size: this.size
+            },
             on: {
               handFindList: ( ...args ) => {
                 this.$emit( 'handFindList', ...args );
@@ -95,6 +101,7 @@ export default {
           {
 
             props: {
+              size: this.size,
 
               /* 统计行数据 */
               summaryMethod () {

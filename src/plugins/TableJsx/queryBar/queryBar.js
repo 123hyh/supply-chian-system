@@ -8,11 +8,17 @@ import { FormComponent, useForm } from '@/plugins/form/index.js';
 import { Button, Dropdown, DropdownMenu, DropdownItem } from 'element-ui';
 
 export default {
+  props: {
+    size: {
+      type: String,
+      default: 'small'
+    }
+  },
   name: 'QueryBar',
   components: {
     XyButton: Button,
     FormComponent,
-    Dropdown, 
+    Dropdown,
     DropdownMenu,
     DropdownItem
   },
@@ -76,7 +82,7 @@ export default {
       } ),
 
       /* 查询栏展开按钮 */
-      isElasticity: false
+      isElasticity: true
     };
   },
   render ( h ) {
@@ -106,23 +112,25 @@ export default {
               }
             ),
 
-            /* 图标 */
-            h( 
+            /* 展开/收起 图标 */
+            h(
               'i',
               {
-                class: [ 
+                class: [
                   'icon',
-                  { [ `el-icon-arrow-${this.isElasticity ? 'down' : 'up'}` ]: true }
+                  {
+                    [ `el-icon-arrow-${this.isElasticity ? 'down' : 'up'}` ]: true
+                  }
                 ],
                 attrs: {
                   title: this.isElasticity ? '展开' : '收起'
                 },
                 on: {
-                  click:() => {
+                  click: () => {
                     this.isElasticity = !this.isElasticity;
                   }
                 }
-              } 
+              }
             )
           ]
         ),
@@ -138,7 +146,7 @@ export default {
               'XyButton',
               {
                 props: {
-                  size: 'small',
+                  size: this.size,
                   type: 'primary',
                   icon: 'el-icon-search'
                 },
@@ -161,14 +169,15 @@ export default {
         h(
           'div',
           {
-            class:[ 'xy-table-query-tools' ]
+            class: [ 'xy-table-query-tools' ]
           },
-          [ 
-            h( 
-              'Dropdown', 
+          [
+            h(
+              'Dropdown',
               {
-                props:{
-                  trigger:'click'
+                props: {
+                  trigger: 'click',
+                  size: this.size
                 }
               },
               [
@@ -176,8 +185,8 @@ export default {
                   'XyButton',
                   {
                     props: {
-                      size:'small',
-                      icon:'el-icon-s-grid'
+                      size: this.size,
+                      icon: 'el-icon-s-grid'
                     }
                   }
                 ),
@@ -186,7 +195,7 @@ export default {
                 h(
                   'DropdownMenu',
                   {
-                    props:{
+                    props: {
                       appendToBody: false
                     },
                     slot: 'dropdown'
@@ -198,15 +207,16 @@ export default {
                     )
                   ]
                 )
-              ] 
+              ]
             ),
 
             /* 导出按钮 */
-            h( 
-              'Dropdown', 
+            h(
+              'Dropdown',
               {
-                props:{
-                  trigger:'click'
+                props: {
+                  trigger: 'click',
+                  size: this.size
                 }
               },
               [
@@ -214,17 +224,17 @@ export default {
                   'XyButton',
                   {
                     props: {
-                      size:'small',
-                      icon:'el-icon-download'
+                      size: this.size,
+                      icon: 'el-icon-download'
                     }
                   }
-                ), 
+                ),
 
                 /* 导出工具 */
                 h(
                   'DropdownMenu',
                   {
-                    props:{
+                    props: {
                       appendToBody: false
                     },
                     slot: 'dropdown'
@@ -235,7 +245,7 @@ export default {
                       item
                     )
                   )
-                ) 
+                )
               ]
             )
           ]

@@ -29,6 +29,10 @@ export default {
       type: Boolean,
       default: true
     },
+    size: {
+      type: String,
+      default: 'small'
+    },
 
     /* 表格配置 */
     schema: {
@@ -141,7 +145,7 @@ export default {
             {
               props: {
                 data: this.list,
-                size: 'small',
+                size: this.size,
                 highlightCurrentRow: true,
                 border: true,
                 'show-summary': true,
