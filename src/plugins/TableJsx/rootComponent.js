@@ -60,6 +60,7 @@ export default {
       type: String,
       default: 'small'
     },
+    
     table: {
       type: Object,
       required: true
