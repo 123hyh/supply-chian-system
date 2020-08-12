@@ -27,28 +27,28 @@
       .el-date-editor {
       width: 215px;
     }
-    /*  */
-    .icon.el-icon-arrow-down, 
-    .icon.el-icon-arrow-up{
+    .icon.el-icon-arrow-down,
+    .icon.el-icon-arrow-up {
       font-size: 1.5em;
       cursor: pointer;
       position: absolute;
       right: 20px;
       top: 0;
-      &:hover{
-        color: #409EFF;
+      &:hover {
+        color: #409eff;
       }
     }
   }
-  .xy-table-query-form-max{
+  .xy-table-query-form-max {
     max-height: 38px;
   }
-  .xy-table-query-buttons,.xy-table-query-tools {
+  .xy-table-query-buttons,
+  .xy-table-query-tools {
     button {
       border-radius: 1px;
     }
   }
-  .xy-table-query-tools{
+  .xy-table-query-tools {
     width: 200px;
     display: flex;
     justify-content: space-evenly;
