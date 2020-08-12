@@ -1,40 +1,77 @@
 let _cid = 0;
 const cacheTable = new Map();
+import Vue from 'vue';
+import { cloneDeepWith, debounce } from 'lodash';
 
 export function useTable ( params ) {
 
   let cid = _cid++;
   let currentVm = null;
 
+  /* 当前表格配置 */
+  const currentConfig = Vue.observable( cloneDeepWith( params )  );
+
+  cacheTable.set( cid, { config: currentConfig } );
+  
   return Object.freeze( {
 
-    /* 当前表格组件id */
+    /**
+     * 当前组件 use id
+     * @param {type} 
+     * @return {type} 
+     */
     get _cid () {
       return cid;
     },
 
-    _init ( vm ) {
-      currentVm = vm;
+    /**
+     * 内部使用
+     * @param {*} vm Vue组件实例
+     */
+    _setVm ( vm ) {
+      if ( vm.$options._isComponent ) {
+        currentVm = vm;
+      }
     },
 
-    /* 点击一行数据事件 */
+    /**
+     * 点击一行数据事件
+     * @param {Function} 需要订阅的回调
+     * @return {Function} 返回 off 事件方法
+     */
     onClickRow ( handler = () => void 1 ) {
       currentVm.$on( 'handClickRow', handler );
+      return () => currentVm.$off( 'handClickRow', handler );
     },
 
-    /* 点击多选框事件 */
-    onSelection ( handler = () => void 1 ) {
+    /**
+     * 点击多选框事件
+     * @param {Function} 需要订阅的回调
+     * @return {Function} 返回 off 事件方法
+     */
+    onSelection ( handler = () => void 1  ) {
       currentVm.$on( 'handSelection', handler );
+      return () => currentVm.$off( 'handSelection', handler );
     },
 
-    /* 双击事件 */
-    onRowDblclick ( handler = () => void 1 ) {
+    /**
+     * 双击事件
+     * @param {Function} 需要订阅的回调
+     * @return {Function} 返回 off 事件方法
+     */
+    onRowDblclick ( handler = () => void 1  ) {
       currentVm.$on( 'handRowDblclick', handler );
+      return () => currentVm.$off( 'handRowDblclick', handler );
     },
 
-    /* 查询列表数据事件 */
+    /**
+     * 查询列表数据事件
+     * @param {Function} 需要订阅的回调
+     * @return {Function} 返回 off 事件方法
+     */
     onFindList ( handler = () => void 1 ) {
       currentVm.$on( 'handFindList', handler );
+      return () => currentVm.$off( 'handFindList', handler );
     }
   } );
 }
@@ -44,15 +81,18 @@ import queryBar from '@/plugins/TableJsx/queryBar/queryBar.js';
 
 export default {
 
+  /* 标识为组件 */
+  get _isComponent () {
+    return true;
+  },
+
   components: {
     XyTable: Table,
     queryBar
   },
 
   created () {
-    const cid = this.table._cid;
-    cacheTable.set( cid, this );
-    this.table._init( this );
+    this.table._setVm( this );
   },
 
   props: {
@@ -67,7 +107,7 @@ export default {
       required: true
     },
 
-    /* 样式类名称 */
+    /* 自定义样式类名称 */
     className: {
       type: String,
       default: ''
@@ -75,10 +115,15 @@ export default {
   },
 
   render ( h ) {
+    const cid = this.table._cid;
+    const { config:{ tableConfig } } = cacheTable.get( cid );
     return h(
       'div',
       {
-        class: [ 'xy-table-box', this.className ]
+        class: [ 
+          'xy-table-box',
+          this.className 
+        ]
       },
       [
 
@@ -104,6 +149,7 @@ export default {
 
             props: {
               size: this.size,
+              schema: tableConfig,
 
               /* 统计行数据 */
               summaryMethod () {

@@ -38,7 +38,8 @@ export default {
     schema: {
       type: Array,
       default: () => ( [
-        {
+
+        /* {
           label: '姓名',
           prop: 'name',
           width: 300,
@@ -53,10 +54,10 @@ export default {
           label: '性别',
           prop: 'sex',
 
-          /* 查询表单类型 */
+          // 查询表单类型
           searchType: 'select',
 
-          /* 查询栏选项 */
+          // 查询栏选项
           options: [ { label: '男', value: 1 }, { label: '女', value: 0 } ]
         },
         {
@@ -91,7 +92,7 @@ export default {
               prop: 'district'
             }
           ]
-        }
+        } */
       ] )
     },
     list: {

@@ -11,7 +11,7 @@
     <!-- tools-bar -->
     <div class="tools-bar">
       <!-- 筛选表格 -->
-      <Dropdown trigger="click">
+      <!-- <Dropdown trigger="click">
         <XyButton
           size="small"
           icon="el-icon-s-grid"
@@ -21,9 +21,9 @@
           <DropdownItem>1</DropdownItem>
           <DropdownItem>1</DropdownItem>
         </DropdownMenu>
-      </Dropdown>
+      </Dropdown> -->
       <!-- 导出表格 -->
-      <Dropdown trigger="click">
+      <!--  <Dropdown trigger="click">
         <XyButton
           size="small"
           icon="el-icon-download"
@@ -48,11 +48,14 @@
           {{ sex === 1 ? "男" : "女" }}
         </div>
       </template>
-    </TableJsx>
+    </TableJsx> -->
 
-    <h1><hr></h1>
+      <h1><hr></h1>
     
-    <rootComponent :table="table"/>
+      <rootComponent :table="table">
+        <div>123</div>
+      </rootComponent>
+    </div>
   </div>
 </template>
 
@@ -63,16 +66,74 @@ import rootComponent, { useTable } from '@/plugins/TableJsx/rootComponent.js';
 
 export default {
   components: {
-    TableJsx,
+
+    /* TableJsx,
     XyButton: Button,
     Dropdown,
     DropdownMenu,
-    DropdownItem,
+    DropdownItem, */
     rootComponent
   },
   data () {
     return {
-      table: useTable()
+      table: useTable( {
+        tableConfig: [
+          {
+            label: '姓名',
+            prop: 'name',
+            width: 300,
+            sortable: true,
+            searchType: 'string'
+          },
+          {
+            label: '年龄',
+            prop: 'age'
+          },
+          {
+            label: '性别',
+            prop: 'sex',
+
+            /* 查询表单类型 */
+            searchType: 'select',
+
+            /* 查询栏选项 */
+            options: [ { label: '男', value: 1 }, { label: '女', value: 0 } ]
+          },
+          {
+            label: '出生',
+            prop: 'createTime',
+            searchType: 'date'
+          },
+          {
+            label: '入职时间',
+            prop: 'entryTime'
+          },
+          {
+            label: '地址',
+            prop: 'addess',
+            children:[
+              {
+                label: '省',
+                prop: 'province',
+                children:[
+                  {
+                    label:'测试3',
+                    prop: 'test3'
+                  }
+                ]
+              },
+              {
+                label: '市',
+                prop: 'city'
+              },
+              {
+                label: '区',
+                prop: 'district'
+              }
+            ]
+          }
+        ]
+      } )
     };
   },
   mounted () {
