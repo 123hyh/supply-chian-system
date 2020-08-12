@@ -49,6 +49,7 @@ export default {
           {
             props:{
               value:  this.state[ prop ] ?? '',
+              filterable: true,
               id: prop,
               disabled,
               readonly,

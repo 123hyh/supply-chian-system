@@ -25,7 +25,7 @@ export default {
   props: {
 
     /* 查询 */
-    isQuery:{
+    isQuery: {
       type: Boolean,
       default: true
     },

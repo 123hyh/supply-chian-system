@@ -63,6 +63,13 @@ const routes: Array<RouteConfig> = [
         component: () => import( '@/view/Test/form.vue' )
       },
       {
+        path: 'testTable',
+        meta:{
+          title: '测试table'
+        },
+        component:() => import( '@/plugins/TableJsx/spec.vue' )
+      },
+      {
         path: 'refresh',
         component: () =>
           import(

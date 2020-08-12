@@ -1,0 +1,34 @@
+.xy-table-query-box {
+  display: flex;
+  .xy-table-query-form {
+    [class^="form-group"] {
+      > div {
+        flex-basis: unset;
+        margin-right: 10px;
+      }
+    }
+    /* 修改日期框 */
+    .form-component-box
+      .form-group
+      .el-form-item
+      .el-form-item__content
+      .el-input-number,
+    .form-component-box
+      .form-group
+      .el-form-item
+      .el-form-item__content
+      .el-select,
+    .form-component-box
+      .form-group
+      .el-form-item
+      .el-form-item__content
+      .el-date-editor {
+      width: 215px;
+    }
+  }
+  .xy-table-query-buttons {
+    button {
+      border-radius: 1px;
+    }
+  }
+}

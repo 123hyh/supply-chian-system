@@ -2,7 +2,7 @@
 import '@/plugins/modal/style/modal.scss';
 
 import Vue from 'vue';
-import { useZoom } from '@/plugins/modal/src/zoom.js';
+import { useZoom } from './src/zoom.js';
 
 function mousedown ( MouseEvent, currentBarName ) {
   const { target } = MouseEvent;
@@ -276,7 +276,7 @@ export const ModalComponent = {
 
                             /* 关闭 模态窗 */
                             e.stopPropagation();
-                            closeModal( true );
+                            closeModal();
                           }
                         },
                         class: [ 'el-icon-close' ]
@@ -284,7 +284,6 @@ export const ModalComponent = {
                     )
                   ]
                 )
-
               ]
             ),
             h(
