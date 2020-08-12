@@ -53,7 +53,11 @@
       <h1><hr></h1>
     
       <rootComponent :table="table">
-        <div>123</div>
+        <template v-slot:table.sex="{ sex }">
+          <div>
+            {{ sex === 1 ? "男" : "女" }}
+          </div>
+        </template>
       </rootComponent>
     </div>
   </div>

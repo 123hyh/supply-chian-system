@@ -95,7 +95,7 @@ export default {
   created () {
     this.table._setVm( this );
   },
-  
+
   beforeDestroy () {
     const cid = this.table._cid;
     cacheTable.delete( cid );
@@ -163,6 +163,17 @@ export default {
               }
             },
 
+            /* 表格跨级插槽, 插槽名必须是 table.[name] 格式 */
+            scopedSlots: Object.keys( this.$scopedSlots ).reduce( 
+              ( prev, slotName ) => {
+                if ( /^table\./.test( slotName ) ) {
+                  const name =   slotName.replace( /^table\./, '' );
+                  prev[ name ] = this.$scopedSlots[ slotName ];
+                }
+                return prev;
+              },
+              {}
+            ),
             on: {
 
               /* 查询事件 */
