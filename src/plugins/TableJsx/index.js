@@ -7,6 +7,8 @@
  * @FilePath: \supply-chain-system\src\pligins\TableJsx\index.js
  */
 
+
+
 import { Table, TableColumn, Input, FormItem, Select, Option, Popover, Button, DatePicker } from 'element-ui';
 import './table.scss';
 import { createQueryItem } from './tableComponents';
@@ -23,12 +25,6 @@ export default {
     DatePickerComponent: DatePicker
   },
   props: {
-
-    /* 查询 */
-    isQuery: {
-      type: Boolean,
-      default: true
-    },
     size: {
       type: String,
       default: 'small'
@@ -98,18 +94,18 @@ export default {
     list: {
       type: Array,
       default: () => ( [
-        { 
+        {
           name: 'mff', age: 18, createTime: '1993-09-01', entryTime: '2019-02-25', sex: 0,
-          test3: '测试三级', province:'广东省', city:'深圳市', district:'罗湖区' 
+          test3: '测试三级', province: '广东省', city: '深圳市', district: '罗湖区'
         },
         { name: 'hyh', age: 18, createTime: '1999-09-01', entryTime: '2020-6-30', sex: 1 }
       ] )
     },
 
     /* 统计方法 */
-    summaryMethod:{
+    summaryMethod: {
       type: Function,
-      default: () => () => {}
+      default: () => () => { }
     }
 
   },
@@ -180,21 +176,27 @@ export default {
             [
 
               /* 列序号 */
-              createElement( 'TableColumnComponent', {
-                props: {
-                  type: 'index',
-                  label: '序号',
-                  align: 'center'
+              createElement(
+                'TableColumnComponent',
+                {
+                  props: {
+                    type: 'index',
+                    label: '序号',
+                    align: 'center'
+                  }
                 }
-              } ),
+              ),
 
               /* 选择列 */
-              createElement( 'TableColumnComponent', {
-                props: {
-                  type: 'selection',
-                  align: 'center'
+              createElement(
+                'TableColumnComponent',
+                {
+                  props: {
+                    type: 'selection',
+                    align: 'center'
+                  }
                 }
-              } ),
+              ),
 
               /* 展开详情 */
               createElement(
@@ -209,27 +211,27 @@ export default {
                       return createElement(
                         'ul',
                         {
-                          class:'column-block-expand-content'
+                          class: 'column-block-expand-content'
                         },
                         this.schema.map( ( { label, prop } = {} ) => {
                           return createElement( 'li',
-                            { class:'column-block-expand-content-item' },
+                            { class: 'column-block-expand-content-item' },
                             [
-                              createElement( 
-                                'div', 
-                                { 
-                                  domProps:{
+                              createElement(
+                                'div',
+                                {
+                                  domProps: {
                                     innerHTML: label
                                   },
-                                  class:'content-item-label' 
+                                  class: 'content-item-label'
                                 }
                               ),
-                              createElement( 
-                                'div', 
-                                { 
+                              createElement(
+                                'div',
+                                {
                                   class: 'content-item-value',
-                                  domProps:{
-                                    innerHTML:  current[ prop ]
+                                  domProps: {
+                                    innerHTML: current[ prop ]
                                   }
                                 }
                               )
@@ -249,7 +251,7 @@ export default {
                 const queryItem = createQueryItem();
 
                 /* 递归 多级表头 */
-                const recursion = ( current ) => { 
+                const recursion = ( current ) => {
                   const {
                     label,
                     prop,
@@ -259,7 +261,7 @@ export default {
                     fixed,
                     children = []
                   } = current;
-                  return  createElement(
+                  return createElement(
                     'TableColumnComponent',
                     {
                       props: {
@@ -276,7 +278,7 @@ export default {
                       scopedSlots: {
 
                         /* 表头插槽 */
-                        header: ( props ) => {
+                        header:  props  => {
                           return createElement(
                             'div',
                             {

@@ -12,6 +12,10 @@ export default {
     size: {
       type: String,
       default: 'small'
+    },
+    tableConfig: {
+      type: Array,
+      default: () => ( [] )
     }
   },
   name: 'QueryBar',

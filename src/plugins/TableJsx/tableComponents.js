@@ -112,11 +112,13 @@ function dateComponent ( createElement, { prop: bindFiled } = {} ) {
   );
 }
 
-/* 排序 ob */
-const sortObserve = Vue.observable( { filed: '', data: '' } );
+
 
 /* 创建 查询输入框 */
 export const createQueryItem = () => {
+
+  /* 排序 ob */
+  const sortObserve = Vue.observable( { filed: '', data: '' } );
 
   /* 每个查询框的 ob */
   const state = Vue.observable( { visible: false } );
@@ -193,7 +195,7 @@ export const createQueryItem = () => {
                     on: {
                       'click': () => {
                         state.visible = false;
-                        console.log( sortObserve );
+                        
                         this.$emit( 'handFindList', this.queryData.fromData );
                         const ld = Loading.service( {
                           target: this.$el,
@@ -240,18 +242,13 @@ export const createQueryItem = () => {
                 ],
                 on: {
                   'click': () => {
-                    const ld = Loading.service( {
-                      target: this.$el,
-                      text: '正在查询数据'
-                    } );
-                    setTimeout( () => {
-                      ld.close();
-                    }, 1500 );
                     const flag = sortObserve.data;
                     const ob = sortObserve;
                     ob.data = flag === 'asc' ? 'desc' : 'asc';
                     ob.filed = bindFiled;
 
+                    /* 触发查询事件 */
+                    this.$emit( 'handFindList', { ...ob } );
                   }
                 }
               }
@@ -266,17 +263,13 @@ export const createQueryItem = () => {
                 ],
                 on: {
                   'click': () => {
-                    const ld = Loading.service( {
-                      target: this.$el,
-                      text: '正在查询数据'
-                    } );
-                    setTimeout( () => {
-                      ld.close();
-                    }, 1500 );
                     const flag = sortObserve.data;
                     const ob = sortObserve;
                     ob.data = flag === 'desc' ? 'asc' : 'desc';
                     ob.filed = bindFiled;
+
+                    /* 触发查询事件 */
+                    this.$emit( 'handFindList', { ...ob } );
                   }
                 }
               }

@@ -53,7 +53,7 @@
       <h1><hr></h1>
     
       <rootComponent :table="table">
-        <template v-slot:table.sex="{ sex }">
+        <template v-slot:table_sex="{ sex }">
           <div>
             {{ sex === 1 ? "男" : "女" }}
           </div>
@@ -81,13 +81,22 @@ export default {
   data () {
     return {
       table: useTable( {
+
+        /* 显示 queryBar */
+        shwoQuery: true,
+
+        /* 表格配置 */
         tableConfig: [
           {
             label: '姓名',
             prop: 'name',
             width: 300,
             sortable: true,
-            searchType: 'string'
+
+            /* 是否显示 该列 */
+            visible: false
+
+            // searchType: 'string'
           },
           {
             label: '年龄',

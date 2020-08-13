@@ -1,7 +1,7 @@
 let _cid = 0;
 const cacheTable = new Map();
 import Vue from 'vue';
-import { cloneDeepWith, debounce } from 'lodash';
+import { cloneDeepWith } from 'lodash';
 
 export function useTable ( params ) {
 
@@ -122,7 +122,17 @@ export default {
 
   render ( h ) {
     const cid = this.table._cid;
-    const { config:{ tableConfig } } = cacheTable.get( cid );
+
+    const { 
+      config:{
+
+        /* 是否显示 queryBar */
+        shwoQuery = false,
+
+        /* 表格配置 */
+        tableConfig
+      } 
+    } = cacheTable.get( cid );
     return h(
       'div',
       {
@@ -134,15 +144,21 @@ export default {
       [
 
         /* 查询栏组件 */
-        h(
+        shwoQuery && h(
           'queryBar',
           {
             props: {
-              size: this.size
+              size: this.size,
+              tableConfig
             },
             on: {
               handFindList: ( ...args ) => {
                 this.$emit( 'handFindList', ...args );
+              },
+
+              /* 设置表头 */
+              handSetHeader () {
+                
               }
             }
           }
@@ -163,11 +179,11 @@ export default {
               }
             },
 
-            /* 表格跨级插槽, 插槽名必须是 table.[name] 格式 */
+            /* 表格跨级插槽, 插槽名必须是 table_[filedName] 格式 */
             scopedSlots: Object.keys( this.$scopedSlots ).reduce( 
               ( prev, slotName ) => {
-                if ( /^table\./.test( slotName ) ) {
-                  const name =   slotName.replace( /^table\./, '' );
+                if ( /^table_/.test( slotName ) ) {
+                  const name =   slotName.replace( /^table_/, '' );
                   prev[ name ] = this.$scopedSlots[ slotName ];
                 }
                 return prev;
@@ -178,7 +194,6 @@ export default {
 
               /* 查询事件 */
               handFindList: ( ...args ) => {
-                console.log( this );
                 this.$emit( 'handFindList', ...args );
               },
 
@@ -199,7 +214,7 @@ export default {
             }
           }
         )
-      ]
+      ].filter( Boolean )
     );
   }
 };
